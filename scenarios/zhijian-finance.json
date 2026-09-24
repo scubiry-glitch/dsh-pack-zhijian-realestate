@@ -1,0 +1,47 @@
+{
+  "id": "zhijian-finance",
+  "version": "1.1.0",
+  "schemaVersion": 2,
+  "domain": "realestate",
+  "intents": [
+    "financial-risk"
+  ],
+  "requiredCapabilities": [
+    {
+      "capability": "zhijian.review",
+      "minProficiency": 1,
+      "cardinality": 1
+    },
+    {
+      "capability": "realestate.macro.review",
+      "minProficiency": 1,
+      "cardinality": 1
+    }
+  ],
+  "routingPolicy": {
+    "assertions": [
+      "房企信用风险归行业研究（新范式园丁 bk-026、稳心会长 bk-027）。住房金融/公积金制度视角（辅）：格物讲师 bk-034（公积金政策性金融、REITs、收储资金）。"
+    ],
+    "candidateHints": [
+      "bk-007",
+      "bk-014",
+      "bk-029",
+      "bk-032",
+      "bk-004"
+    ]
+  },
+  "teamTemplate": "zhijian.team.B",
+  "outputTemplate": "zhijian.output.B",
+  "qualityPolicy": "zhijian.quality",
+  "knowledgePolicy": {
+    "required": [
+      "zhijian-expert-memory"
+    ],
+    "optional": [
+      "local-knowledge"
+    ]
+  },
+  "toolPolicy": {
+    "allowed": []
+  }
+}

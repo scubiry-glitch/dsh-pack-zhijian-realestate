@@ -1,0 +1,58 @@
+{
+  "id": "zhijian.output.C",
+  "version": "1.1.0",
+  "schemaVersion": 2,
+  "media": [
+    "markdown"
+  ],
+  "sections": [
+    {
+      "id": "一句话结论",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "记忆点",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "条件清单",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "补数路径",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "防误导清单",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    }
+  ],
+  "renderModes": {
+    "discussion": {
+      "anonymize": true
+    },
+    "final": {
+      "anonymize": false
+    }
+  }
+}

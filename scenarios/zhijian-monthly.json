@@ -1,0 +1,47 @@
+{
+  "id": "zhijian-monthly",
+  "version": "1.1.0",
+  "schemaVersion": 2,
+  "domain": "realestate",
+  "intents": [
+    "monthly-review"
+  ],
+  "requiredCapabilities": [
+    {
+      "capability": "zhijian.review",
+      "minProficiency": 1,
+      "cardinality": 1
+    },
+    {
+      "capability": "realestate.research.review",
+      "minProficiency": 1,
+      "cardinality": 1
+    }
+  ],
+  "routingPolicy": {
+    "assertions": [
+      "必须由行业研究专家主答。陶琦适合当期量价/挂牌/成交周期数据研判；杨现领适合存量流通/渠道/经纪生态作辅答，不替代行业研究专家给月度主判断。口径：定力董座=克而瑞/普睿，百城台长=中指，挂牌哨探=贝壳/NIFD，与统计局口径均有差异。"
+    ],
+    "candidateHints": [
+      "bk-024",
+      "bk-025",
+      "bk-011",
+      "bk-031",
+      "bk-010"
+    ]
+  },
+  "teamTemplate": "zhijian.team.A",
+  "outputTemplate": "zhijian.output.A",
+  "qualityPolicy": "zhijian.quality",
+  "knowledgePolicy": {
+    "required": [
+      "zhijian-expert-memory"
+    ],
+    "optional": [
+      "local-knowledge"
+    ]
+  },
+  "toolPolicy": {
+    "allowed": []
+  }
+}

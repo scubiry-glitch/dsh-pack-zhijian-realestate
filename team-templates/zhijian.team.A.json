@@ -1,0 +1,245 @@
+{
+  "id": "zhijian.team.A",
+  "version": "1.1.0",
+  "schemaVersion": 2,
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "selectedExpertIds": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1,
+        "maxItems": 5,
+        "description": "用户拍板选定的专家 id（bk-*），1-5 位"
+      },
+      "data": {
+        "type": "string",
+        "description": "数据本体（指标/数值/口径/城市/时段）"
+      },
+      "outputForm": {
+        "type": "string",
+        "enum": [
+          "discussion",
+          "final"
+        ],
+        "description": "输出形态"
+      },
+      "dataContext": {
+        "type": "string",
+        "description": "数据本体/来源/城市/时段上下文（适配器组装）"
+      },
+      "frameworkName": {
+        "type": "string",
+        "description": "框架名称（framework.name）"
+      },
+      "frameworkSteps": {
+        "type": "string",
+        "description": "框架步骤（编号 1..n 拼接）"
+      },
+      "frameworkConstraints": {
+        "type": "string",
+        "description": "框架约束（编号 1..n 拼接）"
+      },
+      "wordLimitLine": {
+        "type": "string",
+        "description": "字数约束行（含换行前缀；无约束为空串）"
+      },
+      "frameworkWordLimitParen": {
+        "type": "string",
+        "description": "括号内的字数约束（用于融合任务；无约束为空串）"
+      },
+      "outputFormText": {
+        "type": "string",
+        "description": "输出形态中文（讨论稿/正式稿）"
+      },
+      "fusionExtraRules": {
+        "type": "string",
+        "description": "融合任务附加规则行（GLOBAL_OUTPUT_RULES 过滤，字面 `5. ` 前缀）"
+      }
+    },
+    "required": [
+      "selectedExpertIds",
+      "data"
+    ]
+  },
+  "slots": [
+    {
+      "id": "role.reviewer",
+      "capabilities": [
+        "zhijian.review"
+      ],
+      "cardinality": {
+        "min": 1,
+        "max": 5
+      },
+      "approval": "user-signoff"
+    },
+    {
+      "id": "role.fusion",
+      "capabilities": [
+        "zhijian.review"
+      ],
+      "cardinality": {
+        "min": 0,
+        "max": 1
+      }
+    },
+    {
+      "id": "role.render",
+      "capabilities": [],
+      "cardinality": {
+        "min": 0,
+        "max": 1
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "role": "role.reviewer",
+      "dependsOn": [],
+      "inputs": [
+        {
+          "kind": "parameter",
+          "ref": "data"
+        },
+        {
+          "kind": "parameter",
+          "ref": "selectedExpertIds"
+        }
+      ],
+      "allowedCapabilities": [
+        "financial.stock.snapshot",
+        "financial.stock.quote",
+        "financial.stock.kline",
+        "financial.stock.screen",
+        "financial.fund.snapshot",
+        "financial.index.snapshot",
+        "financial.index.quote",
+        "financial.macro.query",
+        "financial.docs.search",
+        "realestate.indicators.catalog",
+        "realestate.indicators.timeseries",
+        "realestate.indicators.batch",
+        "realestate.city.compare",
+        "realestate.market-snapshot",
+        "realestate.listing.search",
+        "realestate.newhouse.search",
+        "realestate.resblock.profile",
+        "realestate.plate.search",
+        "realestate.rent.search",
+        "realestate.policy.search"
+      ],
+      "outputSchema": "zhijian.output.A",
+      "retryPolicy": "quality-repair",
+      "subject": "专家研判：{expertName}（{expertField}·{expertInitials}）",
+      "description": "以专家「{expertName}」身份独立研判，输出框架 {frameworkName}。\n\n{dataContext}\n\n{frameworkSteps}{wordLimitLine}\n约束：{frameworkConstraints}\n匿名标注：文内身份只标「{expertField}·{expertInitials}」。完成后提交完整点评文本到 output。"
+    },
+    {
+      "id": "t2",
+      "role": "role.fusion",
+      "dependsOn": [
+        "t1"
+      ],
+      "inputs": [
+        {
+          "kind": "task-output",
+          "ref": "t1"
+        }
+      ],
+      "allowedCapabilities": [
+        "financial.stock.snapshot",
+        "financial.stock.quote",
+        "financial.stock.kline",
+        "financial.stock.screen",
+        "financial.fund.snapshot",
+        "financial.index.snapshot",
+        "financial.index.quote",
+        "financial.macro.query",
+        "financial.docs.search",
+        "realestate.indicators.catalog",
+        "realestate.indicators.timeseries",
+        "realestate.indicators.batch",
+        "realestate.city.compare",
+        "realestate.market-snapshot",
+        "realestate.listing.search",
+        "realestate.newhouse.search",
+        "realestate.resblock.profile",
+        "realestate.plate.search",
+        "realestate.rent.search",
+        "realestate.policy.search"
+      ],
+      "outputSchema": "zhijian.output.A",
+      "retryPolicy": "quality-repair",
+      "subject": "融合合成（讨论稿/正式稿）",
+      "description": "综合以下专家研判任务：{dependencies}（用 expert_teams_status 读取各任务 output）。\n框架：{frameworkName}{frameworkWordLimitParen}\n输出形态：{outputFormText}。\n融合规则（主基调为锚）：\n1. 先定主基调 keynote（据数据事实判定；用户指定基调则严格跟随）。\n2. 支撑主基调的论证保留；偏离的观点降级为边界条件/风险提示（\"若 X 成立，基调需下修\"），不作\"另一派\"并列。\n3. 结论/归因/展望自洽，不前后矛盾。\n4. 匿名化：讨论稿正文关键处标「领域·首字母」+ 文末框架/口径/心智模型元信息；正式稿去全部标注仅留一行数据来源。\n{fusionExtraRules}\n完成后把全文写入 output。"
+    },
+    {
+      "id": "t3",
+      "role": "role.render",
+      "dependsOn": [
+        "t2"
+      ],
+      "inputs": [
+        {
+          "kind": "task-output",
+          "ref": "t2"
+        }
+      ],
+      "allowedCapabilities": [
+        "financial.stock.snapshot",
+        "financial.stock.quote",
+        "financial.stock.kline",
+        "financial.stock.screen",
+        "financial.fund.snapshot",
+        "financial.index.snapshot",
+        "financial.index.quote",
+        "financial.macro.query",
+        "financial.docs.search",
+        "realestate.indicators.catalog",
+        "realestate.indicators.timeseries",
+        "realestate.indicators.batch",
+        "realestate.city.compare",
+        "realestate.market-snapshot",
+        "realestate.listing.search",
+        "realestate.newhouse.search",
+        "realestate.resblock.profile",
+        "realestate.plate.search",
+        "realestate.rent.search",
+        "realestate.policy.search"
+      ],
+      "outputSchema": "zhijian.output.A",
+      "retryPolicy": "quality-repair",
+      "subject": "渲染与生成（HTML5 → PDF/PPT → 视频）",
+      "description": "把 {outputFormText}（t2 融合稿全文，用 expert_teams_status 读取）渲染成最终交付件，四步走：\n第 1 步 生成 HTML5 视觉稿：按 finesse-ui 技能（SKILL.md 路径以权威渠道 GET /plugins/dsh-expert-library/skills 返回的 path 为准，含 references/）规范做高质感（never cheap）视觉稿，product register（研报/报告页），craft floor（tinted neutrals、hairline borders、对比度），配色按场景主题（如贝壳蓝金），卡片式布局、数据高亮、A4 打印友好。\n第 2 步 发布外网链接（重要）：调用 render_publish 工具（参数 teamId=当前团队 id，file=HTML5 产物绝对路径，slug=主题英文缩写如 shuangpingtai），把 HTML5 视觉稿发布为免登录公网链接 https://yy.meizu.life/render/<teamId>/<slug>.html，并把该 url 一并写入 output 的交付清单。若 render_publish 不可用（工具缺失/发布目录不可写），跳过并把本地路径写回 output。\n第 3 步 转 PDF + PPT：PDF 用 weasyprint（A4、页脚「98wiki ｜ 智见 / 行业研究报告」）；PPT 用 pptfast 技能（~/.agents/skills 或 pptfast CLI）转可编辑 PPTX，数字带口径、预测标注「研判推断」。\n第 4 步 渲染检查 + 视频（可选）：截图检查（无遮挡/溢出/页脚可见）并记录 sha256；条件允许时用 video-shotcraft 技能（SKILL.md 路径以权威渠道返回的 path 为准）做 60-90s 电影感短视频（Remotion + 页面截图 + 2.5D 运镜）。\n\n技能引用规则（重要）：技能存在性以 GET /plugins/dsh-expert-library/skills 为准（该渠道永远存在，返回每个技能的 id/绝对 path/sizeBytes/hasReferences）；内容本体在插件 bundled knowledge/skills/<id>/，勿用相对路径 knowledge/skills/ 猜测——子代理 cwd 下的 knowledge/ 无 skills/ 目录；domain-packs/*/skills/ 与 domain-packs/*/source/skills/ 是打包分发副本，不是查找基准。\n\n完成后检查点（重要）：把交付文件清单（路径 + sha256 + 外网链接 url）写入 output，并向队长汇报交付物，等待用户确认是否继续（如视频精修/PPT 调整/转正式稿）——不要静默结束，渲染节点是可选增强而非终点。"
+    }
+  ],
+  "gates": [
+    {
+      "policy": "zhijian.quality",
+      "gate": "compliance-anonymization",
+      "appliesTo": [
+        "t3"
+      ]
+    },
+    {
+      "policy": "zhijian.quality",
+      "gate": "data-citation",
+      "appliesTo": [
+        "t3"
+      ]
+    }
+  ],
+  "deliverables": [
+    {
+      "id": "d1",
+      "outputTemplate": "zhijian.output.A",
+      "fromTasks": [
+        "t3"
+      ],
+      "renderMode": "discussion"
+    }
+  ]
+}

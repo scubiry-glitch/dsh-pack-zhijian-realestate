@@ -1,0 +1,74 @@
+{
+  "id": "zhijian.expert-memory",
+  "version": "1.1.0",
+  "schemaVersion": 2,
+  "domain": "realestate.research",
+  "boundary": "智见点评 33 位房地产专家 Profile 基线（2026-08-21 更新：原 2026-08-19 基线 32 位 + 新增陈杰 BK-034）：身份、领域、立场、风格、心智模型、金句、禁区、分析步骤、方法细节（reviewLens/dataPreference/evidenceStandard/agenticProtocol）、评估模型（emm 加权+一票否决）、输出约束与 rubric；不含实时市场数据。",
+  "ontology": {
+    "entities": [
+      {
+        "id": "expert",
+        "description": "领域专家（bk-002~bk-034）"
+      },
+      {
+        "id": "field",
+        "description": "五大主领域（宏观经济/政策制度/行业研究/城市发展/居住服务）"
+      },
+      {
+        "id": "stance",
+        "description": "专家立场标签"
+      },
+      {
+        "id": "capability-tag",
+        "description": "能力标签（数据/研判/解读/理论/实操）"
+      },
+      {
+        "id": "framework",
+        "description": "输出框架 A-E"
+      }
+    ],
+    "relations": [
+      {
+        "id": "expert-belongs-to-field",
+        "from": "expert",
+        "to": "field",
+        "description": "专家属于主领域"
+      },
+      {
+        "id": "expert-has-stance",
+        "from": "expert",
+        "to": "stance",
+        "description": "专家持有立场"
+      }
+    ]
+  },
+  "collections": [
+    {
+      "id": "experts",
+      "root": "experts",
+      "format": "json",
+      "description": "每专家一个 Profile 记录"
+    }
+  ],
+  "snapshot": {
+    "id": "zhijian-v1-2026-08-21",
+    "takenAt": "2026-08-21T00:00:00Z",
+    "digest": "ad3f2636bfe6d636a74d6a61f7b424926b39915ad4c625095ec8be2245edc07b",
+    "recordCount": 33
+  },
+  "retrievalProfiles": [
+    {
+      "id": "by-id",
+      "method": "keyword"
+    },
+    {
+      "id": "by-field",
+      "method": "keyword"
+    }
+  ],
+  "policies": {
+    "citation": "required",
+    "freshness": "monthly",
+    "access": "readonly"
+  }
+}

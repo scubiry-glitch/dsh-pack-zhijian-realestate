@@ -1,0 +1,15 @@
+{
+  "id": "local-knowledge",
+  "version": "1.1.0",
+  "schemaVersion": 2,
+  "kind": "files",
+  "capabilities": [
+    "read"
+  ],
+  "freshness": "static",
+  "scopes": [
+    "experts",
+    "scenarios",
+    "shared"
+  ]
+}

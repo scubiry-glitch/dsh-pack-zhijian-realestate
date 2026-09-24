@@ -1,0 +1,50 @@
+{
+  "id": "zhijian.output.B",
+  "version": "1.1.0",
+  "schemaVersion": 2,
+  "media": [
+    "markdown"
+  ],
+  "sections": [
+    {
+      "id": "关键性结论",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "关键事实及其变化",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "归因分析",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "收尾",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    }
+  ],
+  "renderModes": {
+    "discussion": {
+      "anonymize": true
+    },
+    "final": {
+      "anonymize": false
+    }
+  }
+}

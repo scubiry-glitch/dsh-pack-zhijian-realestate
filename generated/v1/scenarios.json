@@ -1,0 +1,192 @@
+[
+  {
+    "id": "cross-debate",
+    "name": "Cross Debate Team",
+    "description": "交叉辩论：立场对立的两位专家就同一议题立论-反驳-回应，主持专家裁判总结。默认组合为示例（定力董座 vs 分化哨兵），可替换为任意立场对立组合。",
+    "experts": [
+      "team-lead",
+      "bk-024",
+      "bk-008"
+    ],
+    "tasks": [
+      {
+        "subject": "辩题与规则确认",
+        "description": "明确辩题、双方立场与判定标准（论据须带口径与来源），输出辩论议程。",
+        "expert": "team-lead"
+      },
+      {
+        "subject": "正方立论",
+        "description": "陈述立场与核心论据（数据带口径、引用来源），结构：立场声明 → 论据 2-3 条 → 预期对方弱点。",
+        "dependsOn": [
+          0
+        ],
+        "expert": "bk-024"
+      },
+      {
+        "subject": "反方反驳",
+        "description": "逐条反驳正方论据并给出反论据，结构：反驳点 → 反论据（带口径）→ 正方立场中的漏洞。",
+        "dependsOn": [
+          1
+        ],
+        "expert": "bk-008"
+      },
+      {
+        "subject": "正方回应",
+        "description": "回应反驳：承认有效点、澄清误解、强化核心立场。",
+        "dependsOn": [
+          2
+        ],
+        "expert": "bk-024"
+      },
+      {
+        "subject": "裁判总结",
+        "description": "输出辩论纪要：双方核心论点、交锋点、共识、分歧、判定逻辑与最终观点（不强制二选一，可给条件性结论）。",
+        "dependsOn": [
+          3
+        ],
+        "expert": "team-lead"
+      }
+    ],
+    "deliverable": "辩论纪要：辩题与规则、双方立论/反驳/回应要点、交锋点、共识与分歧、裁判结论。"
+  },
+  {
+    "id": "roundtable",
+    "name": "Roundtable Team",
+    "description": "圆桌研讨：多位专家就同一议题独立发言（并行），纪要将共识/分歧/开放问题整理成文。",
+    "experts": [
+      "bk-004",
+      "bk-005",
+      "bk-008",
+      "docs-coordinator"
+    ],
+    "tasks": [
+      {
+        "subject": "专家发言：周期班长",
+        "description": "以本人立场独立发言：核心判断 → 依据（数据带口径）→ 前瞻。",
+        "expert": "bk-004"
+      },
+      {
+        "subject": "专家发言：长牛博士",
+        "description": "以本人立场独立发言：核心判断 → 依据（数据带口径）→ 前瞻。",
+        "expert": "bk-005"
+      },
+      {
+        "subject": "专家发言：分化哨兵",
+        "description": "以本人立场独立发言：核心判断 → 依据（数据带口径）→ 前瞻。",
+        "expert": "bk-008"
+      },
+      {
+        "subject": "圆桌纪要整理",
+        "description": "综合全部发言整理纪要：共识点、分歧点（含各自依据）、开放问题、后续可验证的观察指标。",
+        "dependsOn": [
+          0,
+          1,
+          2
+        ],
+        "expert": "docs-coordinator"
+      }
+    ],
+    "deliverable": "圆桌纪要：各专家核心观点（匿名标注）、共识、分歧、开放问题、观察指标。"
+  },
+  {
+    "id": "ppt-gen",
+    "name": "PPT Generation Team",
+    "description": "PPT 生成：先做内容架构（听众/目标/大纲），再供给领域内容，产出逐页文案与演讲备注（markdown 结构化），最后由 docs-coordinator 渲染和出图（高工艺 HTML 幻灯片 → PPTX，可选产品视频）。",
+    "experts": [
+      "docs-coordinator",
+      "designer",
+      "bk-024"
+    ],
+    "skill": {
+      "id": "video-shotcraft",
+      "name": "video-shotcraft",
+      "purpose": "可选增强：若用户同时需要产品视频/宣传片（Remotion 电影感视频），按该 skill 制作；技能路径以权威渠道 GET /plugins/dsh-expert-library/skills 返回的 path 为准（勿用相对路径 knowledge/skills/ 猜测——子代理 cwd 下的 knowledge/ 无 skills/ 目录，断言不存在前先查权威渠道）。",
+      "appliesToTaskIndex": 3
+    },
+    "tasks": [
+      {
+        "subject": "内容架构",
+        "description": "确定听众、目标与篇幅（页数/时长），输出 PPT 大纲：章节结构 + 每页标题与要点。",
+        "expert": "docs-coordinator"
+      },
+      {
+        "subject": "领域内容供给",
+        "description": "按大纲供给关键数据、结论与案例（数字带口径与来源），标注每页建议引用。",
+        "dependsOn": [
+          0
+        ],
+        "expert": "bk-024"
+      },
+      {
+        "subject": "逐页文案生成",
+        "description": "按大纲与内容产出逐页文案：封面/目录/每页标题+要点（每页≤5 条）/图表建议/演讲备注，markdown 结构化输出。",
+        "dependsOn": [
+          0,
+          1
+        ],
+        "expert": "docs-coordinator"
+      },
+      {
+        "subject": "渲染和出图",
+        "description": "将逐页文案渲染为交付成品：① 先按 finesse-ui 技能（SKILL.md 路径以权威渠道 GET /plugins/dsh-expert-library/skills 返回的 path 为准，含 references/）的规范产出高工艺 HTML 幻灯片（product register、craft floor、反 cheapness；需要动效参考 gsap-* 技能，同渠道检索）；② 用 pptfast 技能（~/.agents/skills 或 pptfast CLI）把内容转为 PPTX；③ 需要视频时用 video-shotcraft 技能（SKILL.md 路径以权威渠道返回的 path 为准，Ink Press 模板在 template/ 目录）拍产品视频。技能引用规则：技能存在性以 GET /plugins/dsh-expert-library/skills 为准（永远存在，返回 id/绝对 path）；内容本体在插件 bundled knowledge/skills/<id>/，勿用相对路径 knowledge/skills/ 猜测——子代理 cwd 下的 knowledge/ 无 skills/ 目录；domain-packs/*/skills/ 与 source/skills/ 是分发副本，不是查找基准。模板支持：模板可由用户在 goal/data 参数中指定（scenario apply 无独立 template 参数）——若调用方指定了模板，严格按指定模板渲染；未指定时用 finesse 规范自选并说明理由。",
+        "dependsOn": [
+          2
+        ],
+        "expert": "docs-coordinator"
+      }
+    ],
+    "deliverable": "PPT 内容包（markdown）：封面、目录、逐页标题+要点、图表建议、演讲备注 + 渲染成品（高工艺 HTML 幻灯片 / PPTX，可选产品视频）。"
+  },
+  {
+    "id": "research-report",
+    "name": "Research Report Team",
+    "description": "研报生成：资料梳理先行，多位专家并行研判（宏观/风险等视角），融合成结构完整的研报（摘要/正文/结论/风险/附录）。",
+    "experts": [
+      "researcher",
+      "bk-004",
+      "bk-007",
+      "docs-coordinator"
+    ],
+    "tasks": [
+      {
+        "subject": "资料与数据梳理",
+        "description": "梳理主题相关资料与数据：关键事实、数据口径、时间线、争议点。",
+        "expert": "researcher"
+      },
+      {
+        "subject": "宏观研判",
+        "description": "从宏观经济视角研判：周期定位、政策路径、量化测算（数据带口径）。",
+        "dependsOn": [
+          0
+        ],
+        "expert": "bk-004"
+      },
+      {
+        "subject": "风险与债务视角",
+        "description": "从债务金融视角研判：风险点、债务-通缩风险、关键监控指标。",
+        "dependsOn": [
+          0
+        ],
+        "expert": "bk-007"
+      },
+      {
+        "subject": "融合成文",
+        "description": "整合全部研判输出完整研报：标题、摘要、正文（背景/分析/展望）、结论、风险提示、附录（数据与口径）。",
+        "dependsOn": [
+          1,
+          2
+        ],
+        "expert": "docs-coordinator"
+      },
+      {
+        "subject": "渲染与分型验收",
+        "description": "将研报 markdown 渲染为 HTML5→PDF（A4、页脚「98wiki ｜ 智见 / 行业研究报告」、封面 4 KPI），并按 wiki-gated-research 分型验收：Part B 主文（12 页级骨架 / 正文≥10000 中文字 / 表格 / 机制图 / 量化模型 / 决策树 / 无溢出）+ Part C 逻辑附件（logic-annex-v2：15 速览卡 + 15 逻辑卡 + ≥12 逻辑图 + 白话总结 + Key Takeaways + 替代解释 + 独立补数协议）；生成 render_check（哈希 + 首/中/末页截图）与 GATE 文件，双 PASS 后追加 INDEX。",
+        "dependsOn": [
+          3
+        ],
+        "expert": "docs-coordinator"
+      }
+    ],
+    "deliverable": "完整研报（markdown）+ 渲染成品（HTML5→PDF，Part B 主文 + Part C 逻辑附件）+ GATE 验收文件。"
+  }
+]

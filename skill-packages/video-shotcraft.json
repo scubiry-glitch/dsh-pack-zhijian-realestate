@@ -1,0 +1,16 @@
+{
+  "id": "video-shotcraft",
+  "name": "video-shotcraft",
+  "version": "0.0.0-local",
+  "schemaVersion": 2,
+  "source": {
+    "kind": "builtin",
+    "root": "video-shotcraft",
+    "digest": "fd40564d3b478849c013e69f21ae30b14a7db83ec7ecf2c281db219f4f481e28"
+  },
+  "contributions": {},
+  "permissions": {
+    "execScripts": [],
+    "internalOnly": true
+  }
+}

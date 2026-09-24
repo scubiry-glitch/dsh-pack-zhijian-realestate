@@ -1,0 +1,43 @@
+{
+  "id": "zhijian-city",
+  "version": "1.1.0",
+  "schemaVersion": 2,
+  "domain": "realestate",
+  "intents": [
+    "city-opportunity"
+  ],
+  "requiredCapabilities": [
+    {
+      "capability": "zhijian.review",
+      "minProficiency": 1,
+      "cardinality": 1
+    },
+    {
+      "capability": "realestate.city.review",
+      "minProficiency": 1,
+      "cardinality": 1
+    }
+  ],
+  "routingPolicy": {
+    "candidateHints": [
+      "bk-017",
+      "bk-023",
+      "bk-030",
+      "bk-003"
+    ]
+  },
+  "teamTemplate": "zhijian.team.B",
+  "outputTemplate": "zhijian.output.B",
+  "qualityPolicy": "zhijian.quality",
+  "knowledgePolicy": {
+    "required": [
+      "zhijian-expert-memory"
+    ],
+    "optional": [
+      "local-knowledge"
+    ]
+  },
+  "toolPolicy": {
+    "allowed": []
+  }
+}

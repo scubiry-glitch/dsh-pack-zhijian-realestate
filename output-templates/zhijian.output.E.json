@@ -1,0 +1,66 @@
+{
+  "id": "zhijian.output.E",
+  "version": "1.1.0",
+  "schemaVersion": 2,
+  "media": [
+    "markdown"
+  ],
+  "sections": [
+    {
+      "id": "直判定调",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "框架拆解",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "破除误区",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "量化阈值",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "可操作落点",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "口径校准",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    }
+  ],
+  "renderModes": {
+    "discussion": {
+      "anonymize": true
+    },
+    "final": {
+      "anonymize": false
+    }
+  }
+}

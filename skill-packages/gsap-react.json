@@ -1,0 +1,16 @@
+{
+  "id": "gsap-react",
+  "name": "gsap-react",
+  "version": "0.0.0-local",
+  "schemaVersion": 2,
+  "source": {
+    "kind": "builtin",
+    "root": "gsap-react",
+    "digest": "13114409a0629ca5bb1b7a86d48ed88f5a5caed333d393e8029f07c6ca31cd3e",
+    "license": "MIT"
+  },
+  "contributions": {},
+  "permissions": {
+    "execScripts": []
+  }
+}

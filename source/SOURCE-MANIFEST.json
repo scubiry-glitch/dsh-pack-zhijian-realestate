@@ -1,0 +1,124 @@
+{
+  "packId": "zhijian-realestate",
+  "packVersion": "1.1.0",
+  "schemaVersion": 2,
+  "baselines": [
+    {
+      "version": "1.0.0",
+      "source": "智见点评_skill_20260819.zip",
+      "date": "2026-08-19T00:00:00Z",
+      "snapshot": "zhijian-v1-2026-08-19",
+      "zipTotalFiles": 156,
+      "expertCount": 32,
+      "note": "Original 2026-08-19 zip baseline (BK-002..BK-033). Archive: /root/.openclaw/media/outbound/智见点评_skill_20260819.zip"
+    },
+    {
+      "version": "1.1.0",
+      "source": "/root/.openclaw/workspace/skills/智见点评 (unpacked workspace copy, updated 2026-08-20/21)",
+      "date": "2026-08-21T00:00:00Z",
+      "snapshot": "zhijian-v1-2026-08-21",
+      "zipTotalFiles": 160,
+      "expertCount": 33,
+      "note": "Unpacked revision: adds 格物讲师 BK-034 (专家总表.md 33 rows, 路由规则.md candidates updated 2026-08-21). The original 32 Profile JSONs are byte-identical to the 1.0.0 zip."
+    }
+  ],
+  "upgradeHistory": [
+    {
+      "from": "1.0.0",
+      "to": "1.1.0",
+      "adds": [
+        "bk-034 格物讲师"
+      ],
+      "reason": "1.0.0 deliberately kept the 32-expert runtime baseline and recorded BK-034 as a deferred upgrade (2026-08-20 addition to the unpacked source). 1.1.0 regenerates from that newer source: 33 experts, routing candidates updated (政策/制度/金融公积金视角), rich Profile detail projected into ExpertV2."
+    }
+  ],
+  "rawProfiles": {
+    "count": 33,
+    "files": {
+      "制度君_专家Profile_BK-002.json": "15ef5b9d829f69688fb5f5dda05839d16483abd1934080899c6368005e295d92",
+      "老规划_专家Profile_BK-003.json": "6511038d48188966afd264f61c3afc943a2fc13dcbe021ca31c4fb4dde9698e3",
+      "周期班长_专家Profile_BK-004.json": "02cb14fff8e3ccd8ba0d53e2363e81b2419417f04ba136eb0f13cee007234ffc",
+      "长牛博士_专家Profile_BK-005.json": "e1606009e93b89b7e2b17196fe2292ef64a9297a879baa5ce1ef18c3e0c3c34b",
+      "存量猎手_专家Profile_BK-006.json": "2f08c72b0614c6d081f836cf8a3f46605f986c993623370f6fc26aa414373a41",
+      "杠杆侦探_专家Profile_BK-007.json": "e213b494051e919a75a1e63d6b452019c56a632fc27a2c6e794d32fd618a298d",
+      "分化哨兵_专家Profile_BK-008.json": "0a6571b75cc68de7db02b725b79c176509f50d1c084e90068c394afd678bdf81",
+      "土地账房_专家Profile_BK-009.json": "ab6b3e56a38f3af60a5eb62dada355cca39a923bc828a2db7e72cfd1e283449d",
+      "能级参谋_专家Profile_BK-010.json": "a530396b5e63681c6dc06e4255a25810e442d7044cba94ef8f055a0a27bfa770",
+      "转轨师傅_专家Profile_BK-011.json": "b62a0ff7b2996bdb0698b1e33dbca29ea23acaf1a86dbf2ebcb50d0b1579fcec",
+      "政策翻译官_专家Profile_BK-012.json": "e41c0b3c19651e1dbd03939393f6a0dd3c7e74ea7ddb15cefc62335906014392",
+      "批判教授_专家Profile_BK-013.json": "d2630b259c8d96444dc51f261f4bb4f138dcb1098770c0c68a12621a2fb15040",
+      "数据司长_专家Profile_BK-014.json": "15466abad6b36c4185515d37ccb0a748d7379746791e9bee3682966cb1945c23",
+      "喇叭博士_专家Profile_BK-015.json": "59c95ea07b29372107392abe4c344f6498d4978b79da37679db5884b50ea9450",
+      "结构老市长_专家Profile_BK-016.json": "455817b9f82847266de86d8c4874616004da3f502c86c97c65e27e0b267dc1f1",
+      "错配外科_专家Profile_BK-017.json": "e01d6c8c5eca78175eb7bf6c3ff93e8b83afdde2ff27fa54d8fc9ce1df4ec4b9",
+      "统筹会长_专家Profile_BK-018.json": "1450f1ffa201b2ee37274c37f1c79746a07b33c970d2ea0b85e2147e21af8553",
+      "海外瞭望员_专家Profile_BK-019.json": "420c842a9554beb6783449d93a27e9160352ac6f172d8dc19e377d554ac5cbd7",
+      "均衡教头_专家Profile_BK-020.json": "c3508d0dd090b2fe2f6e35614cfe682c82ffc4fee7d6aa84096a1bc15307aee2",
+      "运营管家_专家Profile_BK-021.json": "c4f1e25d4c01341d318977d2d049717cbb94c3b816b31a7ffcd1452bea69a042",
+      "慢牛主席_专家Profile_BK-022.json": "fd792a1a09e2058c85f4f319f9e97bb3b5c180e1c19e01dde8ceac69a75ca28c",
+      "保价局长_专家Profile_BK-023.json": "46c45e8e6331a0a6a04c77089da1ed6523d58a2e48e3da5242ced4a48fae4c6f",
+      "定力董座_专家Profile_BK-024.json": "162361516da9fe9d354bee26fbdbc35265b368e7be690d1e597742b7cb651f9e",
+      "百城台长_专家Profile_BK-025.json": "1915a1f3a70c164dafcea92738b4e932281dc78d2694719fa552b3f93338b987",
+      "新范式园丁_专家Profile_BK-026.json": "10ab739256c291f56992efffc073117ec6aa4a102c0bf446d818e5e59e2ded12",
+      "稳心会长_专家Profile_BK-027.json": "62361624084286b28534763ec0ee62e1f28b5bf0da6f6d4a89b75599359d3042",
+      "好房子工匠_专家Profile_BK-028.json": "62e3156c11aad31ab1619b4df0f7dc96999418da89eb52bac8764b4af3bdd765",
+      "利率司南_专家Profile_BK-029.json": "3057f3eb967fbc0c933f88189f1826226e30a628060ac67d940e39cd1453f562",
+      "拓界理事_专家Profile_BK-030.json": "c8233a634e1f5da126bc432f4eda16b61cf939331272aa57a4e5c217d451b549",
+      "挂牌哨探_专家Profile_BK-031.json": "fab9c3f1151d2fef6f3afbaadff075a442a118ceb40cc1431e4423af94ff99d9",
+      "财政掌柜_专家Profile_BK-032.json": "89549eeb4d80f89c1e8e611df2be8c619f911a0720b025498e7324e3b9618f5f",
+      "渠道灯塔_专家Profile_BK-033.json": "fd0db1388da9de0dde0ccae039bb24c8a6a80d985431c4f127cc8a1b0f49cba4",
+      "格物讲师_专家Profile_BK-034.json": "5ca1083ccf7836d0c4f6232db71ff3d29824811012c08299fa37afc32d10c72d"
+    }
+  },
+  "docs": {
+    "count": 6,
+    "files": {
+      "SKILL.md": "6040b4790fe6daaf0be6370c1212043e4bc085db35193616ee9e72e9e5102530",
+      "专家分类框架_v1.md": "a187db03c2e287ef7a1249d47fd8be30d73c012e16cd71e18c0e46a0a176d336",
+      "专家总表.md": "26e4ae9f6c43c4d89c95c2b348172851e6a281dac2c4bf99bee679ddbadff336",
+      "专家输出框架规范_20260809.md": "afe5fae99ec5bcdde5a9c52decb1495a07bb7df5081a77c65652b8c9e045a663",
+      "资料更新规范.md": "8a2636add2a260cc2c4398fc82f082a41106d7cdd1384a57414afc9270d2add0",
+      "路由规则.md": "105f5fee39dbec1c0950c4ed5f930f64a1749cfea17c3494855221c615f32246"
+    }
+  },
+  "library": {
+    "count": 32,
+    "files": {
+      "BK-002_制度君.md": "01c432bdf24e62f904e5f8ba6405b905aca50c1400417e4a5afdb3429a5bb2a8",
+      "BK-003_老规划.md": "7e02c69d95d41d512b1ec85f6458a6f267902766d86b9796eb565c0c5b2a2248",
+      "BK-004_周期班长.md": "29ec2313f10adc57c927b73b4b3cfcd6be1a6804e2ea1fcfb625e123520f44a5",
+      "BK-005_长牛博士.md": "12c0defdd2ee28e316397c5fd0a7ba18e39c79abf0ac44ba301c3c6fb13b8e88",
+      "BK-006_存量猎手.md": "80411bdb867b3b3434f51714ade3fff672ab34716074cf4cd85068278592894f",
+      "BK-007_杠杆侦探.md": "05cbbeb3970bb0b22b273bfe8939bef1b86e7c821196f13489a1318f34f67c68",
+      "BK-008_分化哨兵.md": "98b1a2fcae18036af660cccf5dff2572763a47a1ee8eab3bffdebb5ef2edddc0",
+      "BK-009_土地账房.md": "0940c93b11219c2ad133e2c0cad447080161043a43dc632c90543409a69f36ce",
+      "BK-010_能级参谋.md": "7046fbc6ac39b49f49f900b0114b6a365810383359c958695bac309b6ae42dad",
+      "BK-011_转轨师傅.md": "fea5dc66fbe8ca85bb065fe8564119156a8675d632bb6fea6ad6cc99bf345003",
+      "BK-012_政策翻译官.md": "08cb0df51d0f1b9bc1fc731b2c92ac3c5d36faf7519899185a33239c54afabec",
+      "BK-013_批判教授.md": "e575f4eeb92793ea9eea8dda74088c6a4941cc3d0eabd9d7e848c08dc23519b9",
+      "BK-014_数据司长.md": "e15a997a74f0b884f416666ccdff147b4d9fcc649c1112fc33cf2cf7b797607e",
+      "BK-015_喇叭博士.md": "7095a4d2e44ca177da45039144e24666cde9f81155793d138121d0bb49bb7232",
+      "BK-016_结构老市长.md": "11582c259e29ea068c2df0ce233ecfa1790408def8c36668b570034c3e7a8cab",
+      "BK-017_错配外科.md": "b8c580877f7220c1107ab11adab94ad9cbcd68eca4537720fed9a571fcb76490",
+      "BK-018_统筹会长.md": "280166e596f25c1912c0cdb3b0885e1c5e20ad28f22bc2e978e3fff3db2743da",
+      "BK-019_海外瞭望员.md": "c6f8d724673ac1f3808379158dec435bd6771aec9969aad21f17ec9290701cb2",
+      "BK-020_均衡教头.md": "ba33201d0a165379713bec06e8cfe85abc46fcf8dfbda2a9629e603112ab7ff0",
+      "BK-021_运营管家.md": "5490162beabedcfcd3098b1617bc5a108cc130a1fb1e74f0d6310e5e5024cd2d",
+      "BK-022_慢牛主席.md": "d775659364263fe1de40ffdb89ae35bb3f1b570c5620d1784baa150a437519d1",
+      "BK-023_保价局长.md": "689bf7c38df9f1f90db68c4f43a91556b2427ce8df6e00cf1dc2907c93b332b5",
+      "BK-024_定力董座.md": "1bbff120f6f9291983d8e26da081e18ed27fe0b1d6e4843c6c79ac6b7d3deb23",
+      "BK-025_百城台长.md": "30f367d18662ac73316e9bfcaae7cd033d69cebef45d1b31562cf09bc2015c41",
+      "BK-026_新范式园丁.md": "35679f20bce4b3f3358cfa78d4bf712110b043bfd8f25523126ad03c6f2916bb",
+      "BK-027_稳心会长.md": "418bfb25de64cb841a903264deb342416d27ead09978f04ed78acaf68a443b38",
+      "BK-028_好房子工匠.md": "f78ce62e1eca13778fd723f1268dc6974d35d51845b71cecf6463c8e1d61af77",
+      "BK-029_利率司南.md": "9a211e11f58b7f4872db3e3f741f46c39a795e7087b16294edc51d6ce293da73",
+      "BK-030_拓界理事.md": "522ab21e5e4c3ed3612d863561d69d93dbe811da5fff3d540acaaba11529f285",
+      "BK-031_挂牌哨探.md": "e577e481fe7524cb60c85a505cf8c737215dd36d005eeb436b4e04c2a0d09f75",
+      "BK-032_财政掌柜.md": "077a00ac4af441fa2ade23195e61da48fe2d3b109aa3b3ec86e5b52c1d3cfa6f",
+      "BK-033_渠道灯塔.md": "72278cb6690df7bee968923ea9e54a1611cddc8e4cb7ef3b94232bd0c5347720"
+    },
+    "missing": [
+      "BK-034 格物讲师"
+    ]
+  }
+}

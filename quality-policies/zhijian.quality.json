@@ -1,0 +1,85 @@
+{
+  "id": "zhijian.quality",
+  "version": "1.1.0",
+  "schemaVersion": 2,
+  "gates": [
+    {
+      "id": "schema-structure",
+      "kind": "deterministic",
+      "appliesTo": [
+        "deliverable"
+      ],
+      "severity": "hard",
+      "phase": "structure",
+      "config": {
+        "checks": [
+          "必填章节齐全",
+          "标题层级/表格列一致",
+          "JSON/YAML/Markdown 可解析"
+        ]
+      }
+    },
+    {
+      "id": "data-citation",
+      "kind": "deterministic",
+      "appliesTo": [
+        "deliverable"
+      ],
+      "severity": "hard",
+      "phase": "data",
+      "config": {
+        "rules": [
+          "硬数字必须核实（编数字比不回答更严重）",
+          "口径缺失必须先问用户",
+          "null 禁转 0",
+          "数字带来源/时段/区域/单位/口径"
+        ]
+      }
+    },
+    {
+      "id": "compliance-anonymization",
+      "kind": "deterministic",
+      "appliesTo": [
+        "deliverable"
+      ],
+      "severity": "hard",
+      "phase": "compliance",
+      "config": {
+        "rules": [
+          "对外只列「领域·首字母」",
+          "已故专家（bk-022）仅可引用历史观点",
+          "internalOnly（bk-031）不得外发"
+        ]
+      }
+    },
+    {
+      "id": "style-lint",
+      "kind": "deterministic",
+      "appliesTo": [
+        "deliverable"
+      ],
+      "severity": "soft",
+      "phase": "style",
+      "config": {
+        "rules": [
+          "禁课堂式过渡句",
+          "同篇不重复同款过渡句式",
+          "转折词一篇 ≤1-2 次"
+        ]
+      }
+    },
+    {
+      "id": "semantic-fusion",
+      "kind": "semantic",
+      "appliesTo": [
+        "deliverable"
+      ],
+      "severity": "hard",
+      "phase": "semantic",
+      "config": {
+        "rule": "主基调为锚：支撑主基调的论证保留，偏离观点降级为边界条件/风险提示"
+      }
+    }
+  ],
+  "maxRepairRounds": 2
+}

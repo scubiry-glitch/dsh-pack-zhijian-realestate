@@ -1,0 +1,13 @@
+{
+  "id": "zhijian-realestate",
+  "version": "1.1.0",
+  "schemaVersion": 2,
+  "name": "智见点评·房地产领域包",
+  "description": "33 位房地产领域专家基线（bk-002~bk-034，五大领域）。V2 投影源为 src/zhijian/data/experts.generated.ts + routing/frameworks 表；V1 视图与运行行为不变。1.1.0：新增陈杰 bk-034，并投影完整 Profile 细节（persona/method/emm/constraints/output_schema）。",
+  "caliberDeclarations": {
+    "克而瑞": "克而瑞/普睿监测口径",
+    "中指": "中指院口径",
+    "贝壳": "贝壳成出口径",
+    "统计局": "国家统计局口径"
+  }
+}

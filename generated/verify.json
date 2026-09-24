@@ -1,0 +1,24 @@
+{
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "diagnostics": [
+    {
+      "code": "missing-license",
+      "path": "pack.skillPackages[9].source.license",
+      "message": "skill package has no license; outputs default to internalOnly",
+      "severity": "warning"
+    }
+  ],
+  "entityCounts": {
+    "experts": 33,
+    "scenarios": 8,
+    "teamTemplates": 4,
+    "outputTemplates": 5,
+    "qualityPolicies": 1,
+    "knowledgeProviders": 2,
+    "domainKnowledge": 1,
+    "methodPacks": 6,
+    "skillPackages": 10
+  }
+}

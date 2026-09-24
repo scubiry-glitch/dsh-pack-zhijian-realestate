@@ -1,0 +1,16 @@
+{
+  "id": "gsap-utils",
+  "name": "gsap-utils",
+  "version": "0.0.0-local",
+  "schemaVersion": 2,
+  "source": {
+    "kind": "builtin",
+    "root": "gsap-utils",
+    "digest": "903676f2daa9ab841b47301fb1d04d47ad1886c1ecbef822ffef4253617c2908",
+    "license": "MIT"
+  },
+  "contributions": {},
+  "permissions": {
+    "execScripts": []
+  }
+}

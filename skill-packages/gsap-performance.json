@@ -1,0 +1,16 @@
+{
+  "id": "gsap-performance",
+  "name": "gsap-performance",
+  "version": "0.0.0-local",
+  "schemaVersion": 2,
+  "source": {
+    "kind": "builtin",
+    "root": "gsap-performance",
+    "digest": "1720df57312aa0c23a83d57e23eaf5724e3a85ae08bb3c23c3ab8a0bc4eb8c7f",
+    "license": "MIT"
+  },
+  "contributions": {},
+  "permissions": {
+    "execScripts": []
+  }
+}

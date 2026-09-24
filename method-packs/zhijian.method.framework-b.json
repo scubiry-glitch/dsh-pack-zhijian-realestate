@@ -1,0 +1,9 @@
+{
+  "id": "zhijian.method.framework-b",
+  "version": "1.1.0",
+  "schemaVersion": 2,
+  "name": "输出框架 B（通用四段式）",
+  "mediaType": "agent-instructions",
+  "load": "progressive",
+  "body": "输出框架 B（通用四段式）— 政策解读 / 宏观形势 / 金融风险 / 城市机会 / 行业经营 / 服务业务 / 制度设计\n\n步骤：\n1. 关键性结论\n2. 关键事实及其变化\n3. 归因分析\n4. 收尾（洞察 + 展望 + 不确定性）\n\n约束：\n1. 无字数上限\n2. 结论先行\n3. 数字带口径\n4. 禁止通用套话"
+}

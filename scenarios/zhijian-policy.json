@@ -1,0 +1,51 @@
+{
+  "id": "zhijian-policy",
+  "version": "1.1.0",
+  "schemaVersion": 2,
+  "domain": "realestate",
+  "intents": [
+    "policy-review"
+  ],
+  "requiredCapabilities": [
+    {
+      "capability": "zhijian.review",
+      "minProficiency": 1,
+      "cardinality": 1
+    },
+    {
+      "capability": "realestate.policy.review",
+      "minProficiency": 1,
+      "cardinality": 1
+    }
+  ],
+  "routingPolicy": {
+    "assertions": [
+      "涉货币/财税的政策联动到宏观经济（周期班长 bk-004、数据司长 bk-014、财政掌柜 bk-032、土地账房 bk-009）。慢牛主席 bk-022 已故：仅可引用历史观点。格物讲师 bk-034：制度研究（九字方针/公积金政策性金融）。"
+    ],
+    "candidateHints": [
+      "bk-020",
+      "bk-021",
+      "bk-022",
+      "bk-006",
+      "bk-034",
+      "bk-012",
+      "bk-013",
+      "bk-028",
+      "bk-003"
+    ]
+  },
+  "teamTemplate": "zhijian.team.B",
+  "outputTemplate": "zhijian.output.B",
+  "qualityPolicy": "zhijian.quality",
+  "knowledgePolicy": {
+    "required": [
+      "zhijian-expert-memory"
+    ],
+    "optional": [
+      "local-knowledge"
+    ]
+  },
+  "toolPolicy": {
+    "allowed": []
+  }
+}

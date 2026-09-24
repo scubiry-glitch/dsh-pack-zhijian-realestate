@@ -1,0 +1,68 @@
+{
+  "id": "zhijian.output.A",
+  "version": "1.1.0",
+  "schemaVersion": 2,
+  "media": [
+    "markdown"
+  ],
+  "sections": [
+    {
+      "id": "一句话定性",
+      "required": true,
+      "minWords": 450,
+      "maxWords": 550,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "指标 2-3 项",
+      "required": true,
+      "minWords": 450,
+      "maxWords": 550,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "趋势预测",
+      "required": true,
+      "minWords": 450,
+      "maxWords": 550,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "不确定性",
+      "required": true,
+      "minWords": 450,
+      "maxWords": 550,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "关注指标",
+      "required": true,
+      "minWords": 450,
+      "maxWords": 550,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    }
+  ],
+  "renderModes": {
+    "discussion": {
+      "anonymize": true
+    },
+    "final": {
+      "anonymize": false
+    }
+  }
+}

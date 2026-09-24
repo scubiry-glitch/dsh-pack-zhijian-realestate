@@ -1,0 +1,48 @@
+{
+  "id": "zhijian-macro",
+  "version": "1.1.0",
+  "schemaVersion": 2,
+  "domain": "realestate",
+  "intents": [
+    "macro-outlook"
+  ],
+  "requiredCapabilities": [
+    {
+      "capability": "zhijian.review",
+      "minProficiency": 1,
+      "cardinality": 1
+    },
+    {
+      "capability": "realestate.macro.review",
+      "minProficiency": 1,
+      "cardinality": 1
+    }
+  ],
+  "routingPolicy": {
+    "candidateHints": [
+      "bk-005",
+      "bk-004",
+      "bk-007",
+      "bk-008",
+      "bk-009",
+      "bk-014",
+      "bk-015",
+      "bk-029",
+      "bk-032"
+    ]
+  },
+  "teamTemplate": "zhijian.team.B",
+  "outputTemplate": "zhijian.output.B",
+  "qualityPolicy": "zhijian.quality",
+  "knowledgePolicy": {
+    "required": [
+      "zhijian-expert-memory"
+    ],
+    "optional": [
+      "local-knowledge"
+    ]
+  },
+  "toolPolicy": {
+    "allowed": []
+  }
+}

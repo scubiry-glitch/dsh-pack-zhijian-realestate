@@ -1,0 +1,16 @@
+{
+  "id": "gsap-core",
+  "name": "gsap-core",
+  "version": "0.0.0-local",
+  "schemaVersion": 2,
+  "source": {
+    "kind": "builtin",
+    "root": "gsap-core",
+    "digest": "06ca3bd9241aa453a3a886af75bea20737bd3d15dcdd3e71ab9fc094b45e225e",
+    "license": "MIT"
+  },
+  "contributions": {},
+  "permissions": {
+    "execScripts": []
+  }
+}

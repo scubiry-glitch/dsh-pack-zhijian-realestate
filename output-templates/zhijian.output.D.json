@@ -1,0 +1,50 @@
+{
+  "id": "zhijian.output.D",
+  "version": "1.1.0",
+  "schemaVersion": 2,
+  "media": [
+    "markdown"
+  ],
+  "sections": [
+    {
+      "id": "核心结论",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "关键事实与分析",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "不确定性与趋势",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "未来关注",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    }
+  ],
+  "renderModes": {
+    "discussion": {
+      "anonymize": true
+    },
+    "final": {
+      "anonymize": false
+    }
+  }
+}

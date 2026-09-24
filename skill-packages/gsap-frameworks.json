@@ -1,0 +1,16 @@
+{
+  "id": "gsap-frameworks",
+  "name": "gsap-frameworks",
+  "version": "0.0.0-local",
+  "schemaVersion": 2,
+  "source": {
+    "kind": "builtin",
+    "root": "gsap-frameworks",
+    "digest": "ebcfa016d0cc8f1dbdc1e790998f8b1b507b0bb0ba5b1113b18a6118aba78b29",
+    "license": "MIT"
+  },
+  "contributions": {},
+  "permissions": {
+    "execScripts": []
+  }
+}
