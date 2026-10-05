@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "description": "报告响应式HTML与PDF、实际可见内容一致、版式和对比度的工艺",
+  "applicability": [
+    "固定正文的HTML与PDF交付",
+    "政策报告、合作研究和长文报告的视觉渲染"
+  ],
+  "variants": {
+    "credit-policy": {
+      "description": "规则、判断条件和政策对照，清楚呈现依据与行动条件"
+    },
+    "designer-paper": {
+      "description": "合作研究、长文论证和纸本阅读，强调章节与留白"
+    }
+  },
+  "requires": [
+    "zhijian-report-craft"
+  ],
+  "materials": [
+    {
+      "id": "skills.zhijian-designer-render.SKILL.md",
+      "path": "skills/zhijian-designer-render/SKILL.md",
+      "roles": [
+        "renderer",
+        "reviewer"
+      ]
+    },
+    {
+      "id": "references.render-v2.md",
+      "path": "references/render-v2.md",
+      "roles": [
+        "renderer",
+        "reviewer"
+      ]
+    },
+    {
+      "id": "references.components.base-v2.css",
+      "path": "references/components/base-v2.css",
+      "roles": [
+        "renderer"
+      ]
+    },
+    {
+      "id": "references.components.components-v2.html",
+      "path": "references/components/components-v2.html",
+      "roles": [
+        "renderer"
+      ]
+    },
+    {
+      "id": "references.components.document-shell-v2.html",
+      "path": "references/components/document-shell-v2.html",
+      "roles": [
+        "renderer"
+      ]
+    },
+    {
+      "id": "references.style-credit-policy-v2.md",
+      "path": "references/style-credit-policy-v2.md",
+      "roles": [
+        "writer",
+        "renderer",
+        "reviewer"
+      ],
+      "variants": [
+        "credit-policy"
+      ]
+    },
+    {
+      "id": "references.components.credit-policy-v2.css",
+      "path": "references/components/credit-policy-v2.css",
+      "roles": [
+        "renderer"
+      ],
+      "variants": [
+        "credit-policy"
+      ]
+    },
+    {
+      "id": "references.style-designer-paper-v2.md",
+      "path": "references/style-designer-paper-v2.md",
+      "roles": [
+        "writer",
+        "renderer",
+        "reviewer"
+      ],
+      "variants": [
+        "designer-paper"
+      ]
+    },
+    {
+      "id": "references.components.designer-paper-v2.css",
+      "path": "references/components/designer-paper-v2.css",
+      "roles": [
+        "renderer"
+      ],
+      "variants": [
+        "designer-paper"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "zhijian-render-v1",
+      "entrypoint": "skills/zhijian-designer-render/scripts/check.mjs",
+      "version": "1.1.0",
+      "resultIds": [
+        "report-craft-pdf-structure",
+        "report-craft-format-consistency",
+        "report-craft-browser"
+      ]
+    }
+  ],
+  "reviewAreas": [
+    {
+      "id": "visual-and-format",
+      "description": "检查实际HTML/PDF、移动端和桌面版式、可读性、内容一致性及截图可见问题"
+    }
+  ],
+  "artifactRoles": [
+    "html",
+    "pdf"
+  ]
+}

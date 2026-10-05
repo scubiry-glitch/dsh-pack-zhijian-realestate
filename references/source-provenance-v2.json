@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "style": "credit-policy",
+      "sourceUrl": "https://bzf.meizu.life/credit-policy-v54-d38b.html",
+      "finalUrl": "https://bzf.meizu.life/credit-policy-v54-d38b.html",
+      "retrievedAt": "2026-10-03T12:25:46.346818+00:00",
+      "httpStatus": 200,
+      "archivePath": "references/source-archives/credit-policy-20261003.raw.html",
+      "archiveBytes": 150673,
+      "archiveSha256": "2ac612b02abc2ac48a53d1c05b4c72ae7f910a1c4df2c1999c33236d07fdc3bf",
+      "canonicalPath": "references/zhijian-credit-policy-v1.html",
+      "canonicalBytes": 150306,
+      "canonicalSha256": "d145f887cfd918dfa7e021029feb109211871fd8adfeddfd2715060b148f5f86",
+      "sameBytes": false,
+      "canonicalPreserved": true,
+      "historicalContentIsTaskEvidence": false,
+      "transformationNote": "Canonical local reference predates this retrieval and is preserved byte-for-byte. Remote bytes are separately archived; equal provenance is not asserted from visual similarity."
+    },
+    {
+      "style": "designer-paper",
+      "sourceUrl": "https://yy.meizu.life/render/智见报告-成都数据集团合作/20260905-cddg-coop-report-v2-designer.html",
+      "finalUrl": "https://yy.meizu.life/render/%E6%99%BA%E8%A7%81%E6%8A%A5%E5%91%8A-%E6%88%90%E9%83%BD%E6%95%B0%E6%8D%AE%E9%9B%86%E5%9B%A2%E5%90%88%E4%BD%9C/20260905-cddg-coop-report-v2-designer.html",
+      "retrievedAt": "2026-10-03T12:25:46.302049+00:00",
+      "httpStatus": 200,
+      "archivePath": "references/source-archives/designer-paper-20261003.raw.html",
+      "archiveBytes": 70126,
+      "archiveSha256": "93965f1c53b5e8dc98fdfee85328fd4e0f1b883a064dd18626431f06e8a865ab",
+      "canonicalPath": "references/zhijian-designer-v1.html",
+      "canonicalBytes": 69759,
+      "canonicalSha256": "b25f9db892c52a78555f4016ad534714216ba2dd80c2966a40d0498106c3d408",
+      "sameBytes": false,
+      "canonicalPreserved": true,
+      "historicalContentIsTaskEvidence": false,
+      "transformationNote": "Canonical local reference predates this retrieval and is preserved byte-for-byte. Remote bytes are separately archived; equal provenance is not asserted from visual similarity."
+    }
+  ]
+}

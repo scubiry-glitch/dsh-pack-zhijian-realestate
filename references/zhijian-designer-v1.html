@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=794">
+<title>关于成都数据集团合作机会的分析报告（贝壳视角）· 内部讨论稿 · v2</title>
+<style>
+/* finesse · register=product(document-report) · A=forest-sage paper/ink · B=900/700/400 · C=chapter-rail
+ * D=static-print · E=paper-archive · SOUL=6 SPECTACLE=1 DENSITY=8
+ * 成都数据集团合作分析报告 v2 —— 视觉层重做（非贝壳蓝）：纸本档案系统
+ * 零 JS / 零外链 / 内联单文件；794×1123 A4 纵向固定页
+ */
+:root{
+  /* —— sage 纸本中性（80% 像素）—— */
+  --outer:#E4E5D9;      /* 浏览器观阅底 */
+  --sheet:#F5F4EB;      /* 纸面（页面底，warm-sage 灰白） */
+  --card:#FDFDF6;       /* 卡/正文块 */
+  --panel:#EDEEE3;      /* 内嵌面板：表头/标签底/图底 */
+  --panel-2:#E5E7D9;
+  --ink-1:#20301F;      /* 标题深墨（绿味黑） */
+  --ink-2:#37473A;      /* 正文 */
+  --ink-3:#5A675B;      /* 标注/图注（≥4.5:1 于 --sheet） */
+  --ink-3b:#4F5C50;     /* 更小字安全值 */
+  --line:rgba(32,48,31,.10);
+  --line-2:rgba(32,48,31,.16);
+  /* —— accent：森林松绿（唯一品牌色）—— */
+  --accent:#2E6B4F;
+  --accent-deep:#24553D;
+  --accent-deep2:#1C4431;
+  --accent-soft:rgba(46,107,79,.09);
+  --accent-softer:rgba(46,107,79,.05);
+  /* —— accent-2：暖金（仅封面细线与点缀，小字不用） —— */
+  --gold:#B8893B;
+  --gold-soft:rgba(184,137,59,.5);
+  /* —— 语义：警示（flag-w）/ 中性存疑（flag） —— */
+  --warn-ink:#7E3B1D;
+  --warn-line:rgba(168,85,47,.42);
+  --warn-bg:rgba(168,85,47,.08);
+  --shadow:0 1px 2px rgba(32,48,31,.05),0 6px 18px -12px rgba(32,48,31,.18);
+  --r:10px; --r-sm:6px;
+  --sans:"Noto Sans CJK SC","Source Han Sans SC","PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+  --serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC","SimSun",serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{background:var(--outer);font-family:var(--sans);color:var(--ink-2);font-size:15px;line-height:1.66}
+/* ============ 页面骨架 ============ */
+.page{
+  position:relative;width:794px;height:1123px;overflow:hidden;
+  background:var(--sheet);display:flex;flex-direction:column;
+  margin:0 auto 26px;box-shadow:0 1px 2px rgba(32,48,31,.06),0 18px 44px -24px rgba(32,48,31,.25);
+}
+
+.page::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:3;
+  opacity:.55;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+}
+.ph{
+  flex:0 0 auto;height:48px;display:flex;align-items:center;gap:12px;
+  padding:0 40px;border-bottom:1px solid var(--line);
+}
+.sec-badge{
+  flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--warn-ink);
+  border:1px solid var(--warn-line);background:var(--warn-bg);
+  border-radius:4px;padding:3px 9px 3px 7px;line-height:1.2;
+}
+.sec-badge::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--warn-ink)}
+.ph-title{
+  flex:1 1 auto;text-align:center;font-size:13.5px;font-weight:700;letter-spacing:.06em;color:var(--ink-1);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.ph-right{flex:0 0 auto;font-size:11px;color:var(--ink-3);white-space:nowrap;letter-spacing:.02em}
+.pm{flex:1 1 auto;min-height:0;overflow:hidden;padding:18px 40px 12px;position:relative}
+.pf{
+  flex:0 0 auto;height:32px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;border-top:1px solid var(--line);
+  font-size:10.5px;letter-spacing:.06em;color:var(--ink-3);
+}
+.pf-no{font-variant-numeric:tabular-nums;letter-spacing:.1em}
+/* ============ 章头 ============ */
+.ch{display:flex;align-items:center;gap:12px;margin:0 0 10px}
+.chno{
+  flex:0 0 auto;width:34px;height:34px;border-radius:6px;
+  background:var(--accent-deep2);color:#F4F3E9;display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:17px;font-weight:900;
+  box-shadow:inset 0 0 0 1px rgba(244,243,233,.14);
+}
+.ch h1{font-size:19px;font-weight:800;color:var(--ink-1);letter-spacing:.02em;line-height:1.35}
+.ch .ch-sub{font-size:11px;color:var(--ink-3);margin-left:auto;text-align:right;line-height:1.5;letter-spacing:.03em}
+/* ============ 节标题 ============ */
+h2{
+  display:flex;align-items:baseline;gap:9px;
+  font-size:15.5px;font-weight:700;color:var(--ink-1);
+  margin:14px 0 6px;line-height:1.4;
+}
+h2::before{content:"";flex:0 0 auto;align-self:center;width:3px;height:13px;border-radius:2px;background:var(--accent)}
+h2 .h2tag{margin-left:auto;flex:0 0 auto;font-size:10.5px;font-weight:600;color:var(--ink-3);letter-spacing:.04em}
+h3{font-size:14px;font-weight:800;color:var(--accent-deep);margin:8px 0 3px;letter-spacing:.02em}
+p{margin:0 0 7px;text-align:justify}
+b,strong{font-weight:700;color:var(--ink-1)}
+em{font-style:normal;color:var(--accent-deep);font-weight:700}
+.small{font-size:12px;line-height:1.55}
+/* ============ 行 / 卡 ============ */
+.row{display:flex;gap:10px;align-items:stretch}
+.row > *{flex:1 1 0;min-width:0}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:10px 14px;box-shadow:var(--shadow);
+}
+.card p{font-size:13.5px;line-height:1.55;margin:3px 0}
+.card.soft p{color:var(--ink-2)}
+.card.soft{background:var(--panel);box-shadow:none}
+.card.warn{background:var(--warn-bg);border-color:var(--warn-line)}
+.card h4,.ct{font-size:13px;font-weight:800;color:var(--accent-deep2);letter-spacing:.03em;margin-bottom:3px}
+.card .ct-sub{font-size:11.5px;color:var(--ink-3);font-weight:600;margin-top:2px}
+/* 编号强调块（结论/引语） */
+.quote{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:8px 15px;box-shadow:var(--shadow);border-top:2px solid var(--accent);
+}
+.quote p{margin:0;font-size:15px;line-height:1.58}
+.quote .cno{font-family:var(--serif);font-weight:900;color:var(--accent);font-size:15px;margin-right:2px}
+/* ============ 徽标：存疑/警示 ============ */
+.flag{
+  display:inline-block;font-size:11.5px;line-height:1.5;font-weight:600;color:var(--ink-3b);
+  border:1px solid var(--line-2);background:rgba(32,48,31,.045);
+  border-radius:4px;padding:0 5px;white-space:nowrap;letter-spacing:.02em;
+}
+.flag-w{
+  display:inline-block;font-size:11.5px;line-height:1.5;font-weight:700;color:var(--warn-ink);
+  border:1px solid var(--warn-line);background:var(--warn-bg);
+  border-radius:4px;padding:0 5px;white-space:nowrap;letter-spacing:.02em;
+}
+.tag{
+  display:inline-block;font-size:11px;line-height:1.55;font-weight:700;color:#F4F3E9;
+  background:var(--accent);border-radius:9px;padding:0 9px;white-space:nowrap;
+}
+.tag.gray{background:#C9CDC0;color:#37473A}
+.tag.line{background:transparent;border:1px solid var(--line-2);color:var(--ink-2)}
+/* ============ 表格 ============ */
+table{width:100%;border-collapse:collapse;margin:4px 0 8px}
+thead th{
+  background:var(--panel);border-bottom:1px solid var(--line-2);
+  font-size:12.5px;font-weight:800;color:var(--accent-deep2);letter-spacing:.02em;
+  text-align:left;padding:6px 10px;vertical-align:bottom;
+}
+tbody td{border-bottom:1px solid var(--line);font-size:13.5px;line-height:1.55;padding:6px 10px;vertical-align:top}
+tbody tr:last-child td{border-bottom:none}
+tbody td b{color:var(--ink-1)}
+th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
+td .flag,td .flag-w{font-size:11px}
+tbody tr:nth-child(even) td{background:rgba(46,107,79,.028)}
+/* ============ 图 ============ */
+.fig{margin:8px 0 4px}
+.ft{
+  display:flex;align-items:baseline;gap:8px;margin-bottom:5px;
+  font-size:11.5px;font-weight:700;color:var(--accent-deep);letter-spacing:.08em;
+}
+.ft::after{content:"";flex:1 1 auto;height:1px;background:var(--line);align-self:center}
+.figcap{
+  font-size:11px;line-height:1.55;color:var(--ink-3);margin:4px 0 2px;
+  text-align:justify;letter-spacing:.01em;
+}
+.step{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r-sm);
+  padding:5px 11px;box-shadow:var(--shadow);
+}
+.step b{font-size:13px;color:var(--ink-1)}
+.step .d{font-size:11.5px;color:var(--ink-3);margin-top:1px;line-height:1.5}
+.chain{display:flex;align-items:stretch;gap:0;margin:4px 0}
+.chain > .step{flex:1 1 0;min-width:0;text-align:center}
+.chain .arr{flex:0 0 34px;display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:900;font-size:14px}
+/* 纵向连接符 */
+.varr{display:flex;justify-content:center;color:var(--accent);font-size:12px;line-height:15px;padding:1px 0;letter-spacing:0}
+/* 数字条（封面关键数字 / 指标卡） */
+.metrics{display:flex;gap:0}
+.metric{
+  flex:1 1 0;min-width:0;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r);padding:11px 10px 10px;text-align:center;box-shadow:var(--shadow);
+}
+.mv{
+  font-size:21px;font-weight:800;color:var(--accent-deep);letter-spacing:-.01em;line-height:1.25;
+  font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+.mv small{font-size:13px;font-weight:700}
+.mk{font-size:10.5px;color:var(--ink-3);line-height:1.5;margin-top:4px;letter-spacing:.01em}
+/* ============ 封面（纸本档案 · 无蓝色渐变） ============ */
+.cover{background:
+  radial-gradient(130% 100% at 90% -10%, rgba(46,107,79,.10) 0%, rgba(46,107,79,0) 48%),
+  linear-gradient(180deg,#EFEEE2 0%,var(--sheet) 62%);
+}
+#p01 .pm{display:flex;flex-direction:column;justify-content:space-between;padding:20px 44px 18px}
+#p01 .cv-id .cv-eyebrow{margin-top:0}
+#p01 .cv-id .cv-title{margin-top:18px;font-size:34px}
+#p01 .cv-id .cv-rule{margin-top:20px}
+#p01 .cv-id .cv-sub{margin-top:6px}
+#p01 .cv-concl{margin:2px 0 0}
+#p01 .cv-concl .cv-card{padding:13px 14px}
+#p01 .cv-concl .cv-card p{font-size:15px;line-height:1.6}
+#p01 .cv-figs{margin:0}
+#p01 .cv-figs .cv-kicker{margin:0 0 10px}
+#p01 .cv-toc{margin:0}
+.cv-strap{
+  display:flex;align-items:center;justify-content:center;gap:18px;margin:4px 0 0;
+  font-family:var(--serif);font-size:13px;color:var(--ink-2);letter-spacing:.14em;text-align:center;line-height:1.7;
+}
+.cv-strap::before,.cv-strap::after{content:"";flex:0 0 26px;height:1px;background:var(--gold-soft)}
+
+.cv-eyebrow{
+  display:flex;align-items:center;gap:10px;margin:26px 4px 0;
+  font-size:11.5px;font-weight:700;letter-spacing:.2em;color:var(--accent-deep);
+}
+.cv-eyebrow::before{content:"";width:22px;height:2px;background:var(--accent);border-radius:1px}
+.cv-eyebrow::after{content:"";flex:1 1 auto;height:1px;background:var(--line)}
+.cv-title{
+  font-family:var(--serif);font-weight:900;font-size:32px;line-height:1.44;color:var(--ink-1);
+  letter-spacing:.04em;margin:14px 4px 0;
+}
+.cv-rule{width:96px;height:3px;background:var(--gold-soft);margin:16px 4px 4px;border-radius:2px;position:relative}
+.cv-rule::after{content:"";position:absolute;left:0;top:-1px;width:34px;height:5px;background:var(--gold);border-radius:2px}
+.cv-sub{margin:2px 4px 0;font-size:14px;font-weight:800;letter-spacing:.3em;color:var(--ink-2)}
+.cv-concl{display:flex;gap:10px;margin:24px 0 6px}
+.cv-concl .cv-card{flex:1 1 0;min-width:0;padding:12px 14px}
+.cv-card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  box-shadow:var(--shadow);border-top:2px solid var(--accent);
+}
+.cv-card .ct{font-size:11px;font-weight:800;letter-spacing:.14em;color:var(--accent-deep2);margin-bottom:6px}
+.cv-card p{font-size:14.5px;line-height:1.62;margin:0;color:var(--ink-2);text-align:left;text-wrap:balance}
+.cv-card p b{font-size:15px;color:var(--ink-1)}
+.cv-kicker{
+  display:flex;align-items:baseline;gap:12px;margin:14px 4px 8px;
+  font-size:11px;font-weight:800;letter-spacing:.34em;color:var(--ink-3);
+}
+.cv-kicker::after{content:"";flex:1 1 auto;height:1px;background:var(--line);align-self:center}
+.cv-metrics{gap:10px}
+.cv-metrics .metric{background:rgba(253,253,246,.72);padding:12px 8px 10px}
+.cv-metrics .mv{font-size:19px;color:var(--accent-deep)}
+.cv-metrics .mv.sm{font-size:16px;letter-spacing:0}
+.cv-metrics .mk{font-size:10.5px;line-height:1.5}
+.cv-toc{
+  display:grid;grid-template-columns:1fr 1fr;gap:0 30px;margin-top:16px;
+  border:1px solid var(--line);border-radius:var(--r);background:rgba(253,253,246,.55);
+  padding:12px 18px 12px 22px;
+}
+.cv-toc span{
+  display:flex;align-items:baseline;gap:9px;padding:4.2px 0;
+  font-size:12.5px;color:var(--ink-2);border-bottom:1px dotted rgba(32,48,31,.12);
+}
+.cv-toc b{font-family:var(--serif);font-weight:900;color:var(--accent-deep);font-size:13px;min-width:20px;letter-spacing:.04em}
+/* ============ 封底 ============ */
+.backcover .pm{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.bc-quote{
+  width:640px;background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:26px 34px;box-shadow:var(--shadow);position:relative;
+}
+.bc-quote::before{content:"";position:absolute;top:0;left:40px;right:40px;height:3px;background:var(--accent);border-radius:0 0 3px 3px}
+.bc-quote p{font-family:var(--serif);font-size:16.5px;line-height:1.9;color:var(--ink-1);text-align:center}
+.bc-rule{width:640px;height:1px;background:var(--line-2);margin:18px 0;position:relative}
+.bc-rule::after{content:"";position:absolute;left:50%;top:-1px;transform:translateX(-50%);width:64px;height:3px;background:var(--gold-soft);border-radius:2px}
+.bc-info{width:640px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 26px;text-align:left}
+.bc-info p{display:flex;font-size:13px;line-height:1.9;margin:0;color:var(--ink-2)}
+.bc-info .k{flex:0 0 88px;font-weight:800;color:var(--accent-deep2);letter-spacing:.05em}
+.bc-note{width:640px;margin-top:16px;font-size:11.5px;color:var(--ink-3);letter-spacing:.03em;line-height:1.8}
+/* ============ 列表 ============ */
+ol,ul{margin:2px 0 8px;padding-left:0}
+ol.plain,ul.plain{list-style:none}
+ol.dec li{position:relative;padding-left:26px;margin:0 0 5px}
+ol.dec li::before{
+  content:attr(data-n);position:absolute;left:0;top:3px;
+  width:17px;height:17px;border-radius:50%;background:var(--accent-soft);color:var(--accent-deep);
+  font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;line-height:1;
+}
+ul.dot li{position:relative;padding-left:14px;list-style:none;margin:0 0 4px}
+ul.dot li::before{content:"";position:absolute;left:1px;top:9px;width:5px;height:5px;border-radius:1px;background:var(--accent)}
+/* ============ 杂项 ============ */
+.concl{
+  background:var(--accent-softer);border:1px solid rgba(46,107,79,.22);border-radius:var(--r);
+  padding:8px 14px;font-size:14px;
+}
+.concl b{color:var(--accent-deep2)}
+.nb{white-space:nowrap}
+.overline{text-decoration:line-through;color:var(--ink-3)}
+
+/* ============ p02 摘要：主体分工 ============ */
+.part-label{margin:0 0 6px;font-size:11px;font-weight:800;letter-spacing:.3em;color:var(--accent-deep2)}
+.part-label::after{content:"";display:inline-block;width:34px;height:1px;background:var(--line-2);margin-left:10px;vertical-align:4px}
+.part-row{margin:0 0 10px}
+.part-cell{padding:9px 12px;text-align:center}
+.part-cell .part-role{font-size:11px;color:var(--ink-3);font-weight:600;line-height:1.45;margin-bottom:4px;letter-spacing:.02em}
+.part-cell .part-name{font-size:14.5px;font-weight:800;color:var(--accent-deep2)}
+.part-wide{flex:1.55 1 0}
+.lead{margin:10px 0 4px;font-weight:800;color:var(--ink-1)}
+
+/* ============ p02 交换示意 ============ */
+.exch{display:flex;align-items:stretch;gap:0;margin-top:4px}
+.ex-box{flex:1 1 0;min-width:0;padding:9px 12px}
+.ex-title{font-size:14px;font-weight:800;color:var(--accent-deep2);margin-bottom:5px}
+.ex-line{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:2px 0;font-size:11.5px;color:var(--ink-3)}
+.ex-k{flex:0 0 auto;font-weight:700}
+.ex-mid{flex:0 0 42px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--accent);font-weight:900;font-size:15px}
+.ex-base{
+  margin-top:8px;background:var(--accent-softer);border:1px solid rgba(46,107,79,.18);border-radius:var(--r-sm);
+  padding:5px 12px;font-size:13.5px;text-align:center;color:var(--ink-1);font-weight:600;
+}
+
+/* ============ p03 股权穿透 / 通用竖链 ============ */
+.fig-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.fig-head .ft{margin:0;flex:1 1 auto}
+.fig-head .ft::after{display:none}
+.fig-chip{
+  flex:0 0 auto;background:var(--card);border:1px solid var(--line);border-radius:var(--r-sm);
+  padding:3px 9px;font-size:11px;color:var(--ink-3);white-space:nowrap;
+}
+.fig-chip b{color:var(--accent-deep2);font-size:13px}
+.vchain{margin:4px 0 2px}
+.vchain .step{text-align:center;padding:6px 12px}
+.step-t{font-size:13px;font-weight:800;color:var(--ink-1);line-height:1.5}
+.step-d{font-size:11.5px;color:var(--ink-3);line-height:1.5;margin-top:1px}
+.vchain .varr{padding:2px 0}
+
+/* ============ p04 运行逻辑流 ============ */
+.flow{display:flex;flex-direction:column;align-items:center;margin-top:6px}
+.flow-row{display:flex;align-items:stretch;gap:0;width:100%;justify-content:center}
+.flow-in{flex:1 1 0;max-width:238px;min-width:0;text-align:center;padding:9px 12px}
+.flow-in b,.flow-mid b{font-size:13.5px;color:var(--accent-deep2)}
+.flow-x{flex:0 0 44px;display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:900;font-size:16px}
+.flow-mid{width:420px;max-width:88%;text-align:center;padding:8px 12px}
+.flow .varr{padding:1px 0}
+.flow-note{
+  margin-top:9px;background:var(--card);border:1px solid var(--line);border-top:2px solid var(--accent);
+  border-radius:var(--r-sm);padding:6px 14px;font-size:13px;width:100%;text-align:center;color:var(--ink-2);
+}
+.flow-note b{color:var(--accent-deep2)}
+.note-card{padding:11px 16px}
+.note-card p{margin:0;line-height:1.68}
+.note-card p b{color:var(--accent-deep2)}
+
+/* ============ p06 公式挂注 / 限制条件 ============ */
+.tagrow{display:flex;flex-wrap:wrap;gap:4px 6px;margin:5px 0 2px}
+.tag.line{font-size:10.8px;font-weight:700;color:var(--ink-2);border:1px solid var(--line-2);border-radius:4px;padding:1.5px 7px;line-height:1.5}
+ol.restrict{list-style:none;counter-reset:none;padding-left:2px;margin:2px 0 8px}
+ol.restrict li{
+  position:relative;padding:1.5px 0 1.5px 44px;margin:0;font-size:13.5px;line-height:1.6;color:var(--ink-2);
+  border-bottom:1px dotted rgba(32,48,31,.08);
+}
+ol.restrict li:last-child{border-bottom:none}
+
+/* ============ p08 ============ */
+.dim-card{padding:10px 12px;text-align:center;display:flex;flex-direction:column;justify-content:center}
+.dim-card .ct{margin-bottom:2px}
+.dim-card p{margin:0;font-size:11px;color:var(--ink-3);text-align:center}
+.warn-bar{margin-top:8px;padding:7px 12px;border-radius:var(--r-sm)}
+.warn-bar p{margin:0;font-size:12.5px;line-height:1.6}
+.warn-bar b{color:var(--warn-ink)}
+ol.lessons{list-style:none;padding-left:2px;margin-top:2px}
+ol.lessons li{position:relative;padding:2px 0 2px 0;margin:0 0 4px;font-size:13.5px;line-height:1.62}
+
+/* ============ p09 阶梯 ============ */
+.ladder{display:flex;flex-direction:column;gap:5px;margin-top:3px}
+.lvl{
+  display:flex;align-items:center;gap:10px;padding:7px 12px;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r-sm);box-shadow:var(--shadow);
+}
+.lvl b{font-size:13px;color:var(--ink-1);white-space:nowrap}
+.lvl-note{font-size:11.5px;color:var(--ink-3);flex:1 1 auto}
+.lvl-tag{flex:0 0 auto;font-size:11px}
+.lvl.l2{margin-left:26px}
+.lvl.l3{margin-left:52px;background:var(--accent-softer)}
+
+/* ============ p10 解耦示意 ============ */
+.decouple{display:flex;align-items:stretch;gap:0;margin-top:3px}
+.decouple .card{flex:1 1 0;text-align:center;padding:9px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.decouple .card b{font-size:13.5px;color:var(--accent-deep2)}
+.dec-sub{font-size:11px;color:var(--ink-3)}
+.dec-mid{
+  flex:0 0 132px;display:flex;align-items:center;justify-content:center;text-align:center;
+  font-size:10.5px;font-weight:700;color:var(--accent-deep);line-height:1.5;padding:4px 8px;
+  background:var(--accent-softer);border-top:1px dashed rgba(46,107,79,.3);border-bottom:1px dashed rgba(46,107,79,.3);
+}
+
+/* ============ p11 矩阵 / 三步 ============ */
+.matrix{margin-top:3px}
+.matrix th{font-size:12px;padding:6px 6px;text-align:center;vertical-align:middle}
+.matrix td{font-size:12.8px;padding:5.5px 6px;text-align:center}
+.matrix td:first-child{text-align:left;font-weight:700;color:var(--ink-1)}
+.card.step3{padding:9px 12px;display:flex;flex-direction:column}
+.card.step3 p{margin:0;font-size:12.8px;line-height:1.62}
+
+/* ============ p12 风险 / 下一步 ============ */
+ol.risks{list-style:none;padding-left:0;margin:4px 0 2px;counter-reset:rk}
+ol.risks li{
+  counter-increment:rk;position:relative;padding:6.5px 12px 6.5px 42px;margin:0 0 5px;
+  background:var(--card);border:1px solid var(--line);border-left:0;border-radius:var(--r);box-shadow:var(--shadow);
+  font-size:13.5px;line-height:1.6;
+}
+ol.risks li::before{
+  content:counter(rk);position:absolute;left:12px;top:8px;width:19px;height:19px;border-radius:50%;
+  background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink);
+  font-weight:800;font-size:11.5px;display:flex;align-items:center;justify-content:center;
+}
+.next{padding:10px 14px;display:flex;flex-direction:column}
+.next-tag{
+  align-self:flex-start;margin-bottom:6px;font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--accent-deep2);
+  background:var(--accent-soft);border-radius:4px;padding:2px 9px;
+}
+.next p{margin:0;font-size:12.8px;line-height:1.6}
+
+/* p10 密度压缩（六章上：方案卡多、行距敏感） */
+#p10 .card{padding:8px 12px}
+#p10 .card .ct{margin-bottom:2px}
+#p10 .row{gap:8px}
+#p10 .card p{margin:2.5px 0}
+#p10 h3{margin:7px 0 2px}
+#p10 .quote{padding:7px 14px}
+#p10 .fig{margin:6px 0 0}
+#p10 .figcap{margin:3px 0 0}
+#p10 .dec-mid{flex:0 0 118px}
+
+</style>
+</head>
+<body>
+<section class="page cover" id="p01">
+  <header class="ph"><span class="sec-badge">内部讨论稿</span><span class="ph-title">关于成都数据集团合作机会的分析报告</span><span class="ph-right">贝壳政研通条线 ｜ 2026年9月5日</span></header>
+  <main class="pm">
+    <div class="cv-id">
+      <div class="cv-eyebrow">贝壳政研通条线 · 2026年9月5日 · 内部讨论稿</div>
+      <h1 class="cv-title">关于成都数据集团合作机会的分析报告</h1>
+      <div class="cv-rule"></div>
+      <div class="cv-sub">贝壳视角 ｜ 合作分析</div>
+    </div>
+
+    <div class="cv-concl">
+      <div class="cv-card">
+        <div class="ct">核心结论一</div>
+        <p><b>合作具有结构性基础。</b></p>
+      </div>
+      <div class="cv-card">
+        <div class="ct">核心结论二</div>
+        <p><b>算力成本优势真实存在，但附带前置条件。</b></p>
+      </div>
+      <div class="cv-card">
+        <div class="ct">核心结论三</div>
+        <p><b>合作宜分层推进、小步验证。</b></p>
+      </div>
+    </div>
+
+    <div class="cv-figs">
+      <div class="cv-kicker">关键数字</div>
+      <div class="metrics cv-metrics">
+        <div class="metric"><div class="mv">40亿元</div><div class="mk">成都数据集团<br>注册资本</div></div>
+        <div class="metric"><div class="mv sm">约20亿元·万卡</div><div class="mk">算力中心一期投资<br>（均在规划阶段）</div></div>
+        <div class="metric"><div class="mv">1.2亿元</div><div class="mk">挂牌底价<br>对应约39倍市盈率</div></div>
+        <div class="metric"><div class="mv">3.3折</div><div class="mk">成都数据集团口头意向<br>贝壳现走火山引擎3.8折</div></div>
+      </div>
+    </div>
+
+    <div class="cv-strap">三方各自以过剩资源交换稀缺资源，构成本次合作能够成立的底层结构。</div>
+
+    <div class="cv-toc">
+      <span><b>一、</b>报告摘要</span>
+      <span><b>二、</b>成都数据集团概况</span>
+      <span><b>三、</b>资源禀赋评价：中央与地方的非对称优势</span>
+      <span><b>四、</b>地方资质的价值分析</span>
+      <span><b>五、</b>与贝壳合作的层次设计</span>
+      <span><b>六、</b>算力中心合作方案设计</span>
+      <span><b>七、</b>风险因素与待核实事项</span>
+      <span><b>八、</b>下一步工作建议</span>
+    </div>
+  </main>
+  <footer class="pf"><span>内部讨论稿 · 供内部决策参考</span><span class="pf-no">第 01 页 / 共 13 页</span></footer>
+</section>
+<section class="page" id="p02">
+  <header class="ph"><span class="sec-badge">内部讨论稿</span><span class="ph-title">关于成都数据集团合作机会的分析报告</span><span class="ph-right">贝壳政研通条线 ｜ 2026年9月5日</span></header>
+  <main class="pm">
+    <div class="ch"><div class="chno">一</div><h1>一、报告摘要</h1></div>
+
+    <div class="part-label">主体分工</div>
+    <div class="row part-row">
+      <div class="card soft part-cell">
+        <div class="part-role">合作对接主体</div>
+        <div class="part-name">成都数据集团</div>
+      </div>
+      <div class="card soft part-cell part-wide">
+        <div class="part-role">面向银行的ISV交付与部分数据合作</div>
+        <div class="part-name">房联云码</div>
+      </div>
+      <div class="card soft part-cell">
+        <div class="part-role">其余合作事项</div>
+        <div class="part-name">集团层面展开</div>
+      </div>
+    </div>
+
+    <p>2026年9月5日，贝壳与成都数据集团举行工作会谈，就数据要素合作、算力合作及股权合作方向进行了初步沟通。合作对接主体为成都数据集团；其旗下企业<b>成都房联云码科技有限公司</b>（以下简称"房联云码"）承担本次合作中的<b>面向银行的ISV交付与部分数据合作</b>，其余合作事项（城市可信空间、算力、股权等）均在集团层面展开。本报告从贝壳视角，对成都数据集团的整体服务能力、资源禀赋、地方资质价值及合作方案进行分析，供管理层决策参考。</p>
+
+    <p class="lead">核心结论如下：</p>
+
+    <div class="quote">
+      <p>1. <b>合作具有结构性基础。</b>成都数据集团握有合规身份与政务数据入口，但缺乏优质产品与全国场景；贝壳握有行业数据、应用场景与产品化能力，但缺乏数据服务的合规身份。双方资源互补关系明确，合作逻辑成立。</p>
+    </div>
+    <div class="quote">
+      <p>2. <b>算力成本优势真实存在，但附带前置条件。</b>其凉山算力中心的低成本来自电价洼地、发电侧消纳压力、资本方让利与政府补贴的叠加，属于政策与资源型洼地，而非纯技术效率优势；且项目尚未投运，报价仅为口头意向。</p>
+    </div>
+    <div class="quote">
+      <p>3. <b>合作宜分层推进、小步验证。</b>算力合作分为纯采购与股权合作两类独立推进；建议以数据应用合作和不预付的标准采购长协为短期切入点，投运验证后再决定是否以预付换价或进入股权合作；当前阶段不宜进行大额股权承诺。</p>
+    </div>
+
+    <div class="fig">
+      <div class="ft">双方资源互补结构（定性示意）</div>
+      <div class="exch">
+        <div class="card ex-box">
+          <div class="ex-title">贝壳</div>
+          <div class="ex-line"><span class="ex-k">握有</span><span class="tag">行业数据</span><span class="tag">应用场景</span><span class="tag">产品化能力</span></div>
+          <div class="ex-line"><span class="ex-k">缺乏</span><span class="tag gray">数据服务的合规身份</span></div>
+        </div>
+        <div class="ex-mid"><span>→</span><span>←</span></div>
+        <div class="card ex-box">
+          <div class="ex-title">成都数据集团</div>
+          <div class="ex-line"><span class="ex-k">握有</span><span class="tag">合规身份</span><span class="tag">政务数据入口</span></div>
+          <div class="ex-line"><span class="ex-k">缺乏</span><span class="tag gray">优质产品</span><span class="tag gray">全国场景</span></div>
+        </div>
+      </div>
+      <div class="ex-base">双方资源互补关系明确，合作逻辑成立。</div>
+      <div class="figcap">定性示意：两栏"握有／缺乏"清单及底线句的措辞均取自核心结论①原文，图中不含新增数值与判断。</div>
+    </div>
+  </main>
+  <footer class="pf"><span>内部讨论稿 · 供内部决策参考</span><span class="pf-no">第 02 页 / 共 13 页</span></footer>
+</section>
+<section class="page" id="p03">
+  <header class="ph"><span class="sec-badge">内部讨论稿</span><span class="ph-title">关于成都数据集团合作机会的分析报告</span><span class="ph-right">贝壳政研通条线 ｜ 2026年9月5日</span></header>
+  <main class="pm">
+    <div class="ch"><div class="chno">二</div><h1>二、成都数据集团概况</h1></div>
+
+    <h2>2.1 集团概况与股权结构</h2>
+    <p><b>合作对接主体：成都数据集团股份有限公司</b>。成都市属国有企业集团，2023年7月由成都市大数据集团股份有限公司改组揭牌，注册资本40亿元，由成都产业集团（约63.9%）、成都高新投资集团（18%）等7家市属国企共同持股，另持省级四川数据集团20%股权，系成渝地区首家以数据为核心业务的国企集团。</p>
+    <p><b>国企背景的意义</b>：市属国企身份既为其政务数据合作提供合规通道与政府信任，也意味着重大合作事项（尤其股权层面）须经国资审批程序，决策链条长于民营企业，谈判节奏预期应据此设定。</p>
+
+    <h2>2.2 旗下业务主体：成都房联云码科技有限公司</h2>
+    <p>房联云码成立于2009年12月，注册资本2亿元（实缴约1.85亿元）。股权穿透（公开工商信息）：成都数据集团 → 成都智慧锦城大数据有限公司（持股44.75%）→ 2020年收购房联云码100%股权，纳入市属国资体系；其旗下成都房联电子信息有限公司原为成都市城乡房产管理局下属企业。</p>
+
+    <div class="fig">
+      <div class="fig-head">
+        <div class="ft" style="margin:0">股权穿透链 · 成都数据集团 → 房联云码</div>
+        <div class="fig-chip"><b>约170款</b>数据产品（以SaaS形态交付）</div>
+      </div>
+      <div class="vchain">
+        <div class="step">
+          <div class="step-t">成都产业集团（约63.9%）、成都高新投资集团（18%）等7家市属国企</div>
+          <div class="step-d">共同持股</div>
+        </div>
+        <div class="varr">↓</div>
+        <div class="step">
+          <div class="step-t">成都数据集团股份有限公司</div>
+          <div class="step-d">注册资本40亿元 · 2023年7月由成都市大数据集团股份有限公司改组揭牌 · 另持省级四川数据集团20%股权</div>
+        </div>
+        <div class="varr">↓</div>
+        <div class="step">
+          <div class="step-t">成都智慧锦城大数据有限公司</div>
+          <div class="step-d">（持股44.75%）</div>
+        </div>
+        <div class="varr">↓</div>
+        <div class="step">
+          <div class="step-t">房联云码</div>
+          <div class="step-d">2020年收购100%股权，纳入市属国资体系</div>
+        </div>
+      </div>
+      <div class="figcap">图示各层名称、持股比例与年份均按正文 2.2"股权穿透（公开工商信息）"原文顺序与括号位置排布；右上指标卡"约170款数据产品（以SaaS形态交付）"亦出自 2.2 原文。</div>
+    </div>
+
+    <p>业务上，房联云码长期深耕开发商与银行业务——银行业（资金监管系统、按揭风控、权证中心代办）、开发商（地产数据产品、开发商数字化系统及研究报告）及住建条线；现有约170款数据产品（以SaaS形态交付），正处于全面AI化转型阶段。</p>
+    <div class="quote">
+      <p><b>本次合作中房联云码的参与范围</b>：面向银行的ISV交付与部分数据合作（详见第五章）；城市可信空间、算力合作、股权合作等其余事项均与集团层面展开。</p>
+    </div>
+  </main>
+  <footer class="pf"><span>内部讨论稿 · 供内部决策参考</span><span class="pf-no">第 03 页 / 共 13 页</span></footer>
+</section>
+<section class="page" id="p04">
+  <header class="ph"><span class="sec-badge">内部讨论稿</span><span class="ph-title">关于成都数据集团合作机会的分析报告</span><span class="ph-right">贝壳政研通条线 ｜ 2026年9月5日</span></header>
+  <main class="pm">
+    <h2>2.3 城市可信空间（成都样板）</h2>
+    <p>城市可信空间为国家数据局试点项目，属中央预算补贴项目。<span class="flag">据会谈介绍</span>，项目总投资约2亿元，补贴比例约15%，预计2026年10月验收<span class="flag flag-w">（上述数字待书面材料确认）</span>。</p>
+    <p>其运行逻辑为：政务公共数据与行业社会化数据在可信空间内融合加工，形成数据产品后合规对外提供服务。该模式解决的核心问题是<b>数据服务收费的合规身份</b>——将"介绍客源收取银行费用"等敏感模式，重构为持牌框架下的数据服务收费。</p>
+
+    <div class="fig">
+      <div class="ft">城市可信空间 · 运行逻辑（定性示意）</div>
+      <div class="flow">
+        <div class="flow-row">
+          <div class="card flow-in"><b>政务公共数据</b></div>
+          <div class="flow-x">×</div>
+          <div class="card flow-in"><b>行业社会化数据</b></div>
+        </div>
+        <div class="varr">↓</div>
+        <div class="card flow-mid"><b>在可信空间内融合加工</b></div>
+        <div class="varr">↓</div>
+        <div class="card flow-mid"><b>形成数据产品</b></div>
+        <div class="varr">↓</div>
+        <div class="card flow-mid"><b>合规对外提供服务</b></div>
+      </div>
+      <div class="flow-note">解决的核心问题：<b>数据服务收费的合规身份</b></div>
+      <div class="figcap">定性示意：输入两类数据 → 可信空间内融合加工 → 形成数据产品 → 合规对外提供服务，节点措辞与旁注均取自 2.3 原文，不含新增数值与判断。</div>
+    </div>
+
+    <h2>2.4 职业信用码与灵活用工数据应用</h2>
+    <div class="card note-card">
+      <p>面向保安、家政、快递等灵活用工群体提供背景核查服务（刑事记录、多头借贷等维度）。数据源<span class="flag flag-w">据称</span>包括人社部全国协议、最高检下属司法研究机构、工商及信用中心数据<span class="flag flag-w">（授权范围与商用边界待核实）</span>。</p>
+    </div>
+    <div class="card soft note-card">
+      <p>全国化推广路径为：国家数据集团挂品牌出面，成都数据集团提供技术支持并参与分成；成都先行落地案例。<b>贝壳经纪人背调可作为首个行业案例</b>，落地后经国家数据集团渠道推向全国。</p>
+    </div>
+  </main>
+  <footer class="pf"><span>内部讨论稿 · 供内部决策参考</span><span class="pf-no">第 04 页 / 共 13 页</span></footer>
+</section>
+<section class="page" id="p05">
+  <header class="ph"><span class="sec-badge">内部讨论稿</span><span class="ph-title">关于成都数据集团合作机会的分析报告</span><span class="ph-right">贝壳政研通条线 ｜ 2026年9月5日</span></header>
+  <main class="pm">
+    <div class="ch"><div class="chno">二</div><h1>二、成都数据集团概况</h1></div>
+
+    <h2>2.5 凉山雅砻江算力中心</h2>
+    <div class="row">
+      <div class="card"><div class="ct">规模</div><p>一期投资约20亿元、万卡规模；二期规划10万卡，目标西部最大<span class="flag">（均在规划阶段）</span>。</p></div>
+      <div class="card"><div class="ct">技术路线</div><p>混合异构算力，国产芯片（海光、华为及新品牌）与英伟达组合，按任务分层调度。</p></div>
+      <div class="card"><div class="ct">能源条件</div><p>水电合作电价每度0.30—0.35元；若未来绿电直供政策放开，具备降至0.10—0.15元的空间。</p></div>
+    </div>
+    <div class="row">
+      <div class="card"><div class="ct">参与方</div><p>国投雅砻江公司（战略介入算力）、四川移动（机房建设与部分消纳）、地方政府（算力券补贴与15%固定资产投资返还）。</p></div>
+      <div class="card"><div class="ct">当前状态</div><p>一期尚在选址（四个候选点），未投运，无实测性能数据。</p></div>
+    </div>
+
+    <div class="fig">
+      <div class="ft">电价水平对比（元/度）· 凉山水电 / 东部数据中心 / 绿电直供情景</div>
+      <svg viewBox="0 0 678 196" width="678" height="196" role="img" aria-label="电价对比水平条形图">
+        <line x1="150" y1="20" x2="150" y2="180" stroke="rgba(32,48,31,.14)" stroke-width="1"/>
+        <text x="8" y="43" font-size="12" fill="#37473A">水电合作价</text>
+        <rect x="158" y="25" width="146" height="34" rx="3" fill="#2E6B4F"/>
+        <text x="312" y="47" font-size="11" font-weight="700" fill="#24553D">0.30—0.35元/度</text>
+        <text x="8" y="97" font-size="12" fill="#37473A">东部数据中心</text>
+        <rect x="158" y="79" width="306" height="34" rx="3" fill="#5C8A72"/>
+        <text x="472" y="101" font-size="11" font-weight="700" fill="#24553D">0.60—0.80元/度</text>
+        <text x="8" y="151" font-size="11.5" fill="#5A675B">绿电直供情景（若政策放开）</text>
+        <rect x="176" y="133" width="57" height="34" rx="3" fill="#E3E5D9" stroke="#C9CDC0"/>
+        <text x="241" y="155" font-size="11" font-weight="700" fill="#5A675B">0.10—0.15元/度</text>
+        <text x="331" y="155" font-size="10.5" font-weight="700" fill="#7E3B1D">政策未放开</text>
+      </svg>
+      <div class="figcap">图注：长度按区间中值比例示意，非实测刻度；水电合作价与东部数据中心电价区间取自 2.7 节六来源表；灰显条对应 2.5 节「若未来绿电直供政策放开，具备降至0.10—0.15元的空间」之情景区间——按 2.7 节限制条件，绿电直供目前政策未放开，低价情景不得纳入测算基线。</div>
+    </div>
+
+    <h2>2.6 公共民生数据</h2>
+    <p><span class="flag">据会谈介绍</span>，其政务成交、权属、抵押类数据产品已在27个城市的数集团渠道具备分发能力；民生领域全国推广拟由国家数据集团授权挂品牌实施。</p>
+  </main>
+  <footer class="pf"><span>内部讨论稿 · 供内部决策参考</span><span class="pf-no">第 05 页 / 共 13 页</span></footer>
+</section>
+<section class="page" id="p06">
+  <header class="ph"><span class="sec-badge">内部讨论稿</span><span class="ph-title">关于成都数据集团合作机会的分析报告</span><span class="ph-right">贝壳政研通条线 ｜ 2026年9月5日</span></header>
+  <main class="pm">
+    <div class="ch"><div class="chno">二</div><h1>二、成都数据集团概况</h1></div>
+
+    <h2>2.7 算力成本优势分析</h2>
+    <p>token单价可分解为：<b>（GPU折旧＋电力＋机房＋运维）÷有效利用率×渠道加价层级</b>。成都数据集团在公式各环节均有压缩来源：</p>
+
+    <table>
+      <thead>
+        <tr><th style="width:86px">来源</th><th>机制</th><th style="width:104px">确定性</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><b>电价洼地</b></td><td>水电合作价0.30—0.35元/度，显著低于东部数据中心0.60—0.80元；电力占运营成本约六至七成</td><td><span class="tag">较高</span></td></tr>
+        <tr><td><b>发电侧动机</b></td><td>雅砻江流域电力消纳存在硬性增长指标，发电企业"背任务找客户"，合作条件天然优厚</td><td><span class="tag">较高</span></td></tr>
+        <tr><td><b>资本方让利</b></td><td>资产由国投系及平台方持有，运营方按分成模式参与，不依赖设备摊销回收，报价底线低于市场化云厂商</td><td><span class="tag gray">中等</span></td></tr>
+        <tr><td><b>政府补贴</b></td><td>算力券抵扣、15%固投返还、西部税收优惠三层叠加</td><td><span class="flag flag-w">待书面确认</span></td></tr>
+        <tr><td><b>混合异构调度</b></td><td>国产卡承载非敏感与非峰值负载，拉低加权成本</td><td><span class="tag gray">中等</span></td></tr>
+        <tr><td><b>渠道层级差</b></td><td>自建自运直供客户，较"模型厂商—云厂商—通道"链条减少两层加价</td><td><span class="tag gray">中等</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="fig">
+      <div class="ft">token 单价公式链 · 六来源按环节挂注（md 2.7 原文 · 定性示意）</div>
+      <div class="chain">
+        <div class="step"><b>（GPU折旧＋电力＋机房＋运维）</b></div>
+        <div class="arr">→</div>
+        <div class="step"><b>÷ 有效利用率</b></div>
+        <div class="arr">→</div>
+        <div class="step"><b>× 渠道加价层级</b></div>
+      </div>
+      <div class="tagrow">
+        <span class="tag line">① 电价洼地 → 电力</span><span class="tag line">② 发电侧动机 → 电力</span><span class="tag line">③ 资本方让利 → 折旧·摊销</span>
+      </div>
+      <div class="tagrow">
+        <span class="tag line">④ 政府补贴 → 算力券·固投返还·税收</span><span class="tag line">⑤ 混合异构调度 → 加权成本</span><span class="tag line">⑥ 渠道层级差 → 渠道加价层级</span>
+      </div>
+      <div class="figcap">公式链与全部措辞均为 2.7 节原文（定性示意）；六来源按编号挂注（①—⑥对应上表行序），环节归位为版式归纳——①电价洼地、②发电侧动机作用于「电力」，③作用于「折旧·摊销」，④作用于「算力券抵扣、15%固投返还、西部税收优惠」，⑤作用于「加权成本」，⑥作用于「渠道加价层级」，机制句全量见上表。</div>
+    </div>
+
+    <h3>必须同时说明的限制条件</h3>
+    <ol class="restrict">
+      <li>其一，低成本依赖补贴与财政逻辑，存在补贴退坡后的价格回撤风险；</li>
+      <li>其二，绿电直供目前政策未放开，低价情景不得纳入测算基线；</li>
+      <li>其三，项目未投运，无SLA与利用率实测数据；</li>
+      <li>其四，对方"不依赖此项盈利"同时意味着条款执行力与续约优先级弱于市场化供应商，须以合同条款对冲；</li>
+      <li>其五，新集群爬坡期供应质量需以POC验证。</li>
+    </ol>
+
+    <div class="concl"><b>结论：</b>该成本优势当前最大价值在于谈判杠杆——用于压降现有供应商（火山引擎等）价格，而非立即形成供货依赖。</div>
+  </main>
+  <footer class="pf"><span>内部讨论稿 · 供内部决策参考</span><span class="pf-no">第 06 页 / 共 13 页</span></footer>
+</section>
+<section class="page" id="p07">
+  <header class="ph"><span class="sec-badge">内部讨论稿</span><span class="ph-title">关于成都数据集团合作机会的分析报告</span><span class="ph-right">贝壳政研通条线 ｜ 2026年9月5日</span></header>
+  <main class="pm">
+    <div class="ch"><div class="chno">三</div><h1>三、资源禀赋评价：中央与地方的非对称优势</h1></div>
+
+    <div class="row">
+      <div class="card">
+        <div class="ct">3.1 中央侧资源（国家数据集团）</div>
+        <p>注册资本300亿元，9月挂牌，国家数据局指导。具备部委级数据入口（人社、司法、工商、信用）、对地方局委的"敲门效力"及全国分支机构网络。</p>
+        <p><b>短板</b>：缺乏从0到1的优质产品与应用场景，缺乏数据中心资产，且存在出成绩的压力。</p>
+      </div>
+      <div class="card">
+        <div class="ct">3.2 地方侧资源（成都数据集团，含旗下房联云码）</div>
+        <p>拥有先行先试并已投运的数据基础设施（可信空间）、27个城市数集团协作网络，以及银行、开发商、住建条线的客情沉淀。</p>
+        <p><b>短板</b>：缺乏全国权威数据源，存在身份层级天花板，敏感场景开展受限。</p>
+      </div>
+    </div>
+
+    <h2>3.3 三方互补结构</h2>
+    <p>中央需要<b>成绩与案例</b>（数据要素市场活跃度），地方需要<b>产品与产能</b>（填充可信空间），贝壳需要<b>合规身份与场景变现</b>（行业数据产品化）。三方各自以过剩资源交换稀缺资源，构成本次合作能够成立的底层结构。</p>
+
+    <div class="fig">
+      <div class="ft">三方互补结构（定性示意 · 措辞取自 3.3 原文）</div>
+      <svg viewBox="0 0 678 306" width="678" height="306" role="img" aria-label="三方互补三角示意图">
+        <line x1="339" y1="34" x2="118" y2="244" stroke="rgba(46,107,79,.35)" stroke-width="1.5"/>
+        <line x1="339" y1="34" x2="560" y2="244" stroke="rgba(46,107,79,.35)" stroke-width="1.5"/>
+        <line x1="118" y1="244" x2="560" y2="244" stroke="rgba(46,107,79,.35)" stroke-width="1.5"/>
+        <circle cx="339" cy="34" r="10" fill="#FDFDF6" stroke="#2E6B4F" stroke-width="2.5"/>
+        <circle cx="118" cy="244" r="10" fill="#FDFDF6" stroke="#2E6B4F" stroke-width="2.5"/>
+        <circle cx="560" cy="244" r="10" fill="#FDFDF6" stroke="#2E6B4F" stroke-width="2.5"/>
+        <rect x="216" y="66" width="246" height="52" rx="8" fill="#FDFDF6" stroke="rgba(32,48,31,.16)"/>
+        <text x="339" y="90" font-size="13" font-weight="800" fill="#24553D" text-anchor="middle">中央（国家数据集团）</text>
+        <text x="339" y="108" font-size="11.5" fill="#37473A" text-anchor="middle">需要成绩与案例（数据要素市场活跃度）</text>
+        <rect x="36" y="262" width="246" height="38" rx="8" fill="#FDFDF6" stroke="rgba(32,48,31,.16)"/>
+        <text x="159" y="277" font-size="13" font-weight="800" fill="#24553D" text-anchor="middle">地方（成都数据集团）</text>
+        <text x="159" y="293" font-size="11.5" fill="#37473A" text-anchor="middle">需要产品与产能（填充可信空间）</text>
+        <rect x="396" y="262" width="246" height="38" rx="8" fill="#FDFDF6" stroke="rgba(32,48,31,.16)"/>
+        <text x="519" y="277" font-size="13" font-weight="800" fill="#24553D" text-anchor="middle">贝壳</text>
+        <text x="519" y="293" font-size="11.5" fill="#37473A" text-anchor="middle">需要合规身份与场景变现（行业数据产品化）</text>
+      </svg>
+      <div class="figcap">三角互补为定性示意：三方各自以过剩资源交换稀缺资源，构成本次合作能够成立的底层结构（3.3 节原文）。</div>
+    </div>
+  </main>
+  <footer class="pf"><span>内部讨论稿 · 供内部决策参考</span><span class="pf-no">第 07 页 / 共 13 页</span></footer>
+</section>
+<section class="page" id="p08">
+  <header class="ph"><span class="sec-badge">内部讨论稿</span><span class="ph-title">关于成都数据集团合作机会的分析报告</span><span class="ph-right">贝壳政研通条线 ｜ 2026年9月5日</span></header>
+  <main class="pm">
+    <div class="ch"><div class="chno">四</div><h1>四、地方资质的价值分析</h1></div>
+
+    <h2>4.1 资质价值的四个维度</h2>
+    <p>数据要素领域的经营资质，其价值类似"支付牌照"逻辑：无牌经营在小规模阶段无人过问，业务上量至千万级即面临清算风险；持牌经营实质是将"事后清算风险"转化为"先发合规溢价"。具体价值体现在四个维度：</p>
+    <div class="row">
+      <div class="card dim-card"><div class="ct">合规身份</div><p class="small">（监管豁免与免责通道）</p></div>
+      <div class="card dim-card"><div class="ct">政府数据接入权</div></div>
+      <div class="card dim-card"><div class="ct">区域节点汇聚地位</div><p class="small">（数据须经其空间流转）</p></div>
+      <div class="card dim-card"><div class="ct">面向机构客户的信任背书</div></div>
+    </div>
+
+    <h2>4.2 实证案例：成都银协金服挂牌转让</h2>
+    <p>2026年9月1日，成都金融支付清算协会挂牌转让成都银协金融服务有限公司100%股权，底价1.2亿元。该公司前身为1987年人民银行内设票据交换机构，运营"四川银政通"平台，打通不动产登记、公积金等部门与银行的数据通道，2025年营业收入1241万元、净利润310万元，挂牌价对应约39倍市盈率。</p>
+    <div class="quote">
+      <p>该案例的启示在于其交易条件：受让方须在交割后20个工作日内删除经营范围中"受人民银行委托""企业征信服务"等表述，且不得继续使用人行及协会相关字号与特许资质。<b>即：资质红利在交割时即告清零</b>，受让方实际获得的是平台运营权、数据通道与客户关系，同时承担保本微利运营义务与永久数据保密责任。</p>
+    </div>
+
+    <div class="fig">
+      <div class="ft">案例数字时间线 · 银协金服挂牌转让（数字均取自 4.2 原文）</div>
+      <div class="chain">
+        <div class="step"><b>1987年</b><div class="d">公司前身：人民银行内设票据交换机构</div></div>
+        <div class="arr">→</div>
+        <div class="step"><b>运营"四川银政通"平台</b><div class="d">打通不动产登记、公积金等部门与银行的数据通道</div></div>
+        <div class="arr">→</div>
+        <div class="step"><b>2026年9月1日挂牌</b><div class="d">转让100%股权 · 底价1.2亿元 · 约39倍市盈率</div></div>
+      </div>
+      <div class="card warn warn-bar">
+        <p><b>交割警示（4.2 原文）：</b>受让方须在交割后20个工作日内删除经营范围中"受人民银行委托""企业征信服务"等表述，且不得继续使用人行及协会相关字号与特许资质。<b>即：资质红利在交割时即告清零</b></p>
+      </div>
+    </div>
+
+    <h2>4.3 对合作路径的启示</h2>
+    <ol class="lessons">
+      <li>第一，<b>独立的"牌照"是可以被监管指令剥离的资产</b>，真正持久的资质在于持续运营的政务数据通道与客户关系，而非静态牌照本身。</li>
+      <li>第二，该案例从反面验证了成都数据集团"城市可信空间"模式的相对优势——其资质内嵌于持续运营的国家试点项目，抗剥离能力强于收购取得的持牌主体。</li>
+      <li>第三，如后续涉及银政通平台等标的的合作论证，应按"平台运营权＋数据通道"定价，并优先核查交割后接入关系（银行年费合同、公积金中心协议）的留存机制。</li>
+    </ol>
+  </main>
+  <footer class="pf"><span>内部讨论稿 · 供内部决策参考</span><span class="pf-no">第 08 页 / 共 13 页</span></footer>
+</section>
+<section class="page" id="p09">
+  <header class="ph"><span class="sec-badge">内部讨论稿</span><span class="ph-title">关于成都数据集团合作机会的分析报告</span><span class="ph-right">贝壳政研通条线 ｜ 2026年9月5日</span></header>
+  <main class="pm">
+    <div class="ch"><div class="chno">五</div><h1>五、与贝壳合作的层次设计</h1></div>
+
+    <h2>5.1 层次一：ISV渠道合作（银行侧，房联云码承担）</h2>
+    <div class="card">
+      <p>房联云码现有银行客户（资金监管、风控、权证代办）与贝壳的目标银行客群高度重叠。合作模式为：贝壳数据产品（不动产估值、T0估值与T+N监测预警、风险评估）以ISV方式经房联云码渠道进入银行，或房联云码产品嵌入贝壳场景。</p>
+      <p>该层次的价值在于渠道复用与合规包装——以"数据＋专家＋盖章"的多层交付形态进入银行采购目录。</p>
+      <p><span class="flag">参照口径</span>：银行原渠道支出每年约5000万元，转为4000万元数据服务采购后，银行成本下降且合规性提升，双方在差额中分成。</p>
+    </div>
+
+    <div class="fig">
+      <div class="ft">合作层次三层阶梯</div>
+      <div class="ladder">
+        <div class="lvl"><b>层次一 · ISV渠道合作</b><span class="lvl-note">（银行侧，房联云码承担）</span><span class="tag lvl-tag">5000万元 → 4000万元</span></div>
+        <div class="lvl l2"><b>层次二 · 数据采购</b><span class="lvl-note">（双向）</span></div>
+        <div class="lvl l3"><b>层次三 · 共建算力中心</b><span class="lvl-note">涉及股权安排，详见第六章</span></div>
+      </div>
+      <div class="figcap">图中三层自上而下对应 5.1—5.3 节题；层次一数字格为银行原渠道支出每年约5000万元转为数据服务采购4000万元的<span class="flag">参照口径</span>，层次三涉及股权安排，详见第六章。</div>
+    </div>
+
+    <h2>5.2 层次二：数据采购（双向）</h2>
+    <div class="row">
+      <div class="card">
+        <div class="ct">贝壳采购</div>
+        <p>成都数据集团及房联云码的政务成交数据、行情数据、权属及抵押数据，用于补全贝壳数据底座的权威口径；此层次中涉及数据交付执行的部分由房联云码承担。</p>
+      </div>
+      <div class="card">
+        <div class="ct">贝壳输出</div>
+        <p>带看量、挂牌量等交易领先指标数据。该类数据具有预测价值，市场已有明确付费案例（评估机构凭借更准的实地调研数据，单标的报价可达同业两倍）。成都数据集团方面亦评估贝壳数据产品单价可达同类市场化产品十倍量级<span class="flag">（对方口径，供参考）</span>。</p>
+      </div>
+    </div>
+
+    <p><b>定价纪律：</b>部署费按客户关系个别定价，不按数据套数标准化销售；面向C端仅提供宽口径数据包，高精度数据仅对机构客户输出。</p>
+
+    <h2>5.3 层次三：共建算力中心</h2>
+    <div class="card soft">
+      <p>涉及股权安排，详见第六章。此外，双方智能体业务均以"使用其智能体须采购其token"为商业闭环，可按C端加价、经纪人按席位、机构客户年度封顶三层设计分账机制。</p>
+    </div>
+  </main>
+  <footer class="pf"><span>内部讨论稿 · 供内部决策参考</span><span class="pf-no">第 09 页 / 共 13 页</span></footer>
+</section>
+<section class="page" id="p10">
+  <header class="ph"><span class="sec-badge">内部讨论稿</span><span class="ph-title">关于成都数据集团合作机会的分析报告</span><span class="ph-right">贝壳政研通条线 ｜ 2026年9月5日</span></header>
+  <main class="pm">
+    <div class="ch"><div class="chno">六</div><h1>六、算力中心合作方案设计</h1></div>
+    <div class="quote">
+      <p>算力合作按参与深度分为两类：<b>纯采购合作</b>与<b>股权合作</b>。两类相互独立、可分别推进，并共同遵循"股权与交付分设"原则——股权谈判的进度不影响采购合作的落地，算力建设风险与数据服务合作风险解耦。</p>
+    </div>
+
+    <h3>6.1 第一类：纯采购合作（无股权安排）</h3>
+    <div class="row">
+      <div class="card">
+        <div class="ct">方案一：标准长协采购（不预付）</div>
+        <p class="small"><b>结构：</b>签订3—5年采购长协锁定价格，按月／季度实际用量结算，不支付预付款；以承诺用量及年度增长预测作为议价筹码（以火山引擎实付3.8折为谈判锚点）。</p>
+        <p class="small"><b>优点：</b>无资金占用与信用风险；供应不达标可随时调整；审计合规零负担；该承诺本身即是压降现有供应商价格的谈判筹码。</p>
+        <p class="small"><b>缺点：</b>折扣深度有限——贝壳投入小，对方让价动力相应有限。</p>
+        <p class="small"><b>适用：</b>项目投运前及爬坡期的默认起步方案。</p>
+      </div>
+      <div class="card">
+        <div class="ct">方案二：预付长协采购（预付换价）</div>
+        <p class="small"><b>结构：</b>在长协基础上支付预付款，换取更深折扣或供应保障；预付款须配套银行共管、按里程碑释放、不足额返还等保护条款。</p>
+        <p class="small"><b>优点：</b>折扣获取力强，可锁定优先供应。</p>
+        <p class="small"><b>缺点：</b>资金占用，供应商违约情景下的敞口管理复杂。</p>
+        <p class="small"><b>适用：</b>投运验证通过、供应质量实测达标后，视价格弹性决定是否采用。<b>预付并非采购合作的必要条件</b>，仅在对方以预付撬动融资、且让价足以补偿资金成本时使用。</p>
+      </div>
+    </div>
+
+    <div class="card soft">
+      <p><b>采购方案的共同要件</b>：价格锁定与最惠客户条款；SLA与爬坡期服务质量考核（POC先行验证）；退出与数据迁移条款。此外，可在采购协议中嵌入<b>认股权选择条款</b>：约定一期投运并实测验证后，贝壳有权（而非义务）按事先约定的估值口径入股——以采购合作自然保留股权选项，无需即时决策。</p>
+    </div>
+
+    <h3>6.2 第二类：股权合作</h3>
+    <div class="row">
+      <div class="card">
+        <div class="ct">方案A：合资公司模式<span class="flag">（对方提议）</span></div>
+        <p class="small">双方设立合资公司，贝壳向合资公司支付预付款，合资公司采购投建算力；贝壳以股东兼战略客户身份获得3—5年长协价与股权收益。</p>
+        <p class="small"><b>优点：</b>风险隔离规范，预付款具有股权对价，便于对方以合资公司为载体获取政策性融资。</p>
+        <p class="small"><b>缺点：</b>双层治理成本，关联交易需专门设计，贝壳存在并表与披露影响；且对方处于市属国资体系，合资公司设立及国资审批周期较长。</p>
+      </div>
+      <div class="card">
+        <div class="ct">方案B：表外子公司模式</div>
+        <p class="small">贝壳将预付款支付给成都数据集团表外子公司，由该子公司入股算力项目主体。</p>
+        <p class="small"><b>优点：</b>不涉及并表，决策链条短，贝壳敞口以预付款为限。</p>
+        <p class="small"><b>缺点：</b>预付款法律性质模糊（债权或定金），审计穿透风险高，子公司治理不透明。</p>
+      </div>
+      <div class="card">
+        <div class="ct">方案E：产业资本协同（长期叙事）</div>
+        <p class="small">对方提出以"数据要素"叙事引入产业资本支持算力投资与研发投入。</p>
+        <p class="small">该方向依赖对方资本市场运作，不确定性高，仅作长期观察选项，不纳入本期决策。</p>
+      </div>
+    </div>
+
+    <div class="fig">
+      <div class="ft">两类结构解耦示意</div>
+      <div class="decouple">
+        <div class="card"><b>纯采购合作</b><div class="dec-sub">方案一 · 方案二（无股权安排）</div></div>
+        <div class="dec-mid"><span>相互独立、可分别推进</span></div>
+        <div class="card soft"><b>股权合作</b><div class="dec-sub">方案A · 方案B · 方案E</div></div>
+      </div>
+      <div class="figcap">定性示意：两类合作相互独立、可分别推进，股权谈判的进度不影响采购合作的落地，算力建设风险与数据服务合作风险解耦。认股权选择条款可在采购协议中嵌入（见6.1），以采购合作自然保留股权选项，无需即时决策。</div>
+    </div>
+  </main>
+  <footer class="pf"><span>内部讨论稿 · 供内部决策参考</span><span class="pf-no">第 10 页 / 共 13 页</span></footer>
+</section>
+<section class="page" id="p11">
+  <header class="ph"><span class="sec-badge">内部讨论稿</span><span class="ph-title">关于成都数据集团合作机会的分析报告</span><span class="ph-right">贝壳政研通条线 ｜ 2026年9月5日</span></header>
+  <main class="pm">
+    <h2>6.3 方案比较</h2>
+    <table class="matrix">
+      <colgroup>
+        <col style="width:104px"><col><col><col><col>
+      </colgroup>
+      <thead>
+        <tr>
+          <th>维度</th>
+          <th>采购·方案一<br>（不预付）</th>
+          <th>采购·方案二<br>（预付）</th>
+          <th>股权·方案A<br>（合资公司）</th>
+          <th>股权·方案B<br>（表外子公司）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>初始出资</td><td>无</td><td>中</td><td>大</td><td>中</td></tr>
+        <tr><td>风险隔离</td><td>最强</td><td>强（需共管条款）</td><td>强</td><td>弱（穿透风险）</td></tr>
+        <tr><td>折扣获取力</td><td>中</td><td>强</td><td>强</td><td>强</td></tr>
+        <tr><td>退出灵活性</td><td>最高（协议终止）</td><td>高</td><td>中（股权转让）</td><td>低（性质模糊）</td></tr>
+        <tr><td>审计合规友好度</td><td>最高</td><td>高</td><td>中（并表披露）</td><td>低</td></tr>
+        <tr><td>对方接受度</td><td>中</td><td>高</td><td>高</td><td>高</td></tr>
+        <tr><td>与当前验证状态的匹配度</td><td>高</td><td>中（验证后适用）</td><td>低</td><td>低</td></tr>
+      </tbody>
+    </table>
+
+    <h2>6.4 基准对比与建议</h2>
+    <p>价格基准：贝壳现走火山引擎3.8折（月度支出约500—600万元，年化约6000万元至2亿元区间）；万界方舟组合口径约4.9折（<span class="flag">情景测算</span>）；成都数据集团<span class="flag flag-w">口头意向</span>3.3折。成都数据集团的进入使贝壳在算力采购谈判中首次拥有真实竞价方。</p>
+
+    <div class="fig">
+      <div class="ft">折扣锚点与三步推进时序</div>
+      <div class="metrics">
+        <div class="metric"><div class="mv">3.3折</div><div class="mk">成都数据集团 · <b>口头意向</b></div></div>
+        <div class="metric"><div class="mv">3.8折</div><div class="mk">火山引擎 · 实付</div></div>
+        <div class="metric"><div class="mv">4.9折</div><div class="mk">万界方舟组合口径 · <b>情景测算</b></div></div>
+      </div>
+      <div class="chain">
+        <div class="step"><b>当前阶段</b><div class="d">方案一（标准长协、不预付）起步 · 配合POC验证</div></div>
+        <div class="arr">→</div>
+        <div class="step"><b>投运验证后</b><div class="d">视折扣弹性升级方案二（预付换价），或与股权层谈判合并推进</div></div>
+        <div class="arr">→</div>
+        <div class="step"><b>股权层如启动</b><div class="d">以方案A为基案 · 方案B仅备选 · 认股权条款保留进退自由</div></div>
+      </div>
+      <div class="figcap">三个折扣格为6.4价格基准原文锚点（3.3折为成都数据集团口头意向、3.8折为贝壳现走火山引擎、4.9折为万界方舟组合口径（情景测算））；下方时序为6.4三步建议的推进顺序示意。</div>
+    </div>
+
+    <p class="lead">建议分三步推进：</p>
+    <div class="row">
+      <div class="card step3">
+        <p><b>1. 当前阶段以方案一（标准长协、不预付）起步</b>，配合POC验证；同步以成都数据集团报价压降火山引擎现价——即使不切换供应商，纯采购合作也已产生谈判价值；</p>
+      </div>
+      <div class="card step3">
+        <p><b>2. 投运验证后视折扣弹性加深</b>：价格空间足够则升级为方案二（预付换价），或与股权层谈判合并推进；</p>
+      </div>
+      <div class="card step3">
+        <p><b>3. 股权层如启动，以方案A为基案</b>，估值以投运实测数据为锚；方案B因审计穿透风险仅作备选；无论采取何种结构，优先通过采购协议中的认股权选择条款保留进退自由，避免在验证前作出股权承诺。</p>
+      </div>
+    </div>
+  </main>
+  <footer class="pf"><span>内部讨论稿 · 供内部决策参考</span><span class="pf-no">第 11 页 / 共 13 页</span></footer>
+</section>
+<section class="page" id="p12">
+  <header class="ph"><span class="sec-badge">内部讨论稿</span><span class="ph-title">关于成都数据集团合作机会的分析报告</span><span class="ph-right">贝壳政研通条线 ｜ 2026年9月5日</span></header>
+  <main class="pm">
+    <div class="ch"><div class="chno">七</div><h1>七、风险因素与待核实事项</h1></div>
+    <ol class="risks">
+      <li>成都数据集团算力项目未投运，3.3折仅为<span class="flag flag-w">口头意向</span>，无报价单与SLA；</li>
+      <li>国家数据集团合作框架、部委数据授权（人社、司法）范围与商用边界均<span class="flag flag-w">无书面佐证</span>；</li>
+      <li>中央预算补贴项目金额、验收时点<span class="flag flag-w">待官方渠道确认</span>；</li>
+      <li>江苏、南京收储线相关套数数据为<span class="flag flag-w">对方口述</span>，须与省内口径比对；</li>
+      <li>对方保险、资本市场相关表述属愿景性叙事，<span class="flag flag-w">不构成承诺</span>；</li>
+      <li>全部会谈数字与人名<span class="flag flag-w">源自录音转写</span>，引用前须经书面材料复核。</li>
+    </ol>
+
+    <div class="ch"><div class="chno">八</div><h1>八、下一步工作建议</h1></div>
+    <div class="row">
+      <div class="card next">
+        <div class="next-tag">短期（本月）</div>
+        <p>完成内部汇报材料定稿；要求对方提供国产算力正式报价（含SLA与交付标准，硬性门槛为优于现有供应商实付价）；启动技术团队POC评估。</p>
+      </div>
+      <div class="card next">
+        <div class="next-tag">中期（本季度）</div>
+        <p>完成数据产品互换清单与定价框架；落地成都经纪人背调行业案例；就银政通平台等地方资产形成独立尽调口径。</p>
+      </div>
+      <div class="card next">
+        <div class="next-tag">股权线</div>
+        <p>股权合作暂不启动，先在采购协议中嵌入认股权选择条款（估值锚定投运实测数据）；待验证通过后以合资公司为基案起草条款清单，明确价格锁定、行权条件与退出安排；适时安排双方高层对等会面。</p>
+      </div>
+    </div>
+
+    <div class="fig">
+      <div class="ft">三步工作时间轴</div>
+      <div class="chain">
+        <div class="step"><b>本月</b><div class="d">内部汇报材料定稿 · 要求国产算力正式报价（含SLA与交付标准）· POC评估</div></div>
+        <div class="arr">→</div>
+        <div class="step"><b>本季度</b><div class="d">数据产品互换清单与定价框架 · 经纪人背调案例 · 银政通平台独立尽调口径</div></div>
+        <div class="arr">→</div>
+        <div class="step"><b>股权线</b><div class="d">先嵌入认股权选择条款 · 验证后以合资公司为基案起草条款清单 · 高层对等会面</div></div>
+      </div>
+      <div class="figcap">定性示意：时间节点本月 → 本季度 → 股权线取第八章三条建议标题语义，各节点动作短语摘自对应条原文。</div>
+    </div>
+  </main>
+  <footer class="pf"><span>内部讨论稿 · 供内部决策参考</span><span class="pf-no">第 12 页 / 共 13 页</span></footer>
+</section>
+<section class="page backcover" id="p13">
+  <header class="ph"><span class="sec-badge">内部讨论稿</span><span class="ph-title">关于成都数据集团合作机会的分析报告</span><span class="ph-right">贝壳政研通条线 ｜ 2026年9月5日</span></header>
+  <main class="pm">
+    <div class="bc-quote">
+      <p><b>结论：</b>该成本优势当前最大价值在于谈判杠杆——用于压降现有供应商<span class="nb">（火山引擎等）</span>价格，而非立即形成供货依赖。</p>
+    </div>
+    <div class="bc-rule"></div>
+    <div class="bc-info">
+      <p><span class="k">报告单位：</span><span>贝壳政研通条线</span></p>
+      <p><span class="k">报告日期：</span><span>2026年9月5日</span></p>
+      <p><span class="k">密级：</span><span>内部讨论稿</span></p>
+      <p><span class="k">编制依据：</span><span>本报告基于2026年9月5日会谈内容、09-02算力合作信息汇总及公开信息整理，供内部决策参考。</span></p>
+    </div>
+    <div class="bc-note"><b>使用提示：</b>全部会谈数字与人名源自录音转写，引用前须经书面材料复核。</div>
+  </main>
+  <footer class="pf"><span>内部讨论稿 · 供内部决策参考</span><span class="pf-no">第 13 页 / 共 13 页</span></footer>
+</section>
+</body>
+</html>

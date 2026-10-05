@@ -139,6 +139,7 @@
   },
   {
     "id": "research-report",
+    "reportTaskIndex": 4,
     "name": "Research Report Team",
     "description": "研报生成：资料梳理先行，多位专家并行研判（宏观/风险等视角），融合成结构完整的研报（摘要/正文/结论/风险/附录）。",
     "experts": [
@@ -179,14 +180,14 @@
         "expert": "docs-coordinator"
       },
       {
-        "subject": "渲染与分型验收",
-        "description": "将研报 markdown 渲染为 HTML5→PDF（A4、页脚「98wiki ｜ 智见 / 行业研究报告」、封面 4 KPI），并按 wiki-gated-research 分型验收：Part B 主文（12 页级骨架 / 正文≥10000 中文字 / 表格 / 机制图 / 量化模型 / 决策树 / 无溢出）+ Part C 逻辑附件（logic-annex-v2：15 速览卡 + 15 逻辑卡 + ≥12 逻辑图 + 白话总结 + Key Takeaways + 替代解释 + 独立补数协议）；生成 render_check（哈希 + 首/中/末页截图）与 GATE 文件，双 PASS 后追加 INDEX。",
+        "subject": "渲染与独立质量验收",
+        "description": "按计划中 AI 明确选择的领域包工艺，将完整研报发布为绑定的 Markdown、HTML、PDF 与证据文件。必须读取 Host 交付的完整必需材料，运行所选工艺的所有适用检查，并由独立成员审核当前发布版本；缺证、过期、失败或无法判定不得当作合格交付。",
         "dependsOn": [
           3
         ],
         "expert": "docs-coordinator"
       }
     ],
-    "deliverable": "完整研报（markdown）+ 渲染成品（HTML5→PDF，Part B 主文 + Part C 逻辑附件）+ GATE 验收文件。"
+    "deliverable": "完整研报 Markdown、HTML、PDF 与当前版本的工艺验收及独立审核证据。"
   }
 ]

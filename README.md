@@ -12,3 +12,7 @@
 - `generated/`：派生视图（V1 金样、总表、校验报告、树摘要），可随时重建。
 - 重建：`pnpm build && node scripts/build-zhijian-pack.mjs --src <源目录>`；
   漂移检查：`node scripts/build-zhijian-pack.mjs --check`。
+
+## 报告工艺
+
+本包提供多个可选择的工艺 skill，参考源、组件、检查和审核要求一并分发；见 [REPORT-CRAFT.md](REPORT-CRAFT.md)。

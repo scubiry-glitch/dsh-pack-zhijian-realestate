@@ -1,0 +1,2 @@
+/* Text and decoration tokens are intentionally distinct. */
+:root{--outer:#eef1ed;--paper:#fcfdfb;--card:#ffffff;--panel:#f3f6f2;--ink:#15241e;--muted:#35473e;--accent:#0e6a55;--accent-text:#0a5142;--on-accent:#ffffff;--decoration:#b8893b;--border:#a1ada4;--warning-text:#715018}

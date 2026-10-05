@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "description": "报告内容、来源、章节五件套、有限类型计算与政策证据绑定；独立内容审核判断事实与适用性",
+  "applicability": [
+    "智见研究报告的正文写作与实质审核",
+    "需要明确数据边界、来源和计算依据的报告"
+  ],
+  "materials": [
+    {
+      "id": "skills.zhijian-report-craft.SKILL.md",
+      "path": "skills/zhijian-report-craft/SKILL.md",
+      "roles": [
+        "writer",
+        "reviewer"
+      ]
+    },
+    {
+      "id": "references.core-v2.md",
+      "path": "references/core-v2.md",
+      "roles": [
+        "writer",
+        "renderer",
+        "reviewer"
+      ]
+    },
+    {
+      "id": "references.writing-v2.md",
+      "path": "references/writing-v2.md",
+      "roles": [
+        "writer",
+        "renderer",
+        "reviewer"
+      ]
+    },
+    {
+      "id": "references.data-v2.md",
+      "path": "references/data-v2.md",
+      "roles": [
+        "writer",
+        "renderer",
+        "reviewer"
+      ]
+    },
+    {
+      "id": "references.evidence-ledger-v2.md",
+      "path": "references/evidence-ledger-v2.md",
+      "roles": [
+        "writer",
+        "renderer",
+        "reviewer"
+      ]
+    },
+    {
+      "id": "references.review-v2.md",
+      "path": "references/review-v2.md",
+      "roles": [
+        "reviewer"
+      ]
+    },
+    {
+      "id": "references.acceptance-v2.md",
+      "path": "references/acceptance-v2.md",
+      "roles": [
+        "writer",
+        "renderer",
+        "reviewer"
+      ]
+    },
+    {
+      "id": "references.zhijian-credit-policy-v1.html",
+      "path": "references/zhijian-credit-policy-v1.html",
+      "roles": []
+    },
+    {
+      "id": "references.zhijian-designer-v1.html",
+      "path": "references/zhijian-designer-v1.html",
+      "roles": []
+    },
+    {
+      "id": "references.source-provenance-v2.json",
+      "path": "references/source-provenance-v2.json",
+      "roles": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "zhijian-content-v1",
+      "entrypoint": "skills/zhijian-report-craft/scripts/check.mjs",
+      "version": "1.1.0",
+      "resultIds": [
+        "report-craft-source-disclosure",
+        "report-craft-closing-structure",
+        "report-craft-chapter-structure",
+        "report-craft-calculations",
+        "report-craft-policy-evidence"
+      ]
+    }
+  ],
+  "reviewAreas": [
+    {
+      "id": "chapter-substance",
+      "description": "逐章核对五件套的实质、论证与结论是否有内容依据"
+    },
+    {
+      "id": "facts-and-uncertainty",
+      "description": "核对关键事实和官方政策原文、文号、地域、发布生效日及研究时点；未核主张须显式条件化"
+    },
+    {
+      "id": "calculations-and-coverage",
+      "description": "逐章盘点并独立复算全部关键计算，包括机器未识别或不支持的算式、资金来源、单位周期和舍入"
+    }
+  ],
+  "artifactRoles": [
+    "md",
+    "evidence"
+  ]
+}

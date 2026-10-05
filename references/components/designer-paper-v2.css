@@ -1,0 +1,2 @@
+/* Paper aesthetic remains responsive on screen; A4 is print-only. */
+:root{--outer:#e4e5d9;--paper:#f5f4eb;--card:#fdfdf6;--panel:#edeee3;--ink:#20301f;--muted:#465747;--accent:#24553d;--accent-text:#24553d;--on-accent:#ffffff;--decoration:#b8893b;--border:#98a38e;--warning-text:#71391d}
