@@ -23,13 +23,21 @@ except ImportError:
     print(json.dumps(uniform('unverified','V2 parser dependencies unavailable (markdown_it/bs4); no installation attempted'))); sys.exit(0)
 try:
     ledger=json.loads(payload['ledger'])
-    require(exact_keys(ledger,['schemaVersion','reportSha256','body','chapters','calculations','policyClaims']),'ledger requires exact schemaVersion/reportSha256/body/chapters/calculations/policyClaims fields')
-    require(type(ledger['schemaVersion']) is int and ledger['schemaVersion']==2,'this domain checker requires craft evidence schemaVersion 2; historical ledgers retain their original checker')
+    require(type(ledger.get('schemaVersion')) is int and ledger['schemaVersion'] in (2,3),'craft evidence schemaVersion must be 2 or 3')
+    fields=['schemaVersion','reportSha256','body','chapters','calculations','policyClaims']
+    if ledger['schemaVersion']==3:fields.append('figureLayer')
+    require(exact_keys(ledger,fields),'ledger fields do not match its schemaVersion')
     require(ledger['reportSha256']==payload['hashes'],'ledger reportSha256 does not match the three actual artifact bytes')
     require(exact_keys(ledger['body'],['htmlId']),'body requires exact htmlId')
     require(isinstance(ledger['chapters'],list) and 0<len(ledger['chapters'])<=64,'chapters must contain 1..64 analysis chapters')
     require(isinstance(ledger['calculations'],list) and len(ledger['calculations'])<=64,'calculations must contain at most64 entries')
     require(isinstance(ledger['policyClaims'],list) and len(ledger['policyClaims'])<=64,'policyClaims must contain at most64 entries')
+    if ledger['schemaVersion']==3:
+        layer=ledger['figureLayer']
+        require(exact_keys(layer,['fragmentsHtml','sha256','chapters']),'figureLayer needs exact fragmentsHtml/sha256/chapters')
+        require(isinstance(layer['fragmentsHtml'],str) and 0<len(layer['fragmentsHtml'].encode())<=131072,'figure fragment bytes must be bounded')
+        require(layer['sha256']==hashlib.sha256(layer['fragmentsHtml'].encode()).hexdigest(),'figure fragment hash mismatch')
+        require(isinstance(layer['chapters'],list) and len(layer['chapters'])==len(ledger['chapters']),'figure chapter count mismatch')
 except Exception as e:
     print(json.dumps(uniform('failed','Craft evidence invalid: '+str(e)))); sys.exit(0)
 renderer=MarkdownIt('commonmark',{'html':True}).enable('table')
@@ -299,7 +307,22 @@ except Exception as e:policy=result(4,'failed',str(e))
 
 try:
     mdtext=norm(text(mdsoup));htmltext=norm(text(body));require(len(mdtext)<=100000 and len(htmltext)<=100000,'format text exceeds100000-character inspection limit')
-    require(mdtext==htmltext,'Full actual MD body and HTML report-body text differ (whitespace-only normalization)')
+    if ledger['schemaVersion']==3:
+        layer=ledger['figureLayer'];fragments=layer['fragmentsHtml']
+        declared=[c['heading'] for c in ledger['chapters']]
+        require(layer['chapters']==declared,'figure chapter order must match report chapters')
+        cards=body.select('[data-chapter]')
+        fragment_cards=BeautifulSoup(fragments,'html.parser').select('[data-chapter]')
+        require(len(cards)==len(declared) and len(fragment_cards)==len(declared),'exactly one figure card per chapter required')
+        require([c.get('data-chapter') for c in cards]==declared and [c.get('data-chapter') for c in fragment_cards]==declared,'figure card chapter/order mismatch')
+        for card,original,title in zip(cards,fragment_cards,declared):
+            require(str(card)==str(original),'reviewed figure card changed during HTML embedding: '+title)
+            parents=[p for p in card.parents if isinstance(p,Tag) and p.name=='section' and p.get('data-report-chapter')==title]
+            require(len(parents)==1,'figure card must be inside its named analysis chapter: '+title)
+        source_body=BeautifulSoup(str(body),'html.parser')
+        for card in source_body.select('[data-chapter]'):card.decompose()
+        require(mdtext==norm(text(source_body)),'MD source layer differs from HTML after removing only authenticated figure cards')
+    else:require(mdtext==htmltext,'Full actual MD body and HTML report-body text differ (whitespace-only normalization)')
     import fitz
     data=base64.b64decode(payload['pdf'],validate=True);doc=fitz.open(stream=data,filetype='pdf');require(3<=len(doc)<=300,'PDF body inspection page limit')
     body_pages=[]
@@ -343,7 +366,7 @@ try:
     extras_visible=[n for n in htmlsoup.find_all(['header','footer']) if body not in n.parents and n is not body]
     for node in extras_visible:
         for token in numeric(text(node)):require(token in body_nums,'Cover/back adds numeric token absent from MD body: '+token)
-    fmt=result(2,'passed','Full parsed MD/HTML body text agrees; actual PDF body agrees allowing only observed repeated table headers/generated list markers. No new HTML cover/back numeric tokens. This does not certify rendering provenance or formula truth.')
+    fmt=result(2,'passed','Parsed MD source layer and HTML body agree; schema 3 authenticates a separate reviewed figure layer. Actual PDF body agrees with complete HTML allowing only observed repeated table headers/generated list markers. No new HTML cover/back numeric tokens. This does not certify rendering provenance or formula truth.')
 except ImportError:fmt=result(2,'unverified','Format PDF dependency unavailable; no installation attempted')
 except Exception as e:fmt=result(2,'failed',str(e))
 
@@ -418,10 +441,11 @@ const visible=e=>{if(!displayed(e))return false;const r=e.getBoundingClientRect(
 const color=s=>{const m=s.match(/^rgba?\(([^)]+)\)$/);if(!m)return null;const x=m[1].split(/[,\s\/]+/).filter(Boolean).map(Number);return x.length>=3&&x.every(Number.isFinite)?x:null};
 const blend=(a,b)=>{const t=a[3]??1;return [0,1,2].map(i=>a[i]*t+b[i]*(1-t))};
 const lum=c=>c.map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);
-const fails=[],unknown=[],rects=[],textNodes=[];let checked=0;const tw=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+const fails=[],unknown=[],rects=[],textNodes=[],fontFailures=[];let checked=0;const tw=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
 while(tw.nextNode()){const n=tw.currentNode,e=n.parentElement;if(!n.textContent.trim()||!displayed(e)||['SCRIPT','STYLE','NOSCRIPT','TEMPLATE'].includes(e.tagName))continue;const cs=getComputedStyle(e);if(parseFloat(cs.fontSize)===0)continue;const range=document.createRange();range.selectNodeContents(n);const d={n,e,cs,rects:[]},node=textNodes.length;textNodes.push(d);for(const r of range.getClientRects())if(r.width>1&&r.height>1){const box={node,line:d.rects.length,id:e.id,tag:e.tagName,text:n.textContent.trim().slice(0,70),x:r.x,y:r.y,right:r.right,bottom:r.bottom};d.rects.push(box);rects.push(box)};
 let bg=[255,255,255],chain=[],p=e,backgroundUnknown=false,effectUnknown=false;while(p){chain.unshift(p);p=p.parentElement}for(const q of chain){const s=getComputedStyle(q),c=color(s.backgroundColor);if(c&&((c[3]??1)===1)){backgroundUnknown=false;bg=[c[0],c[1],c[2]]}else if(c)bg=blend(c,bg);else backgroundUnknown=true;if(s.backgroundImage!=='none')backgroundUnknown=true;if(s.filter!=='none'||s.mixBlendMode!=='normal'||Number(s.opacity)!==1)effectUnknown=true;for(const pseudo of ['::before','::after']){const ps=getComputedStyle(q,pseudo);if(ps.content!=='none'&&ps.content!=='normal'&&ps.display!=='none'&&ps.visibility!=='hidden'&&Number(ps.opacity)!==0&&(ps.backgroundImage!=='none'||ps.backgroundColor!=='rgba(0, 0, 0, 0)'))effectUnknown=true;}}
-const fg=color(cs.color);if(!fg||cs.textShadow!=='none'||backgroundUnknown||effectUnknown){unknown.push({id:e.id,text:n.textContent.trim().slice(0,70),reason:'unsupported composited background/color'});continue}const f=blend(fg,bg),a=lum(f),b=lum(bg),ratio=(Math.max(a,b)+.05)/(Math.min(a,b)+.05),size=parseFloat(cs.fontSize),weight=parseInt(cs.fontWeight)||400,threshold=(size>=24||(size>=18.6667&&weight>=700))?3:4.5;checked++;if(ratio+1e-6<threshold)fails.push({id:e.id,text:n.textContent.trim().slice(0,70),foreground:cs.color,background:bg,ratio,threshold});}
+const size=parseFloat(cs.fontSize),isBody=!!e.closest('main p,main li,article p,article li'),caption=!!e.closest('figcaption,.figcap,.caption,.source');if(size<12||(isBody&&!caption&&size<14))fontFailures.push({id:e.id,text:n.textContent.trim().slice(0,70),fontSize:size,minimum:isBody&&!caption?14:12});
+const fg=color(cs.color);if(!fg||cs.textShadow!=='none'||backgroundUnknown||effectUnknown){unknown.push({id:e.id,text:n.textContent.trim().slice(0,70),reason:'unsupported composited background/color'});continue}const f=blend(fg,bg),a=lum(f),b=lum(bg),ratio=(Math.max(a,b)+.05)/(Math.min(a,b)+.05),weight=parseInt(cs.fontWeight)||400,threshold=(size>=24||(size>=18.6667&&weight>=700))?3:4.5;checked++;if(ratio+1e-6<threshold)fails.push({id:e.id,text:n.textContent.trim().slice(0,70),foreground:cs.color,background:bg,ratio,threshold});}
 const overflow=rects.filter(r=>r.x<-.5||r.right>innerWidth+.5),clipped=[];for(const e of document.body.querySelectorAll('*')){if(!visible(e))continue;const s=getComputedStyle(e);if((/hidden|clip/.test(s.overflowX)&&e.scrollWidth>e.clientWidth+1)||(/hidden|clip/.test(s.overflowY)&&e.scrollHeight>e.clientHeight+1))clipped.push({id:e.id,tag:e.tagName});}
 // Range rectangles describe the font box, not painted glyphs. Derive bounded
 // browser-font ink boxes first; only possible intersections need raster proof.
@@ -485,7 +509,9 @@ for(let i=0;i<glyphCandidates.length;i++)for(let j=i+1;j<glyphCandidates.length&
 const overlap=confirmed;
 
 const ids={};for(const e of document.querySelectorAll('[id]'))ids[e.id]={visible:visible(e),text:e.innerText??''};const unresolvedAssets=[...document.images].filter(i=>!i.complete||i.naturalWidth===0).length+document.querySelectorAll('iframe,object,embed').length;const broken=[...document.querySelectorAll('a[href^="#"]')].map(e=>e.getAttribute('href')).filter(s=>s.length>1&&!document.getElementById(s.slice(1)));
-return {viewport:innerWidth,checked,aaFailures:fails.slice(0,12),aaFailureCount:fails.length,unsupported:unknown.slice(0,5),unsupportedCount:unknown.length,overflow:overflow.slice(0,5),overflowCount:overflow.length,clipped:clipped.slice(0,5),clippedCount:clipped.length,overlapCount:overlap,overlaps:geometryExamples,geometryUnsupported:geometryUnknown.slice(0,5),geometryUnsupportedCount:geometryUnknown.length+ambiguous,glyphCandidatePairCount:pairs,unresolvedAssets,brokenInternalLinks:broken.slice(0,5),ids};
+const deadControls=[...document.querySelectorAll('button,[role="button"],a[href=""],a[href="#"],a[href^="javascript:"]')].filter(e=>displayed(e)).map(e=>({tag:e.tagName,text:(e.innerText??'').slice(0,60)}));
+const hiddenText=[...document.querySelectorAll('main h1,main h2,main h3,main p,main li,main [data-chapter],article h1,article h2,article h3,article p,article li,article [data-chapter]')].filter(e=>e.textContent.trim()&&!visible(e)).map(e=>({tag:e.tagName,text:e.textContent.trim().slice(0,60)}));
+return {viewport:innerWidth,checked,aaFailures:fails.slice(0,12),aaFailureCount:fails.length,fontFailures:fontFailures.slice(0,8),fontFailureCount:fontFailures.length,deadControls:deadControls.slice(0,8),deadControlCount:deadControls.length,hiddenText:hiddenText.slice(0,8),hiddenTextCount:hiddenText.length,unsupported:unknown.slice(0,5),unsupportedCount:unknown.length,overflow:overflow.slice(0,5),overflowCount:overflow.length,clipped:clipped.slice(0,5),clippedCount:clipped.length,overlapCount:overlap,overlaps:geometryExamples,geometryUnsupported:geometryUnknown.slice(0,5),geometryUnsupportedCount:geometryUnknown.length+ambiguous,glyphCandidatePairCount:pairs,unresolvedAssets,brokenInternalLinks:broken.slice(0,5),ids};
 }'''
 try:
     from playwright.sync_api import sync_playwright
@@ -519,7 +545,7 @@ try:
                 finally:ctx.close()
             version=browser.version
         finally:browser.close()
-    hard=any(m['aaFailureCount'] or m['overflowCount'] or m['clippedCount'] or m['overlapCount'] or m['brokenInternalLinks'] or m['boundVisibleTextMismatches'] for m in metrics)
+    hard=any(m['aaFailureCount'] or m['fontFailureCount'] or m['deadControlCount'] or m['hiddenTextCount'] or m['overflowCount'] or m['clippedCount'] or m['overlapCount'] or m['brokenInternalLinks'] or m['boundVisibleTextMismatches'] for m in metrics)
     unknown=bool(attempted) or any(m['unsupportedCount'] or m['geometryUnsupportedCount'] or m['unresolvedAssets'] or not m['checked'] for m in metrics)
     state='failed' if hard else 'unverified' if unknown else 'passed'
     browser_result=result(3,state,json.dumps({'scope':'Actual1280/375 static report DOM, bounded AA/DOM-line and glyph-raster/anchor checks; unsupported compositing is unverified, not full Finesse/semantic certification. Report JS disabled; all requests blocked.','screenshotCoverage':'1280x900 and375x900 initial viewports only; DOM metrics inspect laid-out text throughout the document, not full-page pixel validation','browserVersion':version,'browserSha256':browser_hash,'metrics':metrics,'screenshots':screenshots,'blockedRequestSchemes':attempted[:20]},ensure_ascii=False))

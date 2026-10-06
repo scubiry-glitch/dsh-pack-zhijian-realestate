@@ -15,4 +15,4 @@ description: 智见研究报告的写作、来源、章节结构、计算证据�
 
 提交前使用本包 [预检入口](../../scripts/preflight-report.mjs) 检查实际文件。机器证据、完整材料交付和独立实质审核互不替代。失败或无法检查均不能宣称合格。
 
-本版台账为 schemaVersion 2：按 [台账约定](../../references/evidence-ledger-v2.md) 登记关键计算与政策主张。计算局部通过不等于全文无误；现行政策要求核读官方原文，缺失时明确条件与限制。
+纯正文沿用 schemaVersion 2；嵌入逐章已审点睛图时使用 schemaVersion 3，按 [台账约定](../../references/evidence-ledger-v3.md) 登记独立图层、关键计算与政策主张。图层须对应 Host 已审 figure-fragments.html 原字节，不能用图卡补写正文。计算局部通过不等于全文无误；现行政策要求核读官方原文，缺失时明确条件与限制。
