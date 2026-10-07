@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "description": "V5：观点表达与参考驱动的实际成品验证",
+  "applicability": [
+    "观点驱动研究 HTML/PDF 成品"
+  ],
+  "artifactRoles": [
+    "md",
+    "html",
+    "pdf",
+    "evidence"
+  ],
+  "variants": {
+    "credit-policy": {
+      "description": "深青色轴与政策对照"
+    },
+    "designer-paper": {
+      "description": "forest-sage 纸本层级与卡片"
+    }
+  },
+  "materials": [
+    {
+      "id": "v5.skill",
+      "path": "skills/zhijian-research-craft-v5/SKILL.md",
+      "roles": [
+        "writer",
+        "renderer",
+        "reviewer"
+      ]
+    },
+    {
+      "id": "v5.references.style-credit-policy-v2.md",
+      "path": "references/style-credit-policy-v2.md",
+      "roles": [
+        "renderer",
+        "reviewer"
+      ]
+    },
+    {
+      "id": "v5.references.style-designer-paper-v2.md",
+      "path": "references/style-designer-paper-v2.md",
+      "roles": [
+        "renderer",
+        "reviewer"
+      ]
+    },
+    {
+      "id": "v5.references.components.base-v2.css",
+      "path": "references/components/base-v2.css",
+      "roles": [
+        "renderer",
+        "reviewer"
+      ]
+    },
+    {
+      "id": "v5.references.components.credit-policy-v2.css",
+      "path": "references/components/credit-policy-v2.css",
+      "roles": [
+        "renderer",
+        "reviewer"
+      ]
+    },
+    {
+      "id": "v5.references.components.designer-paper-v2.css",
+      "path": "references/components/designer-paper-v2.css",
+      "roles": [
+        "renderer",
+        "reviewer"
+      ]
+    },
+    {
+      "id": "v5.references.components.components-v2.html",
+      "path": "references/components/components-v2.html",
+      "roles": [
+        "renderer",
+        "reviewer"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "research-v5-delivery",
+      "entrypoint": "skills/zhijian-research-craft-v5/scripts/check.mjs",
+      "version": "5.0.0",
+      "resultIds": [
+        "v5-byte-binding",
+        "v5-text-consistency",
+        "v5-pdf-layout",
+        "v5-browser-layout"
+      ]
+    }
+  ],
+  "reviewAreas": [
+    {
+      "id": "v5-expression",
+      "description": "独立评审观点清晰、论证逻辑、设计参考执行与可读性；机器不判审美"
+    }
+  ]
+}

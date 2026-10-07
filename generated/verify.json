@@ -19,13 +19,14 @@
     "knowledgeProviders": 2,
     "domainKnowledge": 1,
     "methodPacks": 6,
-    "skillPackages": 12
+    "skillPackages": 13
   },
   "craftClosure": {
     "packId": "zhijian-realestate",
     "skillIds": [
       "zhijian-designer-render",
-      "zhijian-report-craft"
+      "zhijian-report-craft",
+      "zhijian-research-craft-v5"
     ],
     "globalMaterialFallback": false
   }

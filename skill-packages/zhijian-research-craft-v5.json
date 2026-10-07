@@ -1,0 +1,21 @@
+{
+  "id": "zhijian-research-craft-v5",
+  "name": "zhijian-research-craft-v5",
+  "version": "5.0.0",
+  "schemaVersion": 2,
+  "source": {
+    "kind": "workspace",
+    "root": "skills/zhijian-research-craft-v5",
+    "digest": "c4b286fde4e36eb5ac1de7bdbac69d12641939667c619f42416f0d655e668bef"
+  },
+  "contributions": {},
+  "permissions": {
+    "execScripts": [
+      "scripts/check.mjs"
+    ],
+    "internalOnly": true
+  },
+  "craft": {
+    "path": "craft/zhijian-research-craft-v5.json"
+  }
+}
