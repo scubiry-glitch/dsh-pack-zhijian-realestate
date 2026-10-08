@@ -8,9 +8,11 @@ description: 观点驱动研究 V5 的表达与成品检查；不施加旧版章
 
 作者围绕证据组织观点与结构；designer-craft 提出神韵、论证顺序、图文节奏，渲染时忠实执行已审正文；独立内容评审核验实际来源与推理；设计批评人独立检查最终成品。不能用作者自评代替独立评审。
 
+写作前按本次材料列出承重判断，逐项核对真实来源、比较基准、推理桥梁、最强竞争解释、仍未解决的边界和读者决定；把检查线索写入 OUTLINE.md，与最终分析章对应。观点被证据推翻时重组章节，不能为保留预设目录而改写结论。正文不按固定六段排版，但每节要让读者从证据走到判断；只有数字与结论、没有中间解释的段落须补论证或缩窄主张。内容评审逐章对照 OUTLINE.md 与正文，指出新增判断究竟来自哪份本次证据，并复核最强反例。
+
 ## 两份设计参考
 
-阅读 references/style-credit-policy-v2.md 与 references/style-designer-paper-v2.md。主样式由冻结 selection.variant 决定；craft-evidence.json 记录主样式及两份参考各自采用/未采用的组件与理由。两份参考均需真正读过，不强行混用冲突配色。执行相应配色、层级与组件，在可读性前提下表现论证性格。旧样例业务内容不能成为证据。
+阅读 references/style-credit-policy-v2.md、references/style-designer-paper-v2.md 与 references/reference-quality-anatomy-v1.md，并实际检查 references/zhijian-credit-policy-v1.html 与 references/zhijian-designer-v1.html 的论证与图稿。先借鉴“事实如何变成判断、判断如何决定图形”的过程，再选视觉组件；主样式由冻结 selection.variant 决定。craft-evidence.json 记录主样式及两份参考各自采用/未采用的组件与理由。两份参考均需真正读过，不强行混用冲突配色。执行相应配色、层级与组件，在可读性前提下表现论证性格。旧样例业务内容不能成为证据。
 
 ## 成品执行
 
@@ -26,6 +28,6 @@ craft-evidence.json：schemaVersion=5，mdSha256/htmlSha256/pdfSha256 原字节 
 
 ## 独立审核
 
-内容 reviewer 阅读当前正文、所有关键来源与台账，记录 content-audit JSON 代码块，字段 argument/sources/calculations/uncertainty/coverage 为实际复核说明，包括遗漏检测与抽验。机器自动绑定当前哈希，毋须手写全文每章证明。
+内容 reviewer 阅读当前正文、所有关键来源与台账，记录 content-audit JSON 代码块，顶层 argument/novelty/sources/calculations/uncertainty/coverage 均为非空字符串，写实际复核说明，包括遗漏检测与抽验。argument、novelty 和 coverage 要逐章点出判断、证据到结论的推理桥梁、与常见解释相比新增了什么、最强反例如何裁决；缺证章明确缩窄范围或退回。机器自动绑定当前哈希，毋须手写全文每章证明。
 
-成品 reviewer 必须检查实际页面：宽/窄屏、DOM、可读性，以及 A4 首中末页；逐章核对图是否真实可见、观点与正文相符、关系由图形表达、边界不误导。记录 visual-audit（verdict="PASS"、checkedAt、method、htmlSha256、pdfSha256、dom、wide、narrow、accessibility、pageCount、pages.first/middle/last 的 index/sha256），按 Host 既有 PDF 实渲染回执填写。静态报告无交互就不造交互结果。无视觉能力时如实报未验证，由具备能力者完成，不自签通过。
+成品 reviewer 必须检查实际页面：宽/窄屏、DOM、可读性，以及 A4 首中末页；逐章核对图是否真实可见、观点与正文相符、关系由图形表达、边界不误导。先调用 `expert_teams_quality_review(prepare_only:true)`，从返回的 `visual_audit_template` 取得 Host 对本次冻结 HTML/PDF 原字节及页图算出的哈希、页数和页码；只填空白的实际观察字段，不改已算出的绑定字段。`review_audit` 放 `json visual-audit` 围栏：顶层 `verdict:"PASS"`、有效 ISO `checkedAt`、实际 `method`、`blockers:0`、当前 HTML/PDF 原字节的 `htmlSha256`/`pdfSha256`、实际 `pageCount`；`dom`、`wide`、`narrow`、`accessibility`、`references`、`figures` 均为非空字符串。`references` 必须说明 credit-policy 与 designer-paper 的取舍；`figures` 须逐字包含 figure-plan.json 每个 `chapters[].chapter` 原标题并逐图记录判断。`pages` 是含 `first`/`middle`/`last` 的对象；每页是含一基 `index`、当前页图 `sha256`、实际观察 `finding` 的对象。页图严格按 PyMuPDF `page.get_pixmap(matrix=fitz.Matrix(1,1), alpha=False).tobytes('png')` 再做 SHA256，第一页、中页 `len(doc)//2`（零基）、末页；不能沿用 110dpi 截图哈希。静态报告无交互就不造交互结果。无视觉能力时如实报未验证，由具备能力者完成，不自签通过。

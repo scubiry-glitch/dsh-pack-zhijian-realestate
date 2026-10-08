@@ -45,6 +45,15 @@
       ]
     },
     {
+      "id": "v5.references.reference-quality-anatomy-v1.md",
+      "path": "references/reference-quality-anatomy-v1.md",
+      "roles": [
+        "writer",
+        "renderer",
+        "reviewer"
+      ]
+    },
+    {
       "id": "v5.references.components.base-v2.css",
       "path": "references/components/base-v2.css",
       "roles": [
