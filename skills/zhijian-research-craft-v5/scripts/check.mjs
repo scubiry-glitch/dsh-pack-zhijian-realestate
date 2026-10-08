@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** V5 inspector: integrity, actual text, A4 and offline browser. No editorial quotas. */
+/** V5 inspector: integrity, analytical-chapter figure coverage, actual text, A4 and offline browser. */
 import { createHash } from 'node:crypto'
 import { spawn } from 'node:child_process'
 const ids=['v5-byte-binding','v5-text-consistency','v5-pdf-layout','v5-browser-layout']
@@ -21,6 +21,7 @@ try {
   const ledger=JSON.parse(data.evidence),selection=input.selections?.find(s=>s.skillId==='zhijian-research-craft-v5')
   if(ledger.schemaVersion!==5||!['credit-policy','designer-paper'].includes(selection?.variant)||ledger.style!==selection.variant)throw Error('V5 style/evidence binding required')
   for(const role of ['md','html','pdf'])if(ledger[role+'Sha256']!==input.artifacts[role].sha256)throw Error('stale craft evidence')
+  if(!/^[a-f0-9]{64}$/u.test(ledger.figurePlanSha256??''))throw Error('figure plan digest required; Host checks it against frozen writer bytes')
   for(const ref of ['credit-policy','designer-paper'])if(typeof ledger.references?.[ref]!=='string'||!ledger.references[ref].trim())throw Error('both reference decisions required')
   payload={...data,style:selection.variant,browser:input.host?.browserExecutablePath??'/root/.cache/dsh-report-craft/chromium_headless_shell-1223/chrome-headless-shell-linux64/chrome-headless-shell'}
   results.push(result(ids[0],'passed','Exact artifact bytes and V5 reference decisions bound; semantic correctness requires independent review.'))
@@ -35,8 +36,9 @@ def row(id,status,detail):out.append(dict(id=id,status=status,detail=detail))
 def norm(s):return re.sub(r'\s+','',s)
 def require(ok,msg):
  if not ok:raise ValueError(msg)
+def text(n):return n.get_text('',strip=False)
 try:
- from bs4 import BeautifulSoup
+ from bs4 import BeautifulSoup, Tag
  from markdown_it import MarkdownIt
  html=BeautifulSoup(p['html'],'html.parser'); bodies=html.select('main#report-body')
  require(len(bodies)==1,'one main#report-body required');body=bodies[0]
@@ -44,17 +46,45 @@ try:
  require(not re.search(r'@import|url\(\s*[\x22\x27]?https?:',p['html'],re.I),'remote CSS resources forbidden')
  source=BeautifulSoup(MarkdownIt('commonmark',{'html':False}).enable('table').render(p['md']),'html.parser')
  ledger=json.loads(p['evidence']);prose=BeautifulSoup(str(body),'html.parser');figures=ledger.get('figures',[])
+ applications=ledger.get('referenceApplication',[])
+ require(isinstance(applications,list) and applications,'referenceApplication must record applied design principles')
+ require(any(isinstance(a,dict) and a.get('source')==p['style'] for a in applications),'primary reference must be applied')
+ for a in applications:
+  require(isinstance(a,dict) and a.get('source') in ('credit-policy','designer-paper'),'referenceApplication source required')
+  for key in ('principle','selector','appliedHow'):
+   require(isinstance(a.get(key),str) and a[key].strip(),'referenceApplication '+key+' required')
+  try:require(bool(prose.select(a['selector'])),'referenceApplication selector absent from actual HTML: '+a['selector'])
+  except Exception as e:raise ValueError('invalid referenceApplication selector: '+str(e))
  require(isinstance(figures,list),'figures must be an array');seen=set()
+ source_chapters=[h.get_text(' ',strip=True) for h in source.find_all('h2')]
+ html_chapters=[h.get_text(' ',strip=True) for h in prose.find_all('h2')]
+ require(source_chapters==html_chapters,'HTML analytical chapters differ from approved Markdown')
+ analytical=[title for title in source_chapters if not re.match(r'^附(?:件|录)(?:[:：]|$)',title)]
+ require(bool(analytical),'at least one analytical chapter required')
+ counts={title:0 for title in analytical};figure_chapters={};current_chapter=None
+ for node in prose.descendants:
+  if not isinstance(node,Tag):continue
+  if node.name=='h2':current_chapter=node.get_text(' ',strip=True)
+  elif node.name=='figure' and node.get('data-v5-figure'):
+   fid=node['data-v5-figure'];figure_chapters[fid]=current_chapter
+   if current_chapter in counts:counts[current_chapter]+=1
+ require(all(value>=1 for value in counts.values()),'analytical chapter missing a figure: '+', '.join(title for title,value in counts.items() if value<1))
  for fig in prose.select('figure[data-v5-figure]'):
   fid=fig.get('data-v5-figure');rows=[f for f in figures if isinstance(f,dict) and f.get('id')==fid]
   require(fid not in seen and len(rows)==1,'figure requires a unique ledger binding');seen.add(fid)
+  entry=rows[0]
+  require(entry.get('chapter')==figure_chapters.get(fid) and entry['chapter'] in counts,'figure chapter binding required')
+  for key in ('claim','relation','encoding','decision'):
+   require(isinstance(entry.get(key),str) and entry[key].strip(),'figure '+key+' required')
+  require(entry['claim'] in fig.get_text(' ',strip=True),'figure headline must state ledger claim')
   require(isinstance(rows[0].get('sourceQuote'),str) and rows[0]['sourceQuote'].strip() and rows[0]['sourceQuote'] in p['md'],'figure must cite actual approved prose')
+  support=entry.get('supportQuotes',[])
+  require(isinstance(support,list) and all(isinstance(q,str) and q.strip() and q in p['md'] for q in support),'figure supportQuotes must cite approved prose')
   nums=set(re.findall(r'[-+]?\d[\d,]*(?:\.\d+)?(?:%|％)?',p['md']))
   require(all(n in nums for n in re.findall(r'[-+]?\d[\d,]*(?:\.\d+)?(?:%|％)?',fig.get_text())),'figure introduces an unapproved number')
   fig.decompose()
  require(len(seen)==len(figures),'ledger figure missing from actual HTML')
  for node in source.find_all(['style','script']):node.decompose()
- text=lambda n:n.get_text('',strip=False)
  require(norm(text(source))==norm(text(prose)),'actual MD and HTML body text differ')
  require(all(not n.get('hidden') and not re.search(r'display\s*:\s*none|visibility\s*:\s*hidden',n.get('style',''),re.I) for n in body.find_all()),'hidden body content prohibited')
  row('v5-text-consistency','passed','Full Markdown reading text matches HTML body. Browser separately checks visibility; independent review checks meaning and charts.')
