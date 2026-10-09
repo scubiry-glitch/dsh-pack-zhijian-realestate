@@ -1,6 +1,6 @@
 {
   "id": "zhijian.team.rent-pricing",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "schemaVersion": 2,
   "parameters": {
     "type": "object",
@@ -73,13 +73,14 @@
         "realestate.resblock.profile",
         "realestate.rent.search",
         "realestate.plate.search",
+        "realestate.geo.search",
         "realestate.indicators.timeseries",
         "realestate.market-snapshot"
       ],
       "outputSchema": "zhijian.output.rent-evidence",
       "retryPolicy": "provider-only",
       "subject": "核验标的与采集同质可比证据",
-      "description": "一次形成共同证据包：核标的产品、出租形态及未核字段；采集同小区/邻近同质挂牌或成交，保存逐次原始回执、查询、时间、TopK、总召回、实际命中条件、去重与缺口。总召回超过 TopK 时，用实际命中的价格分段覆盖全域，必要时细分，按房源 ID 去重并与总召回核对；查询文字中的业务类型或面积未命中时逐行筛选并记录剔除。无法取齐只报可见样本及截断风险。尽量取得同小区近 12 个月逐月租金及统计口径；它只作背景，不替代同质可比。接口不可用如实记录并停止确定性失败重试。发布 t1-evidence.md、结构化样本表和趋势序列或缺口。独立评审核来源、身份和样本口径，阻断项在本任务返修。"
+      "description": "一次形成共同证据包：核标的产品、出租形态及未核字段；采集同小区/邻近同质挂牌或成交，保存逐次原始回执、查询、时间、TopK、总召回、实际命中条件、去重与缺口。总召回超过 TopK 时，用实际命中的价格分段覆盖全域，必要时细分，按房源 ID 去重并与总召回核对；查询文字中的业务类型或面积未命中时逐行筛选并记录剔除。无法取齐只报可见样本及截断风险。社区趋势先走政研通地理搜索取得真实社区 ID，再用地理数据包核 rentIdx、单位、口径和连续月份；社区无 ID、无序列或无授权则留缺口，区级/全市序列不得顶替。贝壳租金行情与政研通社区通道分别记录状态。接口不可用如实记录并停止确定性失败重试。发布 t1-evidence.md、结构化样本表和趋势序列或缺口。独立评审核来源、身份和样本口径，阻断项在本任务返修。"
     },
     {
       "id": "t2",
