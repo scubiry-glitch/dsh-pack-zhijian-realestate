@@ -72,6 +72,25 @@ class RentPricingTemplateTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "consecutive"):
             MODULE.validate(data)
 
+    def test_lagged_real_trend_is_shown_with_period_and_lag(self):
+        data = copy.deepcopy(EXAMPLE)
+        data["communityTrend"] = {
+            "status": "available", "scope": "社区跨户型套均月租",
+            "source": "社区原始月序列", "months": [
+                {"month": f"{y}-{m:02d}", "value": 3600 + i * 10}
+                for i, (y, m) in enumerate([(2025, m) for m in range(8, 13)] +
+                                           [(2026, m) for m in range(1, 8)])
+            ],
+        }
+        MODULE.validate(data)
+        md, page = MODULE.render(data)
+        self.assertIn("2025-08—2026-07", page)
+        self.assertIn("滞后 3 个月", page)
+        self.assertIn("滞后 3 个月", md)
+        data["asOfDate"] = "2026-06-09"
+        with self.assertRaisesRegex(ValueError, "after asOfDate"):
+            MODULE.validate(data)
+
     def test_priced_tier_needs_steps(self):
         data = copy.deepcopy(EXAMPLE)
         data["tiers"]["listing"].update({"value": 4200, "nature": "建议", "source": "回执 E1"})

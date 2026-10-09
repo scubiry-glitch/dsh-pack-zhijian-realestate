@@ -143,8 +143,8 @@ def validate(data):
         require(observed >= 2, "available communityTrend requires two observed months")
         as_of = date.fromisoformat(data["asOfDate"])
         as_of_index = as_of.year * 12 + as_of.month
-        require(previous in (as_of_index, as_of_index - 1),
-                "communityTrend must end in the asOfDate month or previous month")
+        require(previous <= as_of_index,
+                "communityTrend cannot include months after asOfDate")
     else:
         require(not months, "unavailable communityTrend must have no months")
     for field in ("actions", "limitations", "sources"):
@@ -250,6 +250,18 @@ def trend_chart(trend):
     return ''.join(parts)
 
 
+def trend_period_note(trend, asof):
+    if trend["status"] != "available":
+        return ""
+    first, last = trend["months"][0]["month"], trend["months"][-1]["month"]
+    as_of_date = date.fromisoformat(asof)
+    lag = as_of_date.year * 12 + as_of_date.month - (int(last[:4]) * 12 + int(last[5:]))
+    note = f"最近可得连续 12 个月：{first}—{last}。"
+    if lag > 1:
+        note += f"末期较报告基准月滞后 {lag} 个月，不能代表当前月租水平。"
+    return note
+
+
 def render(data):
     title = data["title"]
     asof = data["asOfDate"]
@@ -333,8 +345,9 @@ def render(data):
         h.append('<p class="empty">承重价格尚未具备可复算输入，暂无计算步骤。</p>')
     h.append('</section>')
     trend = data["communityTrend"]
+    period_note = trend_period_note(trend, asof)
     h.append('<section class="card"><h2>近 12 个月社区租金趋势</h2>'
-             f'<p class="caption">口径：{esc(trend["scope"])}。社区跨户型趋势只用于市场背景，不代替目标房的同质可比定价。</p>'
+             f'<p class="caption">{esc(period_note)}口径：{esc(trend["scope"])}。社区跨户型趋势只用于市场背景，不代替目标房的同质可比定价。</p>'
              '<figure class="figure trend-figure">' + trend_chart(trend) +
              f'<figcaption>{("逐月数值见下表；缺失月份断线，不插值。" if trend["status"] == "available" else "数据缺口：" + esc(trend["source"]))}</figcaption></figure>')
     if trend["status"] == "available":
@@ -383,7 +396,7 @@ def render(data):
     if not data["calculationSteps"]:
         m += ["", "承重价格尚未具备可复算输入，暂无计算步骤。"]
     m += ["", "## 近 12 个月社区租金趋势", "",
-          f'口径：{md(trend["scope"])}；来源：{md(trend["source"])}。社区跨户型趋势只用于市场背景，不代替目标房的同质可比定价。', ""]
+          f'{md(period_note)}口径：{md(trend["scope"])}；来源：{md(trend["source"])}。社区跨户型趋势只用于市场背景，不代替目标房的同质可比定价。', ""]
     if trend["status"] == "available":
         m += ["| 月份 | 社区月租（元/月） |", "|---|---:|"]
         m += [f'| {row["month"]} | {fmt(row["value"]) if row.get("value") is not None else "缺失"} |' for row in trend["months"]]
