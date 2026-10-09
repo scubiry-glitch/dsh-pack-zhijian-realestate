@@ -20,6 +20,8 @@
 | comparables | 对象数组 | 每行 label、price、identity（挂牌/成交）、date、source，area 可为空；仅输入真实可比样本 |
 | sampleBoundary | 字符串 | 地域、产品、TopK、有效 n、去重和召回边界；不称市场全量 |
 | methods.comparable / unitArea / substitute | 三个必填对象 | 固定为同质可比主估计、单位面积交叉验证、替代品边界校验；每项有 status、finding、calculation、evidence |
+| calculationSteps | 对象数组 | 有任何三档数值时必填至少一步；逐步列出 step、inputs、formula、result、evidence，供复算，不以方法摘要代替 |
+| communityTrend | 对象 | status 为 available/unavailable；scope 明确社区统计口径，source 写来源或缺口；available 时 months 为连续 12 个 YYYY-MM 与月租 value（缺失可为 null），末月为基准日当月或上月，至少两个观测点；unavailable 时 months 为空 |
 | cases | 可选对象数组 | 仅有互斥产品形态时填 title、condition、decision |
 | actions, limitations, sources | 字符串数组 | 挂牌和复核动作、适用限制、可追溯来源 |
 
@@ -27,7 +29,7 @@
 
 三种参考依据是固定栏位，不得用一个自由文本列表代替：① 同质可比法优先核同小区同产品，不足再扩至板块或区级并记录异质性；② 单位面积租金法写出单价、面积和换算，同一可比池仅构成算术交叉，不能冒充独立证据；③ 替代品锚定法只检验边界，不能直接报目标房点估计。每项 status 只能为“已核验”“证据不足”“不适用”。缺数据时必须说明未计算原因和取数缺口，不能填旧报告数字。
 
-页面固定为“适用条件 → 三档决策 → 条件分案（按需）→ 样本分布 → 三种定价参考依据 → 行动 → 风险与来源”。样本图直接由 comparables 生成；若无样本，页面显示缺口，不画假图。社区混合趋势不能替代目标户型租金，本模板不自动绘制趋势。
+页面固定为“适用条件 → 三档决策 → 条件分案（按需）→ 样本分布与可比明细表 → 三种定价参考依据 → 计算逻辑明细 → 近 12 个月社区租金趋势 → 行动 → 风险与来源”。样本图直接由 comparables 生成；若无样本，页面显示缺口，不画假图。计算明细需让读者从输入、算式重得结果，并把主估计、交叉验证和最终建议的连接说清。社区趋势必须使用该小区真实连续 12 个月序列；缺月显示缺失并断线，数据不可得则展示缺口。社区混合趋势只能说明背景，不能替代目标户型租金或被用作独立定价样本。旧报告的月份、价格和图形均不可复用。
 
 ## 渲染
 

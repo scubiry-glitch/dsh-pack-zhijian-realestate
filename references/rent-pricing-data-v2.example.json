@@ -34,6 +34,13 @@
   },
   "comparables": [],
   "sampleBoundary": "本次尚无可核同质样本；不得引用旧报告或跨产品价格。",
+  "calculationSteps": [],
+  "communityTrend": {
+    "status": "unavailable",
+    "scope": "社区跨户型套均月租，非目标户型价格",
+    "source": "待取得连续 12 个月社区月租序列与统计口径。",
+    "months": []
+  },
   "methods": {
     "comparable": {
       "status": "证据不足",

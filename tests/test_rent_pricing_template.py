@@ -25,6 +25,10 @@ class RentPricingTemplateTest(unittest.TestCase):
         self.assertIn("待确认", md)
         for method in ("同质可比法", "单位面积租金法", "替代品锚定法"):
             self.assertIn(method, page)
+        self.assertIn("可比明细表", page)
+        self.assertIn("计算逻辑明细", page)
+        self.assertIn("近 12 个月社区租金趋势", page)
+        self.assertIn("不绘制趋势图", page)
         self.assertNotIn("〔", page)
 
     def test_comparables_produce_real_chart_and_escaped_labels(self):
@@ -39,12 +43,40 @@ class RentPricingTemplateTest(unittest.TestCase):
             {"label": "B", "price": 4300, "area": 90,
              "identity": "成交", "date": "2026-10-09", "source": "回执 E2"},
         ]
+        data["calculationSteps"] = [{"step": "S1 主估计", "inputs": "4100、4300 元/月",
+                                      "formula": "(4100+4300)/2", "result": "4200 元/月",
+                                      "evidence": "回执 E1、E2"}]
         MODULE.validate(data)
         md, page = MODULE.render(data)
         self.assertIn('aria-label="可比样本月租价格分布"', page)
         self.assertIn("A &lt;script&gt;", page)
         self.assertNotIn("<script>", page)
         self.assertIn("4,200 元/月", md)
+        self.assertIn("S1 主估计", page)
+
+    def test_trend_draws_only_from_twelve_consecutive_months(self):
+        data = copy.deepcopy(EXAMPLE)
+        data["communityTrend"] = {
+            "status": "available", "scope": "社区跨户型套均月租",
+            "source": "测试用逐月回执", "months": [
+                {"month": f"{y}-{m:02d}", "value": 3900 + i * 10}
+                for i, (y, m) in enumerate([(2025, 11), (2025, 12)] + [(2026, m) for m in range(1, 11)])
+            ],
+        }
+        MODULE.validate(data)
+        md, page = MODULE.render(data)
+        self.assertIn('aria-label="近 12 个月社区租金趋势"', page)
+        self.assertIn("2026-10", md)
+        self.assertIn("不代替目标房", page)
+        data["communityTrend"]["months"][5]["month"] = "2026-05"
+        with self.assertRaisesRegex(ValueError, "consecutive"):
+            MODULE.validate(data)
+
+    def test_priced_tier_needs_steps(self):
+        data = copy.deepcopy(EXAMPLE)
+        data["tiers"]["listing"].update({"value": 4200, "nature": "建议", "source": "回执 E1"})
+        with self.assertRaisesRegex(ValueError, "calculationSteps"):
+            MODULE.validate(data)
 
     def test_price_requires_evidence(self):
         data = copy.deepcopy(EXAMPLE)

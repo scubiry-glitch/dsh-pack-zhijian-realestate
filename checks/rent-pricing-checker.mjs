@@ -28,7 +28,10 @@ export function evaluateRentPricing(input) {
       page.includes('id="report-body"') &&
       page.includes('结论先行：三档价格如何用') &&
       page.includes('样本如何约束价格') &&
+      page.includes('可比明细表') &&
       page.includes('三种定价参考依据') &&
+      page.includes('计算逻辑明细') &&
+      page.includes('近 12 个月社区租金趋势') &&
       page.includes('依据一 · 同质可比法') &&
       page.includes('依据二 · 单位面积租金法') &&
       page.includes('依据三 · 替代品锚定法') &&
@@ -37,6 +40,7 @@ export function evaluateRentPricing(input) {
       !/<(?:script|iframe|img)\b/i.test(page) &&
       !/\b(?:src|href)=["']https?:\/\//i.test(page) &&
       (ledger.comparableCount === 0 || page.includes('aria-label="可比样本月租价格分布"')) &&
+      (ledger.trendPointCount === 0 || page.includes('aria-label="近 12 个月社区租金趋势"')) &&
       pdfBytes.subarray(0, 5).toString() === '%PDF-' &&
       pdfBytes.length > 1000
     return [

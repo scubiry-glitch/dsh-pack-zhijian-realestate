@@ -14,6 +14,51 @@ h1,h2,h3,p{margin-top:0}h1{font-family:"Noto Serif CJK SC","Songti SC",serif;fon
 @media(max-width:700px){.wrap{padding:14px 12px 36px}.cover,.card{padding:21px 18px;border-radius:12px}.price-grid,.split{grid-template-columns:1fr}.price strong{font-size:1.55rem}.meta{display:block}.meta span{display:block}}
 @page{size:A4;margin:13mm}@media print{body{background:#fff}.wrap{max-width:none;padding:0}.cover,.card{box-shadow:none;border-radius:0;break-inside:auto}.price,.subcard,.figure,tr{break-inside:avoid}.figure svg{min-width:0}h2{break-after:avoid}a{color:inherit}}
 </style>
+<style>
+/* 智见工艺视觉样式；固定模板的正文结构与数据绑定保持一致。 */
+:root{--paper:#e8ede8;--card:#fcfdfb;--ink:#15241e;--muted:#5e7066;--blue:#0e6a55;--light:#f1f6f1;--line:#d7e0d8;--gold:#a9741f}
+body{background:var(--paper);color:#35473e;font-family:"Noto Sans CJK SC","PingFang SC","Microsoft YaHei",sans-serif;font-size:15px;line-height:1.75}
+.wrap{max-width:1080px;margin:28px auto 48px;padding:40px 48px 58px;background:#fcfdfb;border:1px solid #d7e0d8;border-radius:26px;box-shadow:0 24px 65px -38px #15241e55}
+.cover{position:relative;padding:20px 0 32px;background:transparent;border:0;border-bottom:2px solid var(--blue);border-radius:0;box-shadow:none}
+.cover:after{content:"";position:absolute;right:0;bottom:-2px;width:26%;height:2px;background:var(--gold)}
+.eyebrow{color:var(--blue);font-size:.76rem;letter-spacing:.15em}
+h1{color:var(--ink);font-size:clamp(2rem,3.8vw,2.8rem);letter-spacing:.015em}
+h2{display:flex;gap:10px;align-items:baseline;color:var(--ink);font-size:1.32rem;letter-spacing:.01em}
+h2:before{content:"";width:4px;height:16px;flex:none;align-self:center;border-radius:2px;background:var(--blue)}
+h3{color:var(--blue)}
+.lede{font-size:1.02rem;line-height:1.85;color:#35473e}
+.meta{font-size:.81rem;color:var(--muted)}
+.card{padding:26px 30px;margin-top:0;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;box-shadow:none}
+.card:last-child{border-bottom:0}
+.notice{margin-top:15px;padding:22px 26px;border:1px solid #d7e0d8;border-left:4px solid var(--gold);border-radius:11px;background:#f8faf6}
+.price-grid{gap:12px}
+.price{background:#f1f6f1;border:1px solid #d7e0d8;border-radius:12px;padding:19px}
+.price:nth-child(2){background:#fbf7ed;border-color:#e7dcc0}
+.price:nth-child(2) strong{color:#7a5417}
+.price:nth-child(3){background:#f4f5f2}
+.price strong{font-size:clamp(1.3rem,2.5vw,1.85rem);color:var(--blue)}
+.price .label{color:#35473e}
+.tag{background:#fcfdfb;color:var(--blue);border-color:#bfd6c9}
+.price:nth-child(2) .tag{color:#7a5417;border-color:#e3d3aa}
+.subcard{background:#f7f9f6;border-color:#d7e0d8;border-radius:10px}
+.figure{background:#f8faf7;border-color:#d7e0d8;border-radius:10px}
+.figure svg circle[fill="#245bd1"]{fill:#0e6a55}
+.figure svg[aria-label="近 12 个月社区租金趋势"] line[stroke="#245bd1"]{stroke:#0e6a55}
+.figure svg circle[fill="#178b75"]{fill:#4380a0}
+.figure svg line[stroke="#aa7926"]{stroke:#a9741f}
+.figure svg line[stroke="#dbe3ef"],.figure svg line[stroke="#e7edf5"]{stroke:#d9e2d9}
+.figure svg text{fill:#35473e}
+th{background:#edf3ed;color:#15241e}
+tr:nth-child(even) td{background:#f8faf7}
+.flow>div{background:#f1f6f1;border:1px solid #d7e0d8}
+.flow b{color:var(--blue)}
+.caption,.figure figcaption{color:#5e7066}
+.empty{background:#fbf4e4;color:#6b4b16}
+@media(max-width:700px){.wrap{margin:0;padding:13px 12px 34px;border:0;border-radius:0;box-shadow:none}.cover{padding:16px 5px 27px}.card{padding:22px 6px}.notice{padding:20px 18px;margin-top:14px}.price-grid,.split{grid-template-columns:1fr}}
+@page{size:A4;margin:13mm}
+@media print{body{background:#fff}.wrap{max-width:none;margin:0;padding:0;border:0;border-radius:0;box-shadow:none}.cover{padding-top:0}.card{break-inside:auto}.price,.subcard,.figure,tr{break-inside:avoid}}
+
+</style>
 </head>
 <body><main class="wrap" id="report-body">{{CONTENT}}</main></body>
 </html>
