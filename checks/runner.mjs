@@ -1,9 +1,15 @@
 /** Package-owned adapter. Host alone validates the frozen pack and issues authoritative receipts. */
 import { createHash } from 'node:crypto'
 import { evaluateReportCraftV2 } from './report-craft-checker-v2.mjs'
+import { evaluateRentPricing } from './rent-pricing-checker.mjs'
 
 export async function runSelectedChecks(input) {
   if (input.protocolVersion !== 1 || !Array.isArray(input.selections) || !Array.isArray(input.resultIds)) throw new Error('invalid craft runner protocol')
+  if (input.selections.some(row => row.skillId === 'zhijian-rent-pricing')) {
+    const allowed = ['rent-pricing-template-binding', 'rent-pricing-output-sanity']
+    if (input.resultIds.length !== allowed.length || !allowed.every(id => input.resultIds.includes(id))) throw new Error('invalid rent-pricing check selection')
+    return evaluateRentPricing(input)
+  }
   const rendered = input.selections.find(row => row.skillId === 'zhijian-designer-render')
   const style = rendered?.variant ?? 'credit-policy'
   if (!['credit-policy', 'designer-paper'].includes(style)) throw new Error('unknown domain-owned render variant')

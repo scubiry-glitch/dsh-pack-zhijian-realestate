@@ -1,87 +1,132 @@
 {
   "id": "zhijian.team.rent-pricing",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "schemaVersion": 2,
   "parameters": {
     "type": "object",
     "properties": {
-      "property": { "type": "string", "description": "标的地址、面积、户型、出租方式和用户给定条件；未核实的条件明确标未核" },
-      "asOfDate": { "type": "string", "description": "价格与样本基准日，YYYY-MM-DD" }
+      "property": {
+        "type": "string",
+        "description": "标的地址、面积、户型、出租方式和用户给定条件；未核实的条件明确标未核"
+      },
+      "asOfDate": {
+        "type": "string",
+        "description": "价格与样本基准日，YYYY-MM-DD"
+      }
     },
-    "required": ["property", "asOfDate"]
+    "required": [
+      "property",
+      "asOfDate"
+    ]
   },
   "slots": [
-    { "id": "role.property", "capabilities": ["realestate.services.review", "review.theory"], "cardinality": { "min": 1, "max": 1 } },
-    { "id": "role.comps", "capabilities": ["realestate.services.review", "review.data"], "cardinality": { "min": 1, "max": 1 } },
-    { "id": "role.cross", "capabilities": ["realestate.services.review", "review.judgment"], "cardinality": { "min": 1, "max": 1 } },
-    { "id": "role.pricing", "capabilities": ["realestate.services.review", "review.data"], "cardinality": { "min": 1, "max": 1 } },
-    { "id": "role.audit", "capabilities": ["realestate.services.review", "review.theory"], "cardinality": { "min": 1, "max": 1 } }
+    {
+      "id": "role.evidence",
+      "capabilities": [
+        "realestate.services.review",
+        "review.data"
+      ],
+      "cardinality": {
+        "min": 1,
+        "max": 1
+      }
+    },
+    {
+      "id": "role.pricing",
+      "capabilities": [
+        "realestate.services.review",
+        "review.judgment"
+      ],
+      "cardinality": {
+        "min": 1,
+        "max": 1
+      }
+    },
+    {
+      "id": "role.render",
+      "capabilities": [
+        "realestate.services.review",
+        "review.theory"
+      ],
+      "cardinality": {
+        "min": 1,
+        "max": 1
+      }
+    }
   ],
   "tasks": [
     {
-      "id": "t1", "role": "role.property", "dependsOn": [],
-      "inputs": [{ "kind": "parameter", "ref": "property" }, { "kind": "parameter", "ref": "asOfDate" }],
-      "allowedCapabilities": ["realestate.resblock.profile", "realestate.rent.search"],
-      "outputSchema": "zhijian.output.B", "retryPolicy": "provider-only",
-      "subject": "核验标的形态、出租权利与数据可得性",
-      "description": "核实 {property} 的独立入户、厨卫、水电计量、建筑/套内面积、装修、楼层、朝向、家具、租期与出租权利；未取到的条件列为待确认。基准日 {asOfDate}。冻结用途、读者、价格决策量、数据口径、取数时段和用户指定工具；记录每个接口的能力、时间和缺口。若整租/合租属性未明，不把两类样本混算。输出带来源的标的条件表和待补问题。"
+      "id": "t1",
+      "role": "role.evidence",
+      "dependsOn": [],
+      "inputs": [
+        {
+          "kind": "parameter",
+          "ref": "property"
+        },
+        {
+          "kind": "parameter",
+          "ref": "asOfDate"
+        }
+      ],
+      "allowedCapabilities": [
+        "realestate.resblock.profile",
+        "realestate.rent.search",
+        "realestate.plate.search",
+        "realestate.indicators.timeseries",
+        "realestate.market-snapshot"
+      ],
+      "outputSchema": "zhijian.output.rent-evidence",
+      "retryPolicy": "provider-only",
+      "subject": "核验标的与采集同质可比证据",
+      "description": "一次形成共同证据包：核标的产品、出租形态及未核字段；采集同小区/邻近同质挂牌或成交，保存逐次原始回执、查询、时间、TopK、去重与缺口。可用趋势或替代品只作为补充边界。接口不可用如实记录并停止确定性失败重试。发布 t1-evidence.md 与结构化样本表。独立评审只核来源、身份和样本口径，阻断项在本任务返修。"
     },
     {
-      "id": "t2", "role": "role.comps", "dependsOn": ["t1"],
-      "inputs": [{ "kind": "task-output", "ref": "t1" }],
-      "allowedCapabilities": ["realestate.rent.search", "realestate.resblock.profile", "realestate.plate.search"],
-      "outputSchema": "zhijian.output.B", "retryPolicy": "provider-only",
-      "subject": "采集与标的同质的在租和成交证据",
-      "description": "用 t1 已核的产品形态筛本小区、邻近板块和区级同质样本。逐次保留真实工具调用回执、查询式、基准日、返回上限/TopK、原始行数、去重键、剔除理由、有效 n、价格单位及挂牌/成交身份；不把多次 TopK 拼成市场全量。若用户指定 CLI，必须保留该 CLI 的实际回执。成交数据不可得就明确缺口。将原始件索引与可复算样本表交给下游。"
+      "id": "t2",
+      "role": "role.pricing",
+      "dependsOn": [
+        "t1"
+      ],
+      "inputs": [
+        {
+          "kind": "task-output",
+          "ref": "t1"
+        }
+      ],
+      "allowedCapabilities": [],
+      "outputSchema": "zhijian.output.rent-data",
+      "retryPolicy": "quality-repair",
+      "subject": "测算定价并填写模板数据",
+      "description": "使用 t1 的固定证据包写 rent-pricing-data.json：标的条件、三档决策量（无证据则 null/待确认）、同质样本、主估计、交叉边界、空置行动、风险和来源。依据 references/rent-pricing-data-v2.md 与报告模板；不得沿用海兴雅苑价格。稿件简明，结论先行；独立评审逐条复算承重价格、样本 n、来源和条件，阻断问题由本任务作者修复后重审。发布 t2-pricing-data.json 和计算回执。"
     },
     {
-      "id": "t3", "role": "role.cross", "dependsOn": ["t1"],
-      "inputs": [{ "kind": "task-output", "ref": "t1" }],
-      "allowedCapabilities": ["realestate.rent.search", "realestate.indicators.timeseries", "realestate.market-snapshot"],
-      "outputSchema": "zhijian.output.B", "retryPolicy": "provider-only",
-      "subject": "独立寻找交叉证据、替代品边界和时点信号",
-      "description": "单独核验单位面积租金、可替代产品及可用趋势。替代品只界定价格边界，不无条件折算为同质估价；社区混合户型趋势只判时点，不代替目标户型租金。每条证据标来源、周期、区域、单位、产品类型和限制。没有足够独立证据就明说，不凑三路。"
-    },
-    {
-      "id": "t4", "role": "role.pricing", "dependsOn": ["t1", "t2", "t3"],
-      "inputs": [{ "kind": "task-output", "ref": "t1" }, { "kind": "task-output", "ref": "t2" }, { "kind": "task-output", "ref": "t3" }],
-      "allowedCapabilities": [], "outputSchema": "zhijian.output.rent-pricing", "retryPolicy": "quality-repair",
-      "subject": "定价测算与行动方案",
-      "description": "依照本包 zhijian-rent-pricing skill 和 rent-pricing-report-template-v1.md，用本次样本计算分位数、单位面积交叉值、挂牌区间/目标成交带/底价及让价节奏。三者必须各有推导与适用条件；挂牌价不是成交事实，底价是用户成本/空置偏好约束。证据冲突时说明原因并降精度，不机械取交集。仅在产品形态确有互斥可能时写 A/B 案。图稿先写清观点、关系、数据源和限制。输出可冻结的 Markdown 正文及承重数字清单，不在独立审计前渲染最终产物。"
-    },
-    {
-      "id": "t5", "role": "role.audit", "dependsOn": ["t4"],
-      "inputs": [{ "kind": "task-output", "ref": "t4" }, { "kind": "task-output", "ref": "t2" }, { "kind": "task-output", "ref": "t3" }],
-      "allowedCapabilities": [], "outputSchema": "zhijian.output.B", "retryPolicy": "never",
-      "subject": "独立复算与反证",
-      "description": "由不同于 t4 作者的成员独立复核每条承重价格、原始 CLI 回执、TopK 样本 n 与去重、分位数、元/㎡、空置损益、来源与基准日；检查整租/合租混样、挂牌冒充成交、社区趋势冒充目标房型、均值冒充下沿、低拟合回归外推及无证据的底价。输出带位置/严重度/修正建议的问题清单，不代作者自签通过。"
-    },
-    {
-      "id": "t6", "role": "role.pricing", "dependsOn": ["t5"],
-      "inputs": [{ "kind": "task-output", "ref": "t4" }, { "kind": "task-output", "ref": "t5" }],
-      "allowedCapabilities": [], "outputSchema": "zhijian.output.rent-pricing", "retryPolicy": "quality-repair",
-      "subject": "处理审计意见并冻结单一正文基线",
-      "description": "逐条处理 t5 的问题；阻断项修订后交由独立复核者重审，不能由作者自签通过。若无阻断项，也要记录审计通过和未变更的原因。冻结一份 Markdown 正文、承重数字清单、样本/计算回执索引、版本标签与 SHA256；冻结后任何数字修订都重新开启审计。"
-    },
-    {
-      "id": "t7", "role": "role.audit", "dependsOn": ["t6"],
-      "inputs": [{ "kind": "task-output", "ref": "t6" }, { "kind": "task-output", "ref": "t5" }],
-      "allowedCapabilities": [], "outputSchema": "zhijian.output.B", "retryPolicy": "never",
-      "subject": "独立复审冻结正文与承重数字",
-      "description": "由 t5 审计者或另一位独立于作者的成员，核对 t6 对每条阻断意见的处理和最终 Markdown/证据包/计算回执，重新复算受影响数字；若 t6 未修改，确认 t4 与冻结版相同。明确给出通过或仍阻断及位置。未通过时不得进入最终渲染。"
-    },
-    {
-      "id": "t8", "role": "role.pricing", "dependsOn": ["t7"],
-      "inputs": [{ "kind": "task-output", "ref": "t6" }, { "kind": "task-output", "ref": "t7" }],
-      "allowedCapabilities": [], "outputSchema": "zhijian.output.rent-pricing", "retryPolicy": "quality-repair",
-      "subject": "按冻结正文制作并逐件核对报告",
-      "description": "仅在 t7 独立复审通过后，从 t6 冻结的 Markdown 基线制作 HTML/PDF，不从旧稿或旧截图复用价格。每张图陈述可核的定价逻辑，图内区分观测挂牌、成交、推算与建议价；没有有效趋势就不画趋势图。逐件检查版本标签、承重数字、样本 n、来源、图表、宽屏、手机与 A4 实际输出，记录 SHA256 和视觉缺陷并修复。任何内容修改须重回独立审计。"
+      "id": "t3",
+      "role": "role.render",
+      "dependsOn": [
+        "t2"
+      ],
+      "inputs": [
+        {
+          "kind": "task-output",
+          "ref": "t2"
+        }
+      ],
+      "allowedCapabilities": [],
+      "outputSchema": "zhijian.output.rent-pricing",
+      "retryPolicy": "quality-repair",
+      "subject": "固定模板生成并核对 HTML/PDF",
+      "description": "从已审 t2-pricing-data.json 运行 scripts/render-rent-pricing.py，生成同源 Markdown、HTML、craft-evidence.json；并生成可选文字的 PDF。必须使用 rent-pricing-shell-v2，不得改走通用 Markdown 转 HTML。核对单个 H1、三档卡、真实样本图或数据缺口、来源、手机和 A4；按数据哈希核对 MD/HTML/PDF 版本。渲染中的事实变更回到 t2 重审，不为格式问题另开新节点。"
     }
   ],
-  "gates": [
-    { "policy": "zhijian.quality", "gate": "data-citation", "appliesTo": ["t8"] }
-  ],
+  "gates": [],
   "deliverables": [
-    { "id": "rent-pricing-report", "outputTemplate": "zhijian.output.rent-pricing", "fromTasks": ["t8"], "renderMode": "final" }
+    {
+      "id": "rent-pricing-report",
+      "outputTemplate": "zhijian.output.rent-pricing",
+      "fromTasks": [
+        "t3"
+      ],
+      "renderMode": "final"
+    }
   ]
 }

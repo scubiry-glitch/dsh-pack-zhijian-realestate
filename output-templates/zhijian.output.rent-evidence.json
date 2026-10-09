@@ -1,0 +1,15 @@
+{
+  "id": "zhijian.output.rent-evidence",
+  "version": "1.0.0",
+  "schemaVersion": 2,
+  "media": ["markdown", "json"],
+  "sections": [
+    {"id": "标的条件与未核项", "required": true, "requires": ["source", "caliber"]},
+    {"id": "同质样本与排除记录", "required": true, "requires": ["source", "caliber"]},
+    {"id": "原始回执与取数缺口", "required": true, "requires": ["source", "caliber"]}
+  ],
+  "renderModes": {
+    "discussion": {"anonymize": true},
+    "final": {"anonymize": false}
+  }
+}

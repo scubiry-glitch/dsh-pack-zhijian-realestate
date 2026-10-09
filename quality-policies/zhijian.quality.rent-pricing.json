@@ -1,0 +1,7 @@
+{
+  "id": "zhijian.quality.rent-pricing",
+  "version": "1.0.0",
+  "schemaVersion": 2,
+  "gates": [],
+  "maxRepairRounds": 2
+}

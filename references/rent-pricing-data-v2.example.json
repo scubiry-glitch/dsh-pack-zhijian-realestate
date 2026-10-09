@@ -1,0 +1,54 @@
+{
+  "title": "待核标的租金定价评估",
+  "asOfDate": "2026-10-09",
+  "summary": "标的条件与同质租金证据尚未核实，暂不报具体价格。",
+  "property": {
+    "summary": "小区、户型、面积和出租形态均待核",
+    "conditions": [],
+    "unknowns": [
+      "核实标的与出租方式。"
+    ]
+  },
+  "tiers": {
+    "listing": {
+      "label": "建议挂牌",
+      "value": null,
+      "range": null,
+      "nature": "待确认",
+      "basis": "取得同产品样本及业主条件后测算。"
+    },
+    "expected": {
+      "label": "目标成交带",
+      "value": null,
+      "range": null,
+      "nature": "待确认",
+      "basis": "取得同产品样本及业主条件后测算。"
+    },
+    "floor": {
+      "label": "业主底线",
+      "value": null,
+      "range": null,
+      "nature": "待确认",
+      "basis": "取得同产品样本及业主条件后测算。"
+    }
+  },
+  "comparables": [],
+  "sampleBoundary": "本次尚无可核同质样本；不得引用旧报告或跨产品价格。",
+  "logic": [
+    {
+      "title": "同质证据",
+      "finding": "待取得。",
+      "evidence": "取数回执或不可得记录。"
+    }
+  ],
+  "cases": [],
+  "actions": [
+    "先核出租形态和面积口径，再取同类挂牌及成交证据。"
+  ],
+  "limitations": [
+    "没有可比证据或业主成本时，不给点估计和硬底。"
+  ],
+  "sources": [
+    "本次任务的原始回执或数据缺口记录。"
+  ]
+}

@@ -6,7 +6,7 @@ AI 从已启用包的技能目录选择：
 
 - `zhijian-report-craft`：内容结构、来源与计算；可以单独用于报告内容工艺。
 - `zhijian-designer-render`：HTML/PDF 渲染；显式组合内容技能，并在 `credit-policy` / `designer-paper` 中选择样式。
-- `zhijian-rent-pricing`：具体出租标的的产品核验、同质可比、交叉测算、调价建议与报告页面；须组合 `zhijian-report-craft`，不与通用渲染/V5 工艺叠选。新场景 `zhijian-rent-pricing` 配套任务图、输出模板和可填写页面骨架。
+- `zhijian-rent-pricing`：具体出租标的的产品核验、同质可比、交叉测算、调价建议与报告页面；独立运行，不叠选通用报告/渲染/V5 工艺。场景 `zhijian-rent-pricing` 使用取证→定价→渲染三段任务图，作者填写结构化数据，固定模板从同一数据生成图文与 PDF。
 
 `skill-packages` 记录技能身份与本地摘要；`craft` 记录适用说明、依赖、必需材料和检查；`references` 保存唯一共享参考与组件；`checks/source` 为本包检查器权威源码，`checks/*.mjs` 为确定性构建产物。旧版插件中的 v1/v2 实现只用于历史兼容。
 
@@ -19,3 +19,5 @@ AI 从已启用包的技能目录选择：
 1.3.0 的台账 schema 2 增加资金平衡、租金周期倍数、单利费用及政策证据结构检查。原始参考字节保留；旧任务仍按其冻结版本解释。构建完整包用 `npm run build:pack` / `npm run check:pack`；旧基础生成 CLI 不得覆盖带 craft 的包。
 
 1.3.1 增加可选的包内 MD 单源生成工具，提供同源三格式、章节/数量定位、PDF 大纲和正文页脚；不生成审核结论，既有检查与证据要求保持。
+
+1.6.4 为租金定价增加可执行的页面模板和数据驱动样本图；没有可比样本时显示缺口。移除重复的审计、修订、复审任务节点及通用章节门控，保留价格和来源的独立复核。渲染器运行需要 Python Playwright 与离线 Chromium；缺失时明确失败。
