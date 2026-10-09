@@ -6,6 +6,7 @@ AI 从已启用包的技能目录选择：
 
 - `zhijian-report-craft`：内容结构、来源与计算；可以单独用于报告内容工艺。
 - `zhijian-designer-render`：HTML/PDF 渲染；显式组合内容技能，并在 `credit-policy` / `designer-paper` 中选择样式。
+- `zhijian-rent-pricing`：具体出租标的的产品核验、同质可比、交叉测算、调价建议与报告页面；须组合 `zhijian-report-craft`，不与通用渲染/V5 工艺叠选。新场景 `zhijian-rent-pricing` 配套任务图、输出模板和可填写页面骨架。
 
 `skill-packages` 记录技能身份与本地摘要；`craft` 记录适用说明、依赖、必需材料和检查；`references` 保存唯一共享参考与组件；`checks/source` 为本包检查器权威源码，`checks/*.mjs` 为确定性构建产物。旧版插件中的 v1/v2 实现只用于历史兼容。
 

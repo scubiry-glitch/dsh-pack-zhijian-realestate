@@ -1,0 +1,19 @@
+{
+  "id": "zhijian.output.rent-pricing",
+  "version": "1.0.0",
+  "schemaVersion": 2,
+  "media": ["markdown", "html", "pdf"],
+  "sections": [
+    { "id": "标的核验与适用前提", "required": true, "requires": ["source", "caliber"] },
+    { "id": "结论与定价档位", "required": true, "requires": ["source", "caliber"] },
+    { "id": "可比样本及筛选", "required": true, "requires": ["source", "caliber"] },
+    { "id": "交叉测算与冲突解释", "required": true, "requires": ["source", "caliber"] },
+    { "id": "挂牌节奏与空置权衡", "required": true, "requires": ["source", "caliber"] },
+    { "id": "风险、缺口和补数路径", "required": true, "requires": ["source", "caliber"] },
+    { "id": "条件分案与市场趋势", "required": false, "requires": ["source", "caliber"] }
+  ],
+  "renderModes": {
+    "discussion": { "anonymize": true },
+    "final": { "anonymize": false }
+  }
+}

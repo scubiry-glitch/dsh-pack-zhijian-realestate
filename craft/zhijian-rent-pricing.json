@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "description": "具体出租标的的产品核验、同质样本、租金测算、价格档位与空置策略；独立复核业务数字和图文一致性",
+  "applicability": [
+    "房东或租赁运营者为具体住宅、公寓设置月租挂牌价与调价节奏",
+    "需要核实整租/合租属性、可比样本、价格边界及数据缺口的租金定价报告"
+  ],
+  "artifactRoles": ["md", "html", "pdf", "evidence"],
+  "requires": ["zhijian-report-craft"],
+  "conflicts": ["zhijian-designer-render", "zhijian-research-craft-v5"],
+  "materials": [
+    { "id": "rent-pricing.skill", "path": "skills/zhijian-rent-pricing/SKILL.md", "roles": ["writer", "renderer", "reviewer"] },
+    { "id": "rent-pricing.report-template", "path": "references/rent-pricing-report-template-v1.md", "roles": ["writer"] },
+    { "id": "rent-pricing.process-review", "path": "references/rent-pricing-process-review-v1.md", "roles": [] },
+    { "id": "rent-pricing.shell", "path": "references/components/rent-pricing-shell-v1.html", "roles": ["renderer"] }
+  ],
+  "checks": [],
+  "reviewAreas": [
+    { "id": "rent-product-match", "description": "核对标的出租形态与各可比样本确为同类；条件未核实须分案或降精度" },
+    { "id": "rent-price-recalculation", "description": "重算样本去重、分位数、单位面积、挂牌/目标成交/底价及空置损益，区分观测与建议" },
+    { "id": "rent-visual-meaning", "description": "逐图核对价格档位、样本分布、趋势口径和关键限制，检查实际页面标签与单位" }
+  ]
+}

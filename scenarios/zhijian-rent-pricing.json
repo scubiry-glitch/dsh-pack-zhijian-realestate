@@ -1,0 +1,27 @@
+{
+  "id": "zhijian-rent-pricing",
+  "version": "1.0.0",
+  "schemaVersion": 2,
+  "domain": "realestate",
+  "intents": ["rent-pricing", "rental-listing-advice"],
+  "requiredCapabilities": [
+    { "capability": "zhijian.review", "minProficiency": 1, "cardinality": 1 },
+    { "capability": "realestate.services.review", "minProficiency": 1, "cardinality": 1 }
+  ],
+  "routingPolicy": {
+    "assertions": [
+      "面向具体住宅或公寓的月租金定价、挂牌和调价决策；先核验标的形态与出租权限。",
+      "挂牌样本、成交证据、社区混合趋势及测算必须分开标注；不能把挂牌中位数称为成交中位数。",
+      "A/B 分案、三条估价路径和趋势图按实际数据可得性采用，不预设房型、章数或价格。"
+    ],
+    "candidateHints": ["bk-033", "bk-018", "bk-002", "bk-020"]
+  },
+  "teamTemplate": "zhijian.team.rent-pricing",
+  "outputTemplate": "zhijian.output.rent-pricing",
+  "qualityPolicy": "zhijian.quality",
+  "knowledgePolicy": {
+    "required": ["zhijian-expert-memory"],
+    "optional": ["local-knowledge"]
+  },
+  "toolPolicy": { "allowed": [] }
+}

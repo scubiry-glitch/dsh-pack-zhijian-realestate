@@ -1,0 +1,19 @@
+{
+  "id": "zhijian-rent-pricing",
+  "name": "zhijian-rent-pricing",
+  "version": "1.0.0",
+  "schemaVersion": 2,
+  "source": {
+    "kind": "workspace",
+    "root": "skills/zhijian-rent-pricing",
+    "digest": "21744c4c71d8b567356a78d4fb4bd20294b17b39db6c40d80f4fa072b5b9738e"
+  },
+  "contributions": {},
+  "permissions": {
+    "execScripts": [],
+    "internalOnly": true
+  },
+  "craft": {
+    "path": "craft/zhijian-rent-pricing.json"
+  }
+}

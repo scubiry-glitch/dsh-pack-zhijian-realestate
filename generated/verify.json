@@ -12,19 +12,20 @@
   ],
   "entityCounts": {
     "experts": 33,
-    "scenarios": 8,
-    "teamTemplates": 4,
-    "outputTemplates": 5,
+    "scenarios": 9,
+    "teamTemplates": 5,
+    "outputTemplates": 6,
     "qualityPolicies": 1,
     "knowledgeProviders": 2,
     "domainKnowledge": 1,
     "methodPacks": 6,
-    "skillPackages": 13
+    "skillPackages": 14
   },
   "craftClosure": {
     "packId": "zhijian-realestate",
     "skillIds": [
       "zhijian-designer-render",
+      "zhijian-rent-pricing",
       "zhijian-report-craft",
       "zhijian-research-craft-v5"
     ],
