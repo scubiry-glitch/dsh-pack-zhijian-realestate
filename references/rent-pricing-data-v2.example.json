@@ -34,13 +34,26 @@
   },
   "comparables": [],
   "sampleBoundary": "本次尚无可核同质样本；不得引用旧报告或跨产品价格。",
-  "logic": [
-    {
-      "title": "同质证据",
-      "finding": "待取得。",
-      "evidence": "取数回执或不可得记录。"
+  "methods": {
+    "comparable": {
+      "status": "证据不足",
+      "finding": "同质房源尚未取得，主估计待核。",
+      "calculation": "无可核样本，不计算中位数或价格区间。",
+      "evidence": "同小区和相邻板块检索回执或不可得记录。"
+    },
+    "unitArea": {
+      "status": "证据不足",
+      "finding": "面积与同质单价尚未核实，不作换算。",
+      "calculation": "待核实面积和每平方米月租后计算；同源样本仅算术校验。",
+      "evidence": "面积口径与单价样本的回执或缺口。"
+    },
+    "substitute": {
+      "status": "证据不足",
+      "finding": "替代产品尚无可核价格，不收窄主估计。",
+      "calculation": "缺少同小区合租或其他替代品证据，未折算边界。",
+      "evidence": "替代品查询回执或不可得记录。"
     }
-  ],
+  },
   "cases": [],
   "actions": [
     "先核出租形态和面积口径，再取同类挂牌及成交证据。"

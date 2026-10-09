@@ -23,6 +23,8 @@ class RentPricingTemplateTest(unittest.TestCase):
         self.assertNotIn("<svg", page)
         self.assertIn("本轮未取得可绘制的同质样本", page)
         self.assertIn("待确认", md)
+        for method in ("同质可比法", "单位面积租金法", "替代品锚定法"):
+            self.assertIn(method, page)
         self.assertNotIn("〔", page)
 
     def test_comparables_produce_real_chart_and_escaped_labels(self):
@@ -49,6 +51,12 @@ class RentPricingTemplateTest(unittest.TestCase):
         data["tiers"]["listing"]["value"] = 4200
         data["tiers"]["listing"]["nature"] = "建议"
         with self.assertRaisesRegex(ValueError, "source"):
+            MODULE.validate(data)
+
+    def test_three_methods_are_required(self):
+        data = copy.deepcopy(EXAMPLE)
+        del data["methods"]["substitute"]
+        with self.assertRaisesRegex(ValueError, "methods must contain"):
             MODULE.validate(data)
 
 

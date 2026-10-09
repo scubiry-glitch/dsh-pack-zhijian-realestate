@@ -14,6 +14,12 @@ SHELL = ROOT / "references/components/rent-pricing-shell-v2.html"
 KINDS = {"挂牌", "成交"}
 NATURES = {"观测", "计算", "推断", "建议", "待确认"}
 TIERS = ("listing", "expected", "floor")
+METHODS = (
+    ("comparable", "依据一 · 同质可比法", "主估计"),
+    ("unitArea", "依据二 · 单位面积租金法", "交叉验证"),
+    ("substitute", "依据三 · 替代品锚定法", "边界校验"),
+)
+METHOD_STATUS = {"已核验", "证据不足", "不适用"}
 
 
 def require(ok, message):
@@ -91,13 +97,15 @@ def validate(data):
         money(row.get("price"), f"comparables[{i}].price")
         if row.get("area") is not None:
             money(row["area"], f"comparables[{i}].area")
-    logic = data.get("logic")
-    require(isinstance(logic, list) and 1 <= len(logic) <= 6,
-            "logic needs 1 to 6 findings")
-    for i, row in enumerate(logic):
-        require(isinstance(row, dict), f"logic[{i}] must be an object")
-        for field in ("title", "finding", "evidence"):
-            clean(row.get(field), f"logic[{i}].{field}")
+    methods = data.get("methods")
+    require(isinstance(methods, dict) and set(methods) == {key for key, _, _ in METHODS},
+            "methods must contain comparable, unitArea, substitute")
+    for key, _, _ in METHODS:
+        row = methods[key]
+        require(isinstance(row, dict), f"methods.{key} must be an object")
+        require(row.get("status") in METHOD_STATUS, f"methods.{key}.status is invalid")
+        for field in ("finding", "calculation", "evidence"):
+            clean(row.get(field), f"methods.{key}.{field}")
     for field in ("actions", "limitations", "sources"):
         text_list(data.get(field), field)
     require(data["sources"], "at least one source is required")
@@ -204,10 +212,13 @@ def render(data):
                      f'<td>{esc(row["identity"])}</td><td>{esc(row["date"])}</td><td>{esc(row["source"])}</td></tr>')
         h.append("</tbody></table></div>")
     h.append("</section>")
-    h.append('<section class="card"><h2>定价依据与边界</h2><div class="flow">')
-    for row in data["logic"]:
-        h.append(f'<div><b>{esc(row["title"])}</b>{esc(row["finding"])}'
-                 f'<p class="caption">{esc(row["evidence"])}</p></div>')
+    h.append('<section class="card"><h2>三种定价参考依据</h2>'
+             '<p class="caption">同质可比给主估计，单位面积法作交叉验证，替代品只约束边界；同源数据不得算作独立证据。</p><div class="flow">')
+    for key, label, role in METHODS:
+        row = data["methods"][key]
+        h.append(f'<div><b>{esc(label)}</b><span class="tag">{esc(role)} · {esc(row["status"])}</span>'
+                 f'<p>{esc(row["finding"])}</p><p class="caption">计算：{esc(row["calculation"])}</p>'
+                 f'<p class="caption">证据：{esc(row["evidence"])}</p></div>')
     h.append("</div></section>")
     h.append('<section class="card"><h2>挂牌与复核动作</h2><ol class="actions">' +
              "".join(f"<li>{esc(x)}</li>" for x in data["actions"]) + "</ol></section>")
@@ -237,8 +248,10 @@ def render(data):
           "|---|---:|---:|---|---|---|"]
     for row in data["comparables"]:
         m.append(f'| {md(row["label"])} | {fmt(row["price"])} | {fmt(row["area"]) if row.get("area") is not None else "未核"} | {md(row["identity"])} | {md(row["date"])} | {md(row["source"])} |')
-    m += ["", "## 定价依据与边界", ""]
-    m += [f'- **{md(x["title"])}**：{md(x["finding"])}；证据：{md(x["evidence"])}' for x in data["logic"]]
+    m += ["", "## 三种定价参考依据", "", "同质可比为主估计，单位面积法作交叉验证，替代品只约束边界；同源数据不算独立证据。", ""]
+    for key, label, role in METHODS:
+        row = data["methods"][key]
+        m.append(f'- **{label}｜{role}｜{md(row["status"])}**：{md(row["finding"])}；计算：{md(row["calculation"])}；证据：{md(row["evidence"])}')
     m += ["", "## 挂牌与复核动作", ""]
     m += [f'{i+1}. {md(x)}' for i, x in enumerate(data["actions"])]
     m += ["", "## 风险、缺口与来源", ""]

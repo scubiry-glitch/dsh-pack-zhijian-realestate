@@ -41,7 +41,7 @@
       ]
     },
     {
-      "id": "定价依据与边界",
+      "id": "三种定价参考依据",
       "required": true,
       "requires": [
         "source",

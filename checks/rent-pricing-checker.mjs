@@ -28,6 +28,10 @@ export function evaluateRentPricing(input) {
       page.includes('id="report-body"') &&
       page.includes('结论先行：三档价格如何用') &&
       page.includes('样本如何约束价格') &&
+      page.includes('三种定价参考依据') &&
+      page.includes('依据一 · 同质可比法') &&
+      page.includes('依据二 · 单位面积租金法') &&
+      page.includes('依据三 · 替代品锚定法') &&
       page.includes('证据入口') &&
       !/[〔〕]/.test(page + md) &&
       !/<(?:script|iframe|img)\b/i.test(page) &&
