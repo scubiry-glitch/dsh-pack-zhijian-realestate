@@ -10,7 +10,7 @@ import re
 
 
 ROOT = Path(__file__).resolve().parent.parent
-SHELL = ROOT / "references/components/rent-pricing-shell-v2.html"
+SHELL = ROOT / "references/components/rent-pricing-shell-v3.html"
 KINDS = {"挂牌", "成交"}
 NATURES = {"观测", "计算", "推断", "建议", "待确认"}
 TIERS = ("listing", "expected", "floor")
@@ -271,60 +271,40 @@ def render(data):
     elif not intro.endswith(("。", "！", "？", "…")):
         intro += "。"
     boundary = data["property"]["unknowns"] or data["property"]["conditions"]
-    h = [f'<header class="cover"><div class="cover-top"><p class="eyebrow">RENT PRICING / 租金决策报告</p>'
-         f'<span class="issue-date">数据基准 · {esc(asof)}</span></div><h1>{esc(title)}</h1>'
-         f'<p class="lede">{esc(intro)}</p><div class="meta"><div><small>分析标的</small><strong>{esc(data["property"]["summary"])}</strong></div>'
-         f'<div><small>估价口径</small><strong>月租金 · 元/月</strong></div>'
-         f'<div><small>样本性质</small><strong>挂牌与成交分开标注</strong></div></div>'
-         + (f'<p class="preflight"><span>决策前提</span>{esc(boundary[0])}</p>' if boundary else '')
-         + '</header>']
-    h.append('<section class="card conclusion"><h2>结论先行：三类价格分别怎么用</h2>'
-             '<p class="section-intro">先分清挂牌参照、成交证据和业主底线，再看各自的证据强度与适用边界。</p>'
-             '<div class="price-grid">')
-    for key in TIERS:
+    h = [f'<section class="card cover"><span class="eyebrow">租金定价报告 · 数据基准 {esc(asof)}</span>'
+         f'<h1>{esc(title)}</h1><p class="cover-summary">{esc(intro)}</p>'
+         f'<div class="meta"><div><span>标的</span><span>{esc(data["property"]["summary"])}</span></div>'
+         f'<div><span>基准日</span><span>{esc(asof)}</span></div>'
+         '<div><span>价格口径</span><span>月租金 · 元/月</span></div>'
+         '<div><span>样本性质</span><span>挂牌与成交分开标注</span></div></div>'
+         + (f'<div class="warnbox"><strong>先说前提：</strong>{esc(boundary[0])}</div>' if boundary else '')
+         + '</section>']
+    h.append('<section class="card conclusion"><h2>一、结论先行（三档定价）</h2>'
+             f'<p class="conclusion-lede">{esc(data["summary"])}</p><div class="tiers">')
+    for key, variant in (("listing", "p3"), ("expected", "primary"), ("floor", "p2")):
         t = data["tiers"][key]
         display = tier_display(t)
-        amount = (f'<span>{esc(display[:-4])}</span><small> 元/月</small>'
-                  if display.endswith(" 元/月") else esc(display))
-        h.append(f'<article class="price price-{key}"><div class="price-top"><span class="label">{esc(t["label"])}</span>'
-                 f'<span class="tag">{esc(t["nature"])}</span></div><strong>{amount}</strong></article>')
+        value = (f'{esc(display[:-4])}<em>元/月</em>' if display.endswith(" 元/月") else esc(display))
+        h.append(f'<article class="tier {variant}"><div class="t">{esc(t["label"])} · {esc(t["nature"])}</div>'
+                 f'<div class="v">{value}</div><div class="u">{esc(t["basis"])}</div><div class="bar"></div></article>')
     h.append('</div><div class="price-explain">')
     for key in TIERS:
         t = data["tiers"][key]
-        h.append(f'<div class="price-reason"><b>{esc(t["label"])} · 定价依据</b><p>{esc(t["basis"])}</p>'
-                 f'<p class="caption">证据来源：{esc(t.get("source", "待确认"))}</p></div>')
-    h.append('</div><p class="caption tier-note">挂牌、成交与业主底线的性质各异；缺少成交或成本证据时，只给推断或待确认。</p></section>')
-    h.append('<section class="card notice"><h2>先确认适用条件</h2>')
+        h.append(f'<div class="price-reason"><b>{esc(t["label"])} · 证据</b>'
+                 f'<span>{esc(t.get("source", "待确认"))}</span></div>')
+    h.append('</div><p class="mini">挂牌、成交与业主底线的性质各异；缺少成交或成本证据时，只给推断或待确认。</p></section>')
+    h.append('<section class="card"><h2>二、适用前提与产品形态</h2><p>核实出租形态后，再使用上述价格。</p>')
     h.append('<ul class="facts">' + "".join(f"<li>{esc(x)}</li>" for x in data["property"]["conditions"]) + "</ul>")
     if data["property"]["unknowns"]:
-        h.append('<p class="empty"><b>待确认：</b>' + "；".join(esc(x) for x in data["property"]["unknowns"]) + "</p>")
-    h.append("</section>")
-    h.append(f'<section class="card"><h2>判断摘要</h2><p>{esc(data["summary"])}</p></section>')
+        h.append('<div class="warnbox"><strong>待确认：</strong>' + "；".join(esc(x) for x in data["property"]["unknowns"]) + "</div>")
     if data.get("cases"):
-        h.append('<section class="card"><h2>不同出租形态分别判断</h2><div class="split">')
-        for row in data["cases"]:
-            h.append(f'<div class="subcard"><h3>{esc(row["title"])}</h3><p>{esc(row["condition"])}</p><p><b>{esc(row["decision"])}</b></p></div>')
-        h.append("</div></section>")
-    legend = "蓝点＝挂牌，绿点＝成交"
-    if data["tiers"]["listing"].get("value") is not None:
-        legend += "，金色虚线＝建议挂牌"
-    h.append('<section class="card"><h2>样本如何约束价格</h2><p class="section-lede">' +
-             esc(data["sampleBoundary"]) + '</p><figure class="figure"><h3>可比样本月租分布</h3>' +
-             chart(data["comparables"], data["tiers"]["listing"].get("value")) +
-             '<figcaption>' + legend +
-             '。仅展示输入文件中经核实的样本；非市场全量。</figcaption></figure></section>')
-    h.append('<section class="card"><h2>可比明细表</h2><p class="caption">逐条列出价格、面积、性质、时间和来源；样本边界见上节。</p>')
-    if data["comparables"]:
-        h.append('<div class="table-wrap"><table class="comparables-table"><thead><tr><th>样本</th><th>月租</th><th>面积</th><th>性质</th><th>时间</th><th>来源</th></tr></thead><tbody>')
-        for row in data["comparables"]:
-            area = f'{fmt(row["area"])}㎡' if row.get("area") is not None else "未核"
-            h.append(f'<tr><td>{esc(row["label"])}</td><td>{esc(fmt(row["price"]))}</td><td>{esc(area)}</td>'
-                     f'<td>{esc(row["identity"])}</td><td>{esc(row["date"])}</td><td>{esc(row["source"])}</td></tr>')
-        h.append("</tbody></table></div>")
-    else:
-        h.append('<p class="empty">暂无经核实的可比明细。</p>')
-    h.append("</section>")
-    h.append('<section class="card"><h2>三种定价参考依据</h2>'
+        h.append('<div class="ab">')
+        for index, row in enumerate(data["cases"]):
+            h.append(f'<div class="case {"a" if index == 0 else "b"}"><h3>{esc(row["title"])}</h3>'
+                     f'<div class="who">{esc(row["condition"])}</div><p><strong>{esc(row["decision"])}</strong></p></div>')
+        h.append('</div>')
+    h.append('</section>')
+    h.append('<section class="card"><h2>三、三种定价参考依据</h2>'
              '<p class="section-intro">同质可比给主估计，单位面积法作交叉验证，替代品只约束边界；同源数据不得算作独立证据。</p><div class="flow">')
     for index, (key, label, role) in enumerate(METHODS, 1):
         row = data["methods"][key]
@@ -335,7 +315,7 @@ def render(data):
                  f'<div class="method-evidence"><p><span>计算过程</span>{esc(row["calculation"])}</p>'
                  f'<p><span>证据入口</span>{esc(row["evidence"])}</p></div></article>')
     h.append("</div></section>")
-    h.append('<section class="card"><h2>计算逻辑明细</h2><p class="caption">每一步列出输入、算式、结果与证据；仅复算已给出数值的决策量。</p>')
+    h.append('<section class="card"><h2>四、计算逻辑明细（可复现）</h2><p class="mini">每一步列出输入、算式、结果与证据；仅复算已给出数值的决策量。</p>')
     if data["calculationSteps"]:
         h.append('<div class="table-wrap"><table class="calculation-table"><thead><tr><th>步骤</th><th>输入</th><th>算式</th><th>结果</th><th>证据</th></tr></thead><tbody>')
         for row in data["calculationSteps"]:
@@ -344,9 +324,27 @@ def render(data):
     else:
         h.append('<p class="empty">承重价格尚未具备可复算输入，暂无计算步骤。</p>')
     h.append('</section>')
+    legend = "蓝点＝挂牌，绿点＝成交"
+    if data["tiers"]["listing"].get("value") is not None:
+        legend += "，金色虚线＝建议挂牌"
+    h.append('<section class="card"><h2>五、可比明细表</h2>'
+             f'<p class="sample-boundary"><strong>样本边界：</strong>{esc(data["sampleBoundary"])}</p>'
+             '<figure class="figure"><h3>可比样本月租分布</h3>' +
+             chart(data["comparables"], data["tiers"]["listing"].get("value")) +
+             '<figcaption>' + legend + '。仅展示输入文件中经核实的样本；非市场全量。</figcaption></figure>')
+    if data["comparables"]:
+        h.append('<div class="table-wrap"><table class="comparables-table"><thead><tr><th>样本</th><th>月租</th><th>面积</th><th>性质</th><th>时间</th><th>来源</th></tr></thead><tbody>')
+        for row in data["comparables"]:
+            area = f'{fmt(row["area"])}㎡' if row.get("area") is not None else "未核"
+            h.append(f'<tr><td>{esc(row["label"])}</td><td>{esc(fmt(row["price"]))}</td><td>{esc(area)}</td>'
+                     f'<td>{esc(row["identity"])}</td><td>{esc(row["date"])}</td><td>{esc(row["source"])}</td></tr>')
+        h.append('</tbody></table></div>')
+    else:
+        h.append('<p class="empty">暂无经核实的可比明细。</p>')
+    h.append('</section>')
     trend = data["communityTrend"]
     period_note = trend_period_note(trend, asof)
-    h.append('<section class="card"><h2>近 12 个月社区租金趋势</h2>'
+    h.append('<section class="card"><h2>六、近 12 个月社区租金趋势</h2>'
              f'<p class="caption">{esc(period_note)}口径：{esc(trend["scope"])}。社区跨户型趋势只用于市场背景，不代替目标房的同质可比定价。</p>'
              '<figure class="figure trend-figure">' + trend_chart(trend) +
              f'<figcaption>{("逐月数值见下表；缺失月份断线，不插值。" if trend["status"] == "available" else "数据缺口：" + esc(trend["source"]))}</figcaption></figure>')
@@ -356,57 +354,57 @@ def render(data):
             h.append(f'<tr><td>{esc(row["month"])}</td><td>{esc(fmt(row["value"])) if row.get("value") is not None else "缺失"}</td></tr>')
         h.append('</tbody></table></div>')
     h.append('</section>')
-    h.append('<section class="card"><h2>挂牌与复核动作</h2><ol class="actions">' +
-             "".join(f"<li>{esc(x)}</li>" for x in data["actions"]) + "</ol></section>")
-    h.append('<section class="card"><h2>风险、缺口与来源</h2><ul class="facts">' +
+    h.append('<section class="card"><h2>七、风险与限制</h2><ul class="risks">' +
              "".join(f"<li>{esc(x)}</li>" for x in data["limitations"]) +
              '</ul><h3>证据入口</h3><ol class="sources">' +
              "".join(f"<li>{esc(x)}</li>" for x in data["sources"]) + "</ol></section>")
+    h.append('<section class="card"><h2>八、行动建议</h2><ol class="actions">' +
+             "".join(f"<li>{esc(x)}</li>" for x in data["actions"]) + "</ol></section>")
     shell = SHELL.read_text(encoding="utf-8")
     require(shell.count("{{TITLE}}") == 1 and shell.count("{{CONTENT}}") == 1,
             "invalid rent pricing shell")
     page = shell.replace("{{TITLE}}", esc(title)).replace("{{CONTENT}}", "\n".join(h))
-    m = [f"# {md(title)}", "", f"基准日：{md(asof)}。{md(data['summary'])}", "",
-         "## 先确认适用条件", "", md(data["property"]["summary"])]
-    m += [f"- {md(x)}" for x in data["property"]["conditions"]]
-    m += [f"- 待确认：{md(x)}" for x in data["property"]["unknowns"]]
-    m += ["", "## 结论先行：三类价格分别怎么用", "",
+    m = [f"# {md(title)}", "", f"基准日：{md(asof)}。", "",
+         "## 一、结论先行（三档定价）", "", md(data["summary"]), "",
           "| 决策量 | 金额 | 性质 | 依据 | 来源 |",
           "|---|---:|---|---|---|"]
     for key in TIERS:
         t = data["tiers"][key]
         m.append(f'| {md(t["label"])} | {md(tier_display(t))} | {md(t["nature"])} | {md(t["basis"])} | {md(t.get("source", "待确认"))} |')
+    m += ["", "## 二、适用前提与产品形态", "", md(data["property"]["summary"])]
+    m += [f"- {md(x)}" for x in data["property"]["conditions"]]
+    m += [f"- 待确认：{md(x)}" for x in data["property"]["unknowns"]]
     if data.get("cases"):
-        m += ["", "## 不同出租形态分别判断", ""]
+        m.append("")
         m += [f'- **{md(x["title"])}**：{md(x["condition"])}；{md(x["decision"])}' for x in data["cases"]]
-    m += ["", "## 样本如何约束价格", "", md(data["sampleBoundary"]), "", "## 可比明细表", "",
+    m += ["", "## 三、三种定价参考依据", "", "同质可比为主估计，单位面积法作交叉验证，替代品只约束边界；同源数据不算独立证据。", ""]
+    for key, label, role in METHODS:
+        row = data["methods"][key]
+        m.append(f'- **{label}｜{role}｜{md(row["status"])}**：{md(row["finding"])}；计算：{md(row["calculation"])}；证据：{md(row["evidence"])}')
+    m += ["", "## 四、计算逻辑明细（可复现）", "", "| 步骤 | 输入 | 算式 | 结果 | 证据 |", "|---|---|---|---|---|"]
+    for row in data["calculationSteps"]:
+        m.append('| ' + ' | '.join(md(row[key]) for key in ("step", "inputs", "formula", "result", "evidence")) + ' |')
+    if not data["calculationSteps"]:
+        m += ["", "承重价格尚未具备可复算输入，暂无计算步骤。"]
+    m += ["", "## 五、可比明细表", "", f'样本边界：{md(data["sampleBoundary"])}', "",
           "| 样本 | 月租（元/月） | 面积 | 性质 | 日期 | 来源 |",
           "|---|---:|---:|---|---|---|"]
     for row in data["comparables"]:
         m.append(f'| {md(row["label"])} | {fmt(row["price"])} | {fmt(row["area"]) if row.get("area") is not None else "未核"} | {md(row["identity"])} | {md(row["date"])} | {md(row["source"])} |')
     if not data["comparables"]:
         m += ["", "暂无经核实的可比明细。"]
-    m += ["", "## 三种定价参考依据", "", "同质可比为主估计，单位面积法作交叉验证，替代品只约束边界；同源数据不算独立证据。", ""]
-    for key, label, role in METHODS:
-        row = data["methods"][key]
-        m.append(f'- **{label}｜{role}｜{md(row["status"])}**：{md(row["finding"])}；计算：{md(row["calculation"])}；证据：{md(row["evidence"])}')
-    m += ["", "## 计算逻辑明细", "", "| 步骤 | 输入 | 算式 | 结果 | 证据 |", "|---|---|---|---|---|"]
-    for row in data["calculationSteps"]:
-        m.append('| ' + ' | '.join(md(row[key]) for key in ("step", "inputs", "formula", "result", "evidence")) + ' |')
-    if not data["calculationSteps"]:
-        m += ["", "承重价格尚未具备可复算输入，暂无计算步骤。"]
-    m += ["", "## 近 12 个月社区租金趋势", "",
+    m += ["", "## 六、近 12 个月社区租金趋势", "",
           f'{md(period_note)}口径：{md(trend["scope"])}；来源：{md(trend["source"])}。社区跨户型趋势只用于市场背景，不代替目标房的同质可比定价。', ""]
     if trend["status"] == "available":
         m += ["| 月份 | 社区月租（元/月） |", "|---|---:|"]
         m += [f'| {row["month"]} | {fmt(row["value"]) if row.get("value") is not None else "缺失"} |' for row in trend["months"]]
     else:
         m.append("本轮未取得可核的近 12 个月社区租金序列；不绘制趋势图。")
-    m += ["", "## 挂牌与复核动作", ""]
-    m += [f'{i+1}. {md(x)}' for i, x in enumerate(data["actions"])]
-    m += ["", "## 风险、缺口与来源", ""]
+    m += ["", "## 七、风险与限制", ""]
     m += [f'- {md(x)}' for x in data["limitations"]]
     m += ["", "来源："] + [f'- {md(x)}' for x in data["sources"]]
+    m += ["", "## 八、行动建议", ""]
+    m += [f'{i+1}. {md(x)}' for i, x in enumerate(data["actions"])]
     return "\n".join(m) + "\n", page
 
 
@@ -441,7 +439,7 @@ def main():
         browser.close()
     pdf_bytes = args.pdf.read_bytes()
     ledger = {
-        "template": "rent-pricing-shell-v2",
+        "template": "rent-pricing-shell-v3",
         "dataSha256": digest(raw),
         "mdSha256": digest(md_bytes),
         "htmlSha256": digest(html_bytes),

@@ -1,12 +1,12 @@
 {
   "id": "zhijian-rent-pricing",
   "name": "zhijian-rent-pricing",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "schemaVersion": 2,
   "source": {
     "kind": "workspace",
     "root": "skills/zhijian-rent-pricing",
-    "digest": "63fc44809b41f5f12048df9add744ff219bde7ebedb27845dea140d17270ccd1"
+    "digest": "ff3aff41ffc978d607f8622ad6b609c8c67a955347acdebb3fc5a349a9605bd1"
   },
   "contributions": {},
   "permissions": {

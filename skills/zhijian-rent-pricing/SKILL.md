@@ -23,6 +23,6 @@ description: 为具体出租标的生成可复核的月租定价报告；同源�
 
 ## 固定模板渲染
 
-从已审数据运行本包 scripts/render-rent-pricing.py，生成同源 Markdown、HTML、PDF 和 craft-evidence.json。HTML 用 [页面骨架 v2](../../references/components/rent-pricing-shell-v2.html)，样本图和 12 个月趋势图由数据自动绘制；无数据显示缺口。PDF 由脚本从该 HTML 生成，不带浏览器路径页眉页脚。禁止改用通用 Markdown 转 HTML、复制旧报告数字或把图稿规格文字当成成图。核对单标题、价格卡、可比明细、计算明细、趋势、来源、手机与 A4；机器只查模板绑定和基本版式，业务数字仍由独立评审判断。
+从已审数据运行本包 scripts/render-rent-pricing.py，生成同源 Markdown、HTML、PDF 和 craft-evidence.json。HTML 用 [页面骨架 v3](../../references/components/rent-pricing-shell-v3.html)，沿用海兴雅苑原报告的蓝灰卡片、衬线标题、三档卡和金色边界提示。正文固定为结论先行→适用前提与产品形态→三种依据→计算逻辑→可比明细→社区 12 个月趋势→风险与限制→行动建议；样本边界、分布图与逐条明细置于同章。样本图和趋势图由数据自动绘制；无数据显示缺口。PDF 由脚本从该 HTML 生成，不带浏览器路径页眉页脚。禁止改用通用 Markdown 转 HTML、复制旧报告数字或把图稿规格文字当成成图。核对单标题、价格卡、可比明细、计算明细、趋势、来源、手机与 A4；机器只查模板绑定和基本版式，业务数字仍由独立评审判断。
 
 历史报告的形成过程见 [原始会话复盘](../../references/rent-pricing-process-review-v1.md)，只继承“结论先行、适用条件、明细可查、图说明决策”的方法，不继承样本与价格。

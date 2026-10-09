@@ -15,6 +15,19 @@ EXAMPLE = json.loads((ROOT / "references/rent-pricing-data-v2.example.json").rea
 
 
 class RentPricingTemplateTest(unittest.TestCase):
+    def test_report_follows_original_eight_chapter_reading_order(self):
+        _, page = MODULE.render(copy.deepcopy(EXAMPLE))
+        chapters = (
+            "一、结论先行（三档定价）", "二、适用前提与产品形态",
+            "三、三种定价参考依据", "四、计算逻辑明细（可复现）",
+            "五、可比明细表", "六、近 12 个月社区租金趋势",
+            "七、风险与限制", "八、行动建议",
+        )
+        positions = [page.index(f"<h2>{chapter}</h2>") for chapter in chapters]
+        self.assertEqual(positions, sorted(positions))
+        self.assertEqual(page.count("<h2>"), 8)
+        self.assertLess(page.index("样本边界："), page.index("可比样本月租分布"))
+
     def test_empty_evidence_stays_unpriced(self):
         data = copy.deepcopy(EXAMPLE)
         MODULE.validate(data)

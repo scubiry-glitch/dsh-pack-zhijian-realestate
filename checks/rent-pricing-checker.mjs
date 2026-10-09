@@ -20,18 +20,18 @@ export function evaluateRentPricing(input) {
     const ledgerBytes = role(input.artifacts, 'evidence', 256 * 1024)
     const md = mdBytes.toString('utf8'), page = htmlBytes.toString('utf8')
     const ledger = JSON.parse(ledgerBytes.toString('utf8'))
-    const bound = ledger.template === 'rent-pricing-shell-v2' &&
+    const bound = ledger.template === 'rent-pricing-shell-v3' &&
       ledger.mdSha256 === hash(mdBytes) && ledger.htmlSha256 === hash(htmlBytes) &&
       ledger.pdfSha256 === hash(pdfBytes) &&
       /^[a-f0-9]{64}$/.test(ledger.dataSha256)
+    const sections = ['一、结论先行（三档定价）', '二、适用前提与产品形态',
+      '三、三种定价参考依据', '四、计算逻辑明细（可复现）',
+      '五、可比明细表', '六、近 12 个月社区租金趋势',
+      '七、风险与限制', '八、行动建议']
+    const order = sections.map(section => page.indexOf('<h2>' + section + '</h2>'))
     const structure = (page.match(/<h1\b/g) ?? []).length === 1 &&
       page.includes('id="report-body"') &&
-      page.includes('结论先行：三档价格如何用') &&
-      page.includes('样本如何约束价格') &&
-      page.includes('可比明细表') &&
-      page.includes('三种定价参考依据') &&
-      page.includes('计算逻辑明细') &&
-      page.includes('近 12 个月社区租金趋势') &&
+      order.every((position, index) => position >= 0 && (index === 0 || position > order[index - 1])) &&
       page.includes('依据一 · 同质可比法') &&
       page.includes('依据二 · 单位面积租金法') &&
       page.includes('依据三 · 替代品锚定法') &&

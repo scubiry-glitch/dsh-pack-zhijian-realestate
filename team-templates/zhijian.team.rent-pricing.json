@@ -116,7 +116,7 @@
       "outputSchema": "zhijian.output.rent-pricing",
       "retryPolicy": "quality-repair",
       "subject": "固定模板生成并核对 HTML/PDF",
-      "description": "从已审 t2-pricing-data.json 运行 scripts/render-rent-pricing.py，生成同源 Markdown、HTML、craft-evidence.json 和可选文字的 PDF。必须使用 rent-pricing-shell-v2，不得改走通用 Markdown 转 HTML。核对单个 H1、三档卡、可比明细、逐步计算、真实社区 12 个月图或缺口、来源、手机和 A4；按数据哈希核对 MD/HTML/PDF。渲染中的事实变更回到 t2 重审，不为格式问题另开新节点。"
+      "description": "从已审 t2-pricing-data.json 运行 scripts/render-rent-pricing.py，生成同源 Markdown、HTML、craft-evidence.json 和可选文字的 PDF。必须使用 rent-pricing-shell-v3，不得改走通用 Markdown 转 HTML。核对单个 H1、三档卡、可比明细、逐步计算、真实社区 12 个月图或缺口、来源、手机和 A4；按数据哈希核对 MD/HTML/PDF。渲染中的事实变更回到 t2 重审，不为格式问题另开新节点。"
     }
   ],
   "gates": [],

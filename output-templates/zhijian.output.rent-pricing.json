@@ -1,6 +1,6 @@
 {
   "id": "zhijian.output.rent-pricing",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "schemaVersion": 2,
   "media": [
     "markdown",
@@ -9,7 +9,7 @@
   ],
   "sections": [
     {
-      "id": "先确认适用条件",
+      "id": "结论先行（三档定价）",
       "required": true,
       "requires": [
         "source",
@@ -17,33 +17,12 @@
       ]
     },
     {
-      "id": "结论先行：三档价格如何用",
+      "id": "适用前提与产品形态",
       "required": true,
       "requires": [
         "source",
         "caliber"
       ]
-    },
-    {
-      "id": "不同出租形态分别判断",
-      "required": false,
-      "requires": [
-        "source",
-        "caliber"
-      ]
-    },
-    {
-      "id": "样本如何约束价格",
-      "required": true,
-      "requires": [
-        "source",
-        "caliber"
-      ]
-    },
-    {
-      "id": "可比明细表",
-      "required": true,
-      "requires": ["source", "caliber"]
     },
     {
       "id": "三种定价参考依据",
@@ -54,17 +33,7 @@
       ]
     },
     {
-      "id": "计算逻辑明细",
-      "required": true,
-      "requires": ["source", "caliber"]
-    },
-    {
-      "id": "近 12 个月社区租金趋势",
-      "required": true,
-      "requires": ["source", "caliber"]
-    },
-    {
-      "id": "挂牌与复核动作",
+      "id": "计算逻辑明细（可复现）",
       "required": true,
       "requires": [
         "source",
@@ -72,7 +41,31 @@
       ]
     },
     {
-      "id": "风险、缺口与来源",
+      "id": "可比明细表",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "近 12 个月社区租金趋势",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "风险与限制",
+      "required": true,
+      "requires": [
+        "source",
+        "caliber"
+      ]
+    },
+    {
+      "id": "行动建议",
       "required": true,
       "requires": [
         "source",
