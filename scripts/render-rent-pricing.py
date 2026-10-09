@@ -189,7 +189,8 @@ def chart(rows, listing):
     lo = max(0, lo - pad)
     hi += pad
     width, left, right = 810, 220, 730
-    height = 78 + 34 * len(rows)
+    row_height = 26
+    height = 78 + row_height * len(rows)
     x = lambda value: left + (value - lo) / (hi - lo) * (right - left)
     parts = [f'<svg viewBox="0 0 {width} {height}" role="img" aria-label="可比样本月租价格分布">'
              '<title>可比样本月租价格分布，挂牌与成交分色，建议价为虚线</title>']
@@ -202,7 +203,7 @@ def chart(rows, listing):
         px = x(listing)
         parts.append(f'<line x1="{px:.1f}" y1="33" x2="{px:.1f}" y2="{height-24}" stroke="#aa7926" stroke-width="2" stroke-dasharray="5 4"/>')
     for i, row in enumerate(rows):
-        y = 57 + i * 34
+        y = 57 + i * row_height
         px = x(row["price"])
         color = "#245bd1" if row["identity"] == "挂牌" else "#178b75"
         label = row["label"][:18] + ("…" if len(row["label"]) > 18 else "")
@@ -252,21 +253,41 @@ def trend_chart(trend):
 def render(data):
     title = data["title"]
     asof = data["asOfDate"]
-    h = [f'<header class="cover"><p class="eyebrow">具体标的 · 月租金决策</p><h1>{esc(title)}</h1>'
-         f'<p class="lede">{esc(data["summary"])}</p><div class="meta"><span>基准日：{esc(asof)}</span>'
-         f'<span>标的：{esc(data["property"]["summary"])}</span><span>金额单位：元/月</span></div></header>']
+    intro = data["summary"].split("。", 1)[0].strip()
+    if len(intro) > 120:
+        intro = intro[:120].rstrip("，；、 ") + "…"
+    elif not intro.endswith(("。", "！", "？", "…")):
+        intro += "。"
+    boundary = data["property"]["unknowns"] or data["property"]["conditions"]
+    h = [f'<header class="cover"><div class="cover-top"><p class="eyebrow">RENT PRICING / 租金决策报告</p>'
+         f'<span class="issue-date">数据基准 · {esc(asof)}</span></div><h1>{esc(title)}</h1>'
+         f'<p class="lede">{esc(intro)}</p><div class="meta"><div><small>分析标的</small><strong>{esc(data["property"]["summary"])}</strong></div>'
+         f'<div><small>估价口径</small><strong>月租金 · 元/月</strong></div>'
+         f'<div><small>样本性质</small><strong>挂牌与成交分开标注</strong></div></div>'
+         + (f'<p class="preflight"><span>决策前提</span>{esc(boundary[0])}</p>' if boundary else '')
+         + '</header>']
+    h.append('<section class="card conclusion"><h2>结论先行：三类价格分别怎么用</h2>'
+             '<p class="section-intro">先分清挂牌参照、成交证据和业主底线，再看各自的证据强度与适用边界。</p>'
+             '<div class="price-grid">')
+    for key in TIERS:
+        t = data["tiers"][key]
+        display = tier_display(t)
+        amount = (f'<span>{esc(display[:-4])}</span><small> 元/月</small>'
+                  if display.endswith(" 元/月") else esc(display))
+        h.append(f'<article class="price price-{key}"><div class="price-top"><span class="label">{esc(t["label"])}</span>'
+                 f'<span class="tag">{esc(t["nature"])}</span></div><strong>{amount}</strong></article>')
+    h.append('</div><div class="price-explain">')
+    for key in TIERS:
+        t = data["tiers"][key]
+        h.append(f'<div class="price-reason"><b>{esc(t["label"])} · 定价依据</b><p>{esc(t["basis"])}</p>'
+                 f'<p class="caption">证据来源：{esc(t.get("source", "待确认"))}</p></div>')
+    h.append('</div><p class="caption tier-note">挂牌、成交与业主底线的性质各异；缺少成交或成本证据时，只给推断或待确认。</p></section>')
     h.append('<section class="card notice"><h2>先确认适用条件</h2>')
     h.append('<ul class="facts">' + "".join(f"<li>{esc(x)}</li>" for x in data["property"]["conditions"]) + "</ul>")
     if data["property"]["unknowns"]:
         h.append('<p class="empty"><b>待确认：</b>' + "；".join(esc(x) for x in data["property"]["unknowns"]) + "</p>")
     h.append("</section>")
-    h.append('<section class="card"><h2>结论先行：三档价格如何用</h2><div class="price-grid">')
-    for key in TIERS:
-        t = data["tiers"][key]
-        h.append(f'<article class="price"><span class="label">{esc(t["label"])}</span>'
-                 f'<strong>{esc(tier_display(t))}</strong><span class="tag">{esc(t["nature"])}</span>'
-                 f'<p>{esc(t["basis"])}</p><p class="caption">依据：{esc(t.get("source", "待确认"))}</p></article>')
-    h.append('</div><p class="caption">挂牌、成交与业主底线的性质各异；缺少成交或成本证据时，只给推断或待确认。</p></section>')
+    h.append(f'<section class="card"><h2>判断摘要</h2><p>{esc(data["summary"])}</p></section>')
     if data.get("cases"):
         h.append('<section class="card"><h2>不同出租形态分别判断</h2><div class="split">')
         for row in data["cases"]:
@@ -282,7 +303,7 @@ def render(data):
              '。仅展示输入文件中经核实的样本；非市场全量。</figcaption></figure></section>')
     h.append('<section class="card"><h2>可比明细表</h2><p class="caption">逐条列出价格、面积、性质、时间和来源；样本边界见上节。</p>')
     if data["comparables"]:
-        h.append('<div class="table-wrap"><table><thead><tr><th>样本</th><th>月租</th><th>面积</th><th>性质</th><th>时间</th><th>来源</th></tr></thead><tbody>')
+        h.append('<div class="table-wrap"><table class="comparables-table"><thead><tr><th>样本</th><th>月租</th><th>面积</th><th>性质</th><th>时间</th><th>来源</th></tr></thead><tbody>')
         for row in data["comparables"]:
             area = f'{fmt(row["area"])}㎡' if row.get("area") is not None else "未核"
             h.append(f'<tr><td>{esc(row["label"])}</td><td>{esc(fmt(row["price"]))}</td><td>{esc(area)}</td>'
@@ -292,16 +313,19 @@ def render(data):
         h.append('<p class="empty">暂无经核实的可比明细。</p>')
     h.append("</section>")
     h.append('<section class="card"><h2>三种定价参考依据</h2>'
-             '<p class="caption">同质可比给主估计，单位面积法作交叉验证，替代品只约束边界；同源数据不得算作独立证据。</p><div class="flow">')
-    for key, label, role in METHODS:
+             '<p class="section-intro">同质可比给主估计，单位面积法作交叉验证，替代品只约束边界；同源数据不得算作独立证据。</p><div class="flow">')
+    for index, (key, label, role) in enumerate(METHODS, 1):
         row = data["methods"][key]
-        h.append(f'<div><b>{esc(label)}</b><span class="tag">{esc(role)} · {esc(row["status"])}</span>'
-                 f'<p>{esc(row["finding"])}</p><p class="caption">计算：{esc(row["calculation"])}</p>'
-                 f'<p class="caption">证据：{esc(row["evidence"])}</p></div>')
+        h.append(f'<article class="method"><div class="method-head"><span class="method-index">0{index}</span>'
+                 f'<div><b>{esc(label)}</b><span class="method-role">{esc(role)}</span></div>'
+                 f'<span class="tag">{esc(row["status"])}</span></div>'
+                 f'<p class="method-finding">{esc(row["finding"])}</p>'
+                 f'<div class="method-evidence"><p><span>计算过程</span>{esc(row["calculation"])}</p>'
+                 f'<p><span>证据入口</span>{esc(row["evidence"])}</p></div></article>')
     h.append("</div></section>")
     h.append('<section class="card"><h2>计算逻辑明细</h2><p class="caption">每一步列出输入、算式、结果与证据；仅复算已给出数值的决策量。</p>')
     if data["calculationSteps"]:
-        h.append('<div class="table-wrap"><table><thead><tr><th>步骤</th><th>输入</th><th>算式</th><th>结果</th><th>证据</th></tr></thead><tbody>')
+        h.append('<div class="table-wrap"><table class="calculation-table"><thead><tr><th>步骤</th><th>输入</th><th>算式</th><th>结果</th><th>证据</th></tr></thead><tbody>')
         for row in data["calculationSteps"]:
             h.append('<tr>' + ''.join(f'<td>{esc(row[key])}</td>' for key in ("step", "inputs", "formula", "result", "evidence")) + '</tr>')
         h.append('</tbody></table></div>')
@@ -310,9 +334,9 @@ def render(data):
     h.append('</section>')
     trend = data["communityTrend"]
     h.append('<section class="card"><h2>近 12 个月社区租金趋势</h2>'
-             f'<p class="caption">口径：{esc(trend["scope"])}；来源：{esc(trend["source"])}。社区跨户型趋势只用于市场背景，不代替目标房的同质可比定价。</p>'
-             '<figure class="figure">' + trend_chart(trend) +
-             '<figcaption>逐月数值见下表；缺失月份断线，不插值。</figcaption></figure>')
+             f'<p class="caption">口径：{esc(trend["scope"])}。社区跨户型趋势只用于市场背景，不代替目标房的同质可比定价。</p>'
+             '<figure class="figure trend-figure">' + trend_chart(trend) +
+             f'<figcaption>{("逐月数值见下表；缺失月份断线，不插值。" if trend["status"] == "available" else "数据缺口：" + esc(trend["source"]))}</figcaption></figure>')
     if trend["status"] == "available":
         h.append('<div class="table-wrap"><table><thead><tr><th>月份</th><th>社区月租（元/月）</th></tr></thead><tbody>')
         for row in trend["months"]:
@@ -333,7 +357,7 @@ def render(data):
          "## 先确认适用条件", "", md(data["property"]["summary"])]
     m += [f"- {md(x)}" for x in data["property"]["conditions"]]
     m += [f"- 待确认：{md(x)}" for x in data["property"]["unknowns"]]
-    m += ["", "## 结论先行：三档价格如何用", "",
+    m += ["", "## 结论先行：三类价格分别怎么用", "",
           "| 决策量 | 金额 | 性质 | 依据 | 来源 |",
           "|---|---:|---|---|---|"]
     for key in TIERS:

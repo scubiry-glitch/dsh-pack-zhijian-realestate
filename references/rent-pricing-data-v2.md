@@ -8,6 +8,8 @@
 2. 定价：填写本模板数据，计算挂牌建议、目标成交推断、业主底线。每个数字标性质、条件、来源。Host 的独立评审复算承重数字；有阻断项在这个任务的下一 attempt 修改。
 3. 渲染：由脚本从同一 JSON 生成 MD/HTML/PDF 和账本；核对手机与 A4。脚本、模板和轻量机器检查承担版式工作。
 
+取证时若总召回大于 TopK，不能直接把展示样本当全量。检查回执的实际命中条件；按服务端确实命中的价格段覆盖全域、继续细分被截断段，按房源 ID 去重后与同口径总召回核对。查询词中的户型、业务类型、面积条件未命中时，用返回字段逐行筛选并记录剔除原因；取不齐则在 `sampleBoundary` 标截断，仅报可见样本。不同时间的分段并集保留时点边界，不写成单一静态快照。
+
 ## JSON 字段
 
 | 字段 | 类型 | 规则 |
@@ -18,7 +20,7 @@
 | tiers.listing / expected / floor | 对象 | 每档含 label、nature、basis；金额为 value 或 range；无证据写 null 且 nature=待确认 |
 | tiers.*.source | 字符串 | 有数值时必填证据入口或明确的计算回执 |
 | comparables | 对象数组 | 每行 label、price、identity（挂牌/成交）、date、source，area 可为空；仅输入真实可比样本 |
-| sampleBoundary | 字符串 | 地域、产品、TopK、有效 n、去重和召回边界；不称市场全量 |
+| sampleBoundary | 字符串 | 地域、产品、实际命中条件、TopK、总召回、价格分段及端点、去重键、剔除原因和有效 n；仅在分段并集覆盖总召回且逐行筛选可核时称取齐 |
 | methods.comparable / unitArea / substitute | 三个必填对象 | 固定为同质可比主估计、单位面积交叉验证、替代品边界校验；每项有 status、finding、calculation、evidence |
 | calculationSteps | 对象数组 | 有任何三档数值时必填至少一步；逐步列出 step、inputs、formula、result、evidence，供复算，不以方法摘要代替 |
 | communityTrend | 对象 | status 为 available/unavailable；scope 明确社区统计口径，source 写来源或缺口；available 时 months 为连续 12 个 YYYY-MM 与月租 value（缺失可为 null），末月为基准日当月或上月，至少两个观测点；unavailable 时 months 为空 |
