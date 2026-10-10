@@ -1,0 +1,473 @@
+{
+  "schemaVersion": 3,
+  "status": "reviewed",
+  "report": {
+    "title": "海兴雅苑原报告 A 案｜版式与算式对照",
+    "asOfDate": "2026-09-17",
+    "oneSentenceConclusion": "本页仅重放原报告 A 案的历史数字，用于验证价格横轴与四项趋势计算；A 案以独立成套一居室整租成立为条件，不构成新估价。"
+  },
+  "subject": {
+    "city": "杭州",
+    "district": "余杭",
+    "businessCircle": "未来科技城",
+    "community": "海兴雅苑",
+    "areaSqm": 35,
+    "areaBasis": "原报告标称面积",
+    "layout": "一居室",
+    "rentalMode": "整租",
+    "verifiedFacts": [
+      "原报告 A 案假设独立成套"
+    ],
+    "unknowns": [
+      "原报告未核实本小区实际独立成套一居室；执行前须核具体房源与业主确认价"
+    ]
+  },
+  "productCases": [
+    {
+      "id": "A",
+      "label": "A 案｜独立成套一居室整租",
+      "condition": "具体房源须确认为独立成套、35㎡整租",
+      "evidenceIds": [],
+      "comparablePoolIds": [],
+      "applicable": null,
+      "listing": {
+        "value": 2600,
+        "range": [
+          2550,
+          2700
+        ],
+        "nature": "原报告历史建议/推断",
+        "basisStepIds": [
+          "S13"
+        ],
+        "evidenceIds": [
+          "SRC-ORIGINAL"
+        ],
+        "conditions": [
+          "仅用于原报告 A 案版式对照"
+        ]
+      },
+      "expected": {
+        "value": 2500,
+        "range": [
+          2450,
+          2550
+        ],
+        "nature": "原报告历史建议/推断",
+        "basisStepIds": [
+          "S14"
+        ],
+        "evidenceIds": [
+          "SRC-ORIGINAL"
+        ],
+        "conditions": [
+          "仅用于原报告 A 案版式对照"
+        ]
+      },
+      "modeledConcessionBoundary": {
+        "value": 2300,
+        "range": null,
+        "nature": "原报告历史测算",
+        "basisStepIds": [
+          "S15"
+        ],
+        "evidenceIds": [
+          "SRC-ORIGINAL"
+        ],
+        "conditions": [
+          "仅用于原报告 A 案版式对照"
+        ]
+      },
+      "ownerConfirmedMinimum": {
+        "value": null,
+        "confirmedAt": null,
+        "evidenceId": null
+      }
+    }
+  ],
+  "methods": {
+    "homogeneousComparables": {
+      "status": "原报告转录",
+      "role": "主估计",
+      "range": [
+        1838,
+        2700
+      ],
+      "finding": "原报告依据一"
+    },
+    "unitArea": {
+      "status": "原报告转录",
+      "role": "同源算术校验",
+      "range": [
+        2258,
+        2555
+      ],
+      "finding": "原报告依据二"
+    },
+    "substitutes": {
+      "status": "原报告转录",
+      "role": "边界检验",
+      "range": [
+        2079,
+        2500
+      ],
+      "finding": "原报告依据三"
+    }
+  },
+  "convergence": {
+    "rule": "原报告三依据公共交集",
+    "resultRange": [
+      2258,
+      2500
+    ],
+    "conflictResolution": "该复刻仅沿用原报告 S12 结果；不重新评估市场"
+  },
+  "queryAudit": [],
+  "comparablePools": [],
+  "comparables": [],
+  "calculationSteps": [
+    {
+      "id": "S12",
+      "caseId": "A",
+      "inputs": [
+        "原报告三依据区间"
+      ],
+      "formula": "公共交集 = [2,258,2,500] 元/月",
+      "result": "[2,258,2,500] 元/月",
+      "nature": "原报告转录",
+      "evidenceIds": [
+        "SRC-ORIGINAL"
+      ]
+    },
+    {
+      "id": "S13",
+      "caseId": "A",
+      "inputs": [
+        "S12 上沿 2,500",
+        "议价空间 100"
+      ],
+      "formula": "2,500+100=2,600 元/月；建议区间 2,550–2,700",
+      "result": "2,600 元/月",
+      "nature": "原报告转录",
+      "evidenceIds": [
+        "SRC-ORIGINAL"
+      ]
+    },
+    {
+      "id": "S14",
+      "caseId": "A",
+      "inputs": [
+        "S12 上沿 2,500"
+      ],
+      "formula": "成交中枢 2,500；带宽 2,450–2,550 元/月",
+      "result": "2,450–2,550 元/月",
+      "nature": "原报告转录",
+      "evidenceIds": [
+        "SRC-ORIGINAL"
+      ]
+    },
+    {
+      "id": "S15",
+      "caseId": "A",
+      "inputs": [
+        "S12 下沿 2,258"
+      ],
+      "formula": "2,258 四舍五入到百元=2,300，仍在交集内",
+      "result": "2,300 元/月",
+      "nature": "原报告市场测算，非业主确认",
+      "evidenceIds": [
+        "SRC-ORIGINAL"
+      ]
+    }
+  ],
+  "trend": {
+    "status": "available",
+    "selectedLevel": "community",
+    "selectedName": "海兴雅苑",
+    "geoId": "330100-D2-B0-C49",
+    "indicatorKey": "rentIdx",
+    "indicatorMeaning": "跨户型社区租金指标",
+    "unit": "接口原值，具体统计单位未明",
+    "populationScope": "跨户型社区",
+    "source": "haixing-community-bundle.json",
+    "observationStart": "2025-08",
+    "observationEnd": "2026-07",
+    "lagMonths": 2,
+    "fallbackAttempts": [
+      {
+        "level": "community",
+        "name": "海兴雅苑",
+        "geoId": "330100-D2-B0-C49",
+        "indicatorKey": "rentIdx",
+        "queriedAt": "2026-10-10",
+        "status": "selected",
+        "reason": "取得连续31期原始值",
+        "receiptPath": "haixing-community-bundle.json"
+      }
+    ],
+    "historyMonths": [
+      {
+        "month": "2024-01",
+        "value": 5575,
+        "sourceRow": "rentIdx/2024-01"
+      },
+      {
+        "month": "2024-02",
+        "value": 5688,
+        "sourceRow": "rentIdx/2024-02"
+      },
+      {
+        "month": "2024-03",
+        "value": 5558,
+        "sourceRow": "rentIdx/2024-03"
+      },
+      {
+        "month": "2024-04",
+        "value": 5081,
+        "sourceRow": "rentIdx/2024-04"
+      },
+      {
+        "month": "2024-05",
+        "value": 5070,
+        "sourceRow": "rentIdx/2024-05"
+      },
+      {
+        "month": "2024-06",
+        "value": 5063,
+        "sourceRow": "rentIdx/2024-06"
+      },
+      {
+        "month": "2024-07",
+        "value": 5006,
+        "sourceRow": "rentIdx/2024-07"
+      },
+      {
+        "month": "2024-08",
+        "value": 4931,
+        "sourceRow": "rentIdx/2024-08"
+      },
+      {
+        "month": "2024-09",
+        "value": 4790,
+        "sourceRow": "rentIdx/2024-09"
+      },
+      {
+        "month": "2024-10",
+        "value": 5023,
+        "sourceRow": "rentIdx/2024-10"
+      },
+      {
+        "month": "2024-11",
+        "value": 5027,
+        "sourceRow": "rentIdx/2024-11"
+      },
+      {
+        "month": "2024-12",
+        "value": 5031,
+        "sourceRow": "rentIdx/2024-12"
+      },
+      {
+        "month": "2025-01",
+        "value": 5100,
+        "sourceRow": "rentIdx/2025-01"
+      },
+      {
+        "month": "2025-02",
+        "value": 5150,
+        "sourceRow": "rentIdx/2025-02"
+      },
+      {
+        "month": "2025-03",
+        "value": 4965,
+        "sourceRow": "rentIdx/2025-03"
+      },
+      {
+        "month": "2025-04",
+        "value": 4679,
+        "sourceRow": "rentIdx/2025-04"
+      },
+      {
+        "month": "2025-05",
+        "value": 4394,
+        "sourceRow": "rentIdx/2025-05"
+      },
+      {
+        "month": "2025-06",
+        "value": 4058,
+        "sourceRow": "rentIdx/2025-06"
+      },
+      {
+        "month": "2025-07",
+        "value": 4058,
+        "sourceRow": "rentIdx/2025-07"
+      },
+      {
+        "month": "2025-08",
+        "value": 3950,
+        "sourceRow": "rentIdx/2025-08"
+      },
+      {
+        "month": "2025-09",
+        "value": 4285,
+        "sourceRow": "rentIdx/2025-09"
+      },
+      {
+        "month": "2025-10",
+        "value": 4629,
+        "sourceRow": "rentIdx/2025-10"
+      },
+      {
+        "month": "2025-11",
+        "value": 4973,
+        "sourceRow": "rentIdx/2025-11"
+      },
+      {
+        "month": "2025-12",
+        "value": 5367,
+        "sourceRow": "rentIdx/2025-12"
+      },
+      {
+        "month": "2026-01",
+        "value": 5325,
+        "sourceRow": "rentIdx/2026-01"
+      },
+      {
+        "month": "2026-02",
+        "value": 5327,
+        "sourceRow": "rentIdx/2026-02"
+      },
+      {
+        "month": "2026-03",
+        "value": 5185,
+        "sourceRow": "rentIdx/2026-03"
+      },
+      {
+        "month": "2026-04",
+        "value": 5035,
+        "sourceRow": "rentIdx/2026-04"
+      },
+      {
+        "month": "2026-05",
+        "value": 4827,
+        "sourceRow": "rentIdx/2026-05"
+      },
+      {
+        "month": "2026-06",
+        "value": 4802,
+        "sourceRow": "rentIdx/2026-06"
+      },
+      {
+        "month": "2026-07",
+        "value": 4763,
+        "sourceRow": "rentIdx/2026-07"
+      }
+    ],
+    "months": [
+      {
+        "month": "2025-08",
+        "value": 3950,
+        "sourceRow": "rentIdx/2025-08"
+      },
+      {
+        "month": "2025-09",
+        "value": 4285,
+        "sourceRow": "rentIdx/2025-09"
+      },
+      {
+        "month": "2025-10",
+        "value": 4629,
+        "sourceRow": "rentIdx/2025-10"
+      },
+      {
+        "month": "2025-11",
+        "value": 4973,
+        "sourceRow": "rentIdx/2025-11"
+      },
+      {
+        "month": "2025-12",
+        "value": 5367,
+        "sourceRow": "rentIdx/2025-12"
+      },
+      {
+        "month": "2026-01",
+        "value": 5325,
+        "sourceRow": "rentIdx/2026-01"
+      },
+      {
+        "month": "2026-02",
+        "value": 5327,
+        "sourceRow": "rentIdx/2026-02"
+      },
+      {
+        "month": "2026-03",
+        "value": 5185,
+        "sourceRow": "rentIdx/2026-03"
+      },
+      {
+        "month": "2026-04",
+        "value": 5035,
+        "sourceRow": "rentIdx/2026-04"
+      },
+      {
+        "month": "2026-05",
+        "value": 4827,
+        "sourceRow": "rentIdx/2026-05"
+      },
+      {
+        "month": "2026-06",
+        "value": 4802,
+        "sourceRow": "rentIdx/2026-06"
+      },
+      {
+        "month": "2026-07",
+        "value": 4763,
+        "sourceRow": "rentIdx/2026-07"
+      }
+    ],
+    "comparabilityWarning": "跨户型 rentIdx 原值，不直接用于 A 案 35㎡月租点价；原报告曾标元/月，接口未独立说明单位",
+    "timeDecision": "历史原报告 A 案的趋势视觉重放，非本次新估价"
+  },
+  "vacancyEconomics": {
+    "scenarios": []
+  },
+  "repricingSchedule": [],
+  "listingWindows": [],
+  "leaseTerms": [],
+  "risks": [
+    {
+      "risk": "原报告 A 案标的形态待核",
+      "impact": "本页仅作历史数字视觉对照，不能直接挂牌"
+    }
+  ],
+  "missingEvidenceActions": [
+    {
+      "missing": "业主确认最低价",
+      "action": "正式出价前须向业主确认"
+    }
+  ],
+  "sources": [
+    {
+      "id": "SRC-ORIGINAL",
+      "channel": "海兴雅苑原报告",
+      "observedAt": "2026-09-17",
+      "pathOrUrl": "https://yy.meizu.life/render/haixing-yayuan/rent-pricing.html",
+      "scope": "原报告 A 案 S12–S15 价格与条件",
+      "sha256": "e01fafd4cddad9aa79abe9c7a09850d0ecb6f2016e231e431ec9f8ad128e2c73"
+    },
+    {
+      "id": "SRC-ZYT",
+      "channel": "政研通 CLI 地理数据包",
+      "observedAt": "2026-10-10",
+      "pathOrUrl": "haixing-community-bundle.json",
+      "scope": "geo 330100-D2-B0-C49 rentIdx 31期",
+      "sha256": "c4aec288cac7c46cb816db3b360ed1454371e128fca3c9c3dfd94ad770f4ddc2"
+    }
+  ],
+  "review": {
+    "reviewer": null,
+    "reviewedAt": null,
+    "blockingFindings": [],
+    "dataSha256": null,
+    "renderSha256": null
+  }
+}

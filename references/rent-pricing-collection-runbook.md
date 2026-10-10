@@ -88,11 +88,13 @@ zyt --json 地理数据包 --城市 "$RENT_CITY" --地理编码 "$ZYT_CITY_GEO_I
 
 可用定义：真实目标地理对象；指标定义与单位可核；最近可得的 12 个日历月可排成序列，至少有足够观测点供呈现；基准日之后的月份不得纳入。缺月保留 `null`，图上断线；序列滞后写真实末月和滞后月数。商圈/城市级跨户型序列只能说明市场时点背景，图题必须写“商圈/城市”，不得写“小区趋势”或据此直接定单套租金。
 
+**保存完整历史期，不只保存图上的 12 期。** 从选中层级的同一个 `scopes[geoId].indicators[indicatorKey]` 对齐 `periods`/`values`，把完整连续月序列放入 `trend.historyMonths[]`，最后 12 期同步放入 `trend.months[]`。至少 13 期才能算最新月同比，至少 24 期才能算滚动 12 月均值同比。四项趋势百分比由渲染器从原始值计算：最高÷最低−1、最新÷上年同月−1、最新÷当年 1 月−1、近 12 月均值÷之前 12 月均值−1。缺月时单项标待计算并列缺月；不回退到另一层级补这一项。指标原始单位不明时保持“接口原值，单位待核”，只对同序列做无量纲变化率。
+
 `fallbackAttempts[]` 逐级记录 `level/name/geoId/indicatorKey/status/reason/receiptPath`。状态至少区分：对象未找到、指标无值、口径不合、月份不足、权限/接口失败、已选中。三级无可用序列时 `trend.status=unavailable`、`selectedLevel=null`，报告显示缺口卡。
 
 ## 4. 证据包交给下一任务的最小结构
 
-`t1` 一次性交付 `raw/` 原始回执、`queryAudit[]`、`comparablePools[]`、`comparables[]`、`trend.fallbackAttempts[]` 和真实月序列/缺口，及每个回执的 SHA256。价格和趋势来源分别标“挂牌/成交/模型”“小区/商圈/城市”；统计池保留原始行、重复、排除、有效 n 的倒推。`t2` 只从这份冻结证据包测算；需要补数时明确补哪个缺口，不再从头广搜。
+`t1` 一次性交付 `raw/` 原始回执、`queryAudit[]`、`comparablePools[]`、`comparables[]`、`trend.fallbackAttempts[]`、`trend.historyMonths[]`、展示用 `trend.months[]` 和每个回执的 SHA256。价格和趋势来源分别标“挂牌/成交/模型”“小区/商圈/城市”；统计池保留原始行、重复、排除、有效 n 的倒推。`t2` 只从这份冻结证据包测算；需要补数时明确补哪个缺口，不再从头广搜。
 
 ## 5. 已知弯路及单次止损
 

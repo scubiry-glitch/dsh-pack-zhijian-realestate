@@ -80,7 +80,7 @@
       "outputSchema": "zhijian.output.rent-evidence",
       "retryPolicy": "provider-only",
       "subject": "核验产品形态、可比池和趋势三级回退",
-      "description": "取数前先读 skills/zhijian-rent-pricing/SKILL.md、references/rent-pricing-collection-runbook.md 和 v3 字段说明。先核独立成套/合租及面积口径、出租权限和业主输入，必要时给互斥 A/B 案。查询同小区、商圈、区级同质房源，保存原始回执、实际命中条件、TopK/总召回、去重和排除记录、逐条房源；挂牌与成交分池。趋势严格按目标小区→所属商圈→同城城市级取数，每级保存 geo_id、指标、单位、月份和失败回执，选中后停止降级；三级都无同口径 12 个月序列则记录缺口。发布 t1-evidence.md、queryAudit、comparablePools、comparables 和 trend。独立评审核标的身份、证据身份和样本边界，阻断项在 t1 返修。"
+      "description": "取数前先读 skills/zhijian-rent-pricing/SKILL.md、references/rent-pricing-collection-runbook.md 和 v3 字段说明。先核独立成套/合租及面积口径、出租权限和业主输入，必要时给互斥 A/B 案。查询同小区、商圈、区级同质房源，保存原始回执、实际命中条件、TopK/总召回、去重和排除记录、逐条房源；挂牌与成交分池。趋势严格按目标小区→所属商圈→同城城市级取数，每级保存 geo_id、指标、单位、月份和失败回执，选中后停止降级；保存该层级同指标完整连续历史月序列 trend.historyMonths[] 和末 12 期 trend.months[]，至少 24 期可算四项变化率；三级都无同口径 12 个月序列则记录缺口。发布 t1-evidence.md、queryAudit、comparablePools、comparables 和 trend。独立评审核标的身份、证据身份和样本边界，阻断项在 t1 返修。"
     },
     {
       "id": "t2",
@@ -98,7 +98,7 @@
       "outputSchema": "zhijian.output.rent-data-detailed",
       "retryPolicy": "quality-repair",
       "subject": "按详细模板逐格测算与成稿",
-      "description": "填写 references/rent-pricing-data-v3.template.json 的 v3 字段：产品分案、四个决策字段（挂牌/目标成交/测算让价边界/业主确认最低价）、三依据、分池统计、逐条证据、逐步算式、趋势层级、让价现金流、条款与风险。价格有数值须有 inputIds→formula→result→evidenceIds；同源单位面积只作算术校验，替代品只检边界。业主未确认最低价仍为 null，但可在证据足够时给出独立的测算让价边界。独立评审复算承重数字和措辞，阻断项在 t2 返修；评审通过后冻结 v3 JSON 及 SHA256。"
+      "description": "填写 references/rent-pricing-data-v3.template.json 的 v3 字段：产品分案、四个决策字段（挂牌/目标成交/底价（市场测算硬底）/业主确认最低价）、三依据、分池统计、逐条证据、逐步算式、趋势层级、让价现金流、条款与风险。价格有数值须有 inputIds→formula→result→evidenceIds；同源单位面积只作算术校验，替代品只检边界。业主未确认最低价仍为 null，但可在证据足够时给出独立的测算硬底；三档点价价差百分比统一以挂牌价为分母。独立评审复算承重数字和措辞，阻断项在 t2 返修；评审通过后冻结 v3 JSON 及 SHA256。"
     },
     {
       "id": "t3",
@@ -116,7 +116,7 @@
       "outputSchema": "zhijian.output.rent-pricing-detailed",
       "retryPolicy": "quality-repair",
       "subject": "从冻结 v3 数据生成详细 HTML/PDF",
-      "description": "使用 references/rent-pricing-detailed-template.html 的八章视觉和 v3 字段生成同源 HTML/PDF、数据与渲染哈希。保留分案卡、四价格状态、三依据区间、逐步计算、查询审计、分池统计、逐条可比、趋势实际层级、让价阶梯及合同条款。图仅在数据足够时绘制；缺口显示缺口卡。核单标题、每张图的数值与证据、表格行数、手机与 A4。若事实或算式变化，退回 t2 再审；纯版式问题在 t3 修复。 执行 scripts/render-rent-pricing-detailed.py --data <已审 JSON> --md <报告.md> --html <报告.html> --pdf <报告.pdf> --ledger <台账.json>。"
+      "description": "使用 references/rent-pricing-detailed-template.html 的八章视觉和 v3 字段生成同源 HTML/PDF、数据与渲染哈希。保留三档价格共用横轴、业主确认最低价单列、三段价差百分比、趋势下方四项原始序列计算及缺月说明；保留分案卡、四价格状态、三依据区间、逐步计算、查询审计、分池统计、逐条可比、趋势实际层级、让价阶梯及合同条款。图仅在数据足够时绘制；缺口显示缺口卡。核单标题、每张图的数值与证据、表格行数、手机与 A4。若事实或算式变化，退回 t2 再审；纯版式问题在 t3 修复。 执行 scripts/render-rent-pricing-detailed.py --data <已审 JSON> --md <报告.md> --html <报告.html> --pdf <报告.pdf> --ledger <台账.json>。"
     }
   ],
   "gates": [],

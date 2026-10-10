@@ -17,7 +17,10 @@ class DetailedRentPricingTest(unittest.TestCase):
         MODULE.validate(data)
         markdown, html = MODULE.render(data)
         self.assertEqual(html.count("<h2>"), 8)
-        self.assertIn("测算让价边界", html)
+        self.assertIn("测算硬底只说明市场情景", html)
+        self.assertIn("底价（测算硬底）", html)
+        self.assertIn("共用月租横轴", html)
+        self.assertIn("滚动 12 个月均值同比", html)
         self.assertIn("业主确认最低价", html)
         self.assertIn("待确认", html)
         self.assertIn("未来悦小区近 12 个月", html)
@@ -44,6 +47,7 @@ class DetailedRentPricingTest(unittest.TestCase):
     def test_no_trend_draws_no_trend_chart(self):
         data = copy.deepcopy(FIXTURE)
         data["trend"].update(status="unavailable", selectedLevel=None, months=[],
+                             historyMonths=[],
                              fallbackAttempts=[{"level": level, "status": "unavailable"}
                                                for level in MODULE.LEVELS])
         MODULE.validate(data)
@@ -62,6 +66,53 @@ class DetailedRentPricingTest(unittest.TestCase):
         data["comparablePools"][1]["median"] = 2350
         with self.assertRaisesRegex(ValueError, "cannot claim"):
             MODULE.validate(data)
+
+    def test_haixing_original_four_trend_rates_recalculate_from_31_periods(self):
+        fixture = json.loads((ROOT / "tests/fixtures/haixing-rentidx-history.json").read_text())
+        months = fixture["months"]
+        self.assertEqual(len(months), 31)
+        metrics = MODULE.trend_metrics({"months": months[-12:], "historyMonths": months})
+        self.assertEqual([round(item["value"], 1) for item in metrics], [35.9, 17.4, -10.6, 2.2])
+        self.assertIn("2025-08", metrics[0]["title"])
+        self.assertIn("2025-07", metrics[1]["title"])
+
+    def test_haixing_visual_replay_includes_all_three_requested_elements(self):
+        data = json.loads((ROOT / "tests/fixtures/rent-pricing-detailed-haixing-visual.json").read_text())
+        MODULE.validate(data)
+        _, html = MODULE.render(data)
+        self.assertIn("底价（测算硬底）", html)
+        self.assertIn("2,300 元/月", html)
+        self.assertIn("三档定价共用横轴", html)
+        for rate in ("+35.9%", "+17.4%", "−10.6%", "+2.2%"):
+            self.assertIn(rate, html)
+
+    def test_missing_prior_period_is_explicit_instead_of_invented(self):
+        data = copy.deepcopy(FIXTURE)
+        data["trend"]["historyMonths"] = data["trend"]["months"]
+        MODULE.validate(data)
+        metrics = MODULE.trend_metrics(data["trend"])
+        self.assertIsNone(metrics[1]["value"])
+        self.assertIn("2025-07", metrics[1]["detail"])
+        self.assertIsNone(metrics[3]["value"])
+        self.assertIn("2024-08", metrics[3]["detail"])
+
+    def test_original_price_ladder_uses_one_axis_and_listing_denominator(self):
+        data = copy.deepcopy(FIXTURE)
+        case = data["productCases"][0]
+        for key, value, bounds in (("listing", 2600, [2550, 2700]),
+                                   ("expected", 2500, [2450, 2550]),
+                                   ("modeledConcessionBoundary", 2300, None)):
+            case[key].update(value=value, range=bounds)
+        case["modeledConcessionBoundary"].update(basisStepIds=[data["calculationSteps"][0]["id"]], evidenceIds=[data["sources"][0]["id"]])
+        MODULE.validate(data)
+        axis = MODULE.price_chart(case)
+        self.assertEqual(axis.count("<svg"), 1)
+        self.assertIn("2,300", axis)
+        self.assertIn("2,700", axis)
+        gap = MODULE.decision_gap_note(case)
+        self.assertIn("3.8%", gap)
+        self.assertIn("7.7%", gap)
+        self.assertIn("11.5%", gap)
 
 
 if __name__ == "__main__":

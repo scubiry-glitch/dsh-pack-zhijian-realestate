@@ -3,23 +3,50 @@
   "version": "0.1.0",
   "schemaVersion": 2,
   "domain": "realestate",
-  "intents": ["rent-pricing-detailed", "rental-listing-advice-detailed"],
+  "intents": [
+    "rent-pricing-detailed",
+    "rental-listing-advice-detailed"
+  ],
   "requiredCapabilities": [
-    {"capability": "zhijian.review", "minProficiency": 1, "cardinality": 1},
-    {"capability": "realestate.services.review", "minProficiency": 1, "cardinality": 1}
+    {
+      "capability": "zhijian.review",
+      "minProficiency": 1,
+      "cardinality": 1
+    },
+    {
+      "capability": "realestate.services.review",
+      "minProficiency": 1,
+      "cardinality": 1
+    }
   ],
   "routingPolicy": {
     "assertions": [
       "为具体住宅或公寓生成可复算的月租决策报告；保留产品分案、样本池、计算链和执行节奏。",
       "一次取证、一次测算和正文、一次同源渲染；各阶段使用 Host 独立评审，阻断项返回原任务修复。",
       "趋势依次查询目标小区、所属商圈、同城城市级；报告图题和统计口径与实际取得层级一致。",
-      "市场测算让价边界与业主确认最低价是不同字段，不能把前者称为业主硬底。"
+      "市场测算让价边界与业主确认最低价是不同字段，不能把前者称为业主硬底。",
+      "选中层级的完整历史期用于近12月波幅、最新月同比、年内变化、滚动12月均值同比四项复算；缺月逐项显示待计算。",
+      "挂牌、目标成交和有证据的市场测算硬底共用月租横轴；业主确认最低价另列，价差百分比统一以挂牌为分母。"
     ],
-    "candidateHints": ["bk-033", "bk-018", "bk-002", "bk-020"]
+    "candidateHints": [
+      "bk-033",
+      "bk-018",
+      "bk-002",
+      "bk-020"
+    ]
   },
   "teamTemplate": "zhijian.team.rent-pricing-detailed",
   "outputTemplate": "zhijian.output.rent-pricing-detailed",
   "qualityPolicy": "zhijian.quality.rent-pricing-detailed",
-  "knowledgePolicy": {"required": ["zhijian-expert-memory"], "optional": ["local-knowledge"]},
-  "toolPolicy": {"allowed": []}
+  "knowledgePolicy": {
+    "required": [
+      "zhijian-expert-memory"
+    ],
+    "optional": [
+      "local-knowledge"
+    ]
+  },
+  "toolPolicy": {
+    "allowed": []
+  }
 }

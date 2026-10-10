@@ -86,7 +86,7 @@
         "basisStepIds": [],
         "evidenceIds": [],
         "conditions": [
-          "缺已核持有成本和空置容忍度，暂不测算"
+          "同小区仅3条在租挂牌，无成租下界；面积法与主估计同源、跨小区样本只作边界，暂不足以确定市场测算硬底。"
         ]
       },
       "ownerConfirmedMinimum": {
@@ -550,7 +550,164 @@
       }
     ],
     "comparabilityWarning": "非目标35㎡一居整租租金，指标算法未公开",
-    "timeDecision": "仅作历史时点背景，不参与单套点价"
+    "timeDecision": "仅作历史时点背景，不参与单套点价",
+    "historyMonths": [
+      {
+        "month": "2024-01",
+        "value": 3165,
+        "sourceRow": "rentIdx/2024-01"
+      },
+      {
+        "month": "2024-02",
+        "value": 3202,
+        "sourceRow": "rentIdx/2024-02"
+      },
+      {
+        "month": "2024-03",
+        "value": 3215,
+        "sourceRow": "rentIdx/2024-03"
+      },
+      {
+        "month": "2024-04",
+        "value": 3192,
+        "sourceRow": "rentIdx/2024-04"
+      },
+      {
+        "month": "2024-05",
+        "value": 3068,
+        "sourceRow": "rentIdx/2024-05"
+      },
+      {
+        "month": "2024-06",
+        "value": 3118,
+        "sourceRow": "rentIdx/2024-06"
+      },
+      {
+        "month": "2024-07",
+        "value": 3198,
+        "sourceRow": "rentIdx/2024-07"
+      },
+      {
+        "month": "2024-08",
+        "value": 3177,
+        "sourceRow": "rentIdx/2024-08"
+      },
+      {
+        "month": "2024-09",
+        "value": 3230,
+        "sourceRow": "rentIdx/2024-09"
+      },
+      {
+        "month": "2024-10",
+        "value": 3219,
+        "sourceRow": "rentIdx/2024-10"
+      },
+      {
+        "month": "2024-11",
+        "value": 3292,
+        "sourceRow": "rentIdx/2024-11"
+      },
+      {
+        "month": "2024-12",
+        "value": 3197,
+        "sourceRow": "rentIdx/2024-12"
+      },
+      {
+        "month": "2025-01",
+        "value": 3096,
+        "sourceRow": "rentIdx/2025-01"
+      },
+      {
+        "month": "2025-02",
+        "value": 3068,
+        "sourceRow": "rentIdx/2025-02"
+      },
+      {
+        "month": "2025-03",
+        "value": 2949,
+        "sourceRow": "rentIdx/2025-03"
+      },
+      {
+        "month": "2025-04",
+        "value": 2936,
+        "sourceRow": "rentIdx/2025-04"
+      },
+      {
+        "month": "2025-05",
+        "value": 2929,
+        "sourceRow": "rentIdx/2025-05"
+      },
+      {
+        "month": "2025-06",
+        "value": 2940,
+        "sourceRow": "rentIdx/2025-06"
+      },
+      {
+        "month": "2025-07",
+        "value": 2929,
+        "sourceRow": "rentIdx/2025-07"
+      },
+      {
+        "month": "2025-08",
+        "value": 2850,
+        "sourceRow": "rentIdx/2025-08"
+      },
+      {
+        "month": "2025-09",
+        "value": 2937,
+        "sourceRow": "rentIdx/2025-09"
+      },
+      {
+        "month": "2025-10",
+        "value": 3014,
+        "sourceRow": "rentIdx/2025-10"
+      },
+      {
+        "month": "2025-11",
+        "value": 3081,
+        "sourceRow": "rentIdx/2025-11"
+      },
+      {
+        "month": "2025-12",
+        "value": 3053,
+        "sourceRow": "rentIdx/2025-12"
+      },
+      {
+        "month": "2026-01",
+        "value": 3037,
+        "sourceRow": "rentIdx/2026-01"
+      },
+      {
+        "month": "2026-02",
+        "value": 3085,
+        "sourceRow": "rentIdx/2026-02"
+      },
+      {
+        "month": "2026-03",
+        "value": 3004,
+        "sourceRow": "rentIdx/2026-03"
+      },
+      {
+        "month": "2026-04",
+        "value": 2919,
+        "sourceRow": "rentIdx/2026-04"
+      },
+      {
+        "month": "2026-05",
+        "value": 2869,
+        "sourceRow": "rentIdx/2026-05"
+      },
+      {
+        "month": "2026-06",
+        "value": 2929,
+        "sourceRow": "rentIdx/2026-06"
+      },
+      {
+        "month": "2026-07",
+        "value": 2950,
+        "sourceRow": "rentIdx/2026-07"
+      }
+    ]
   },
   "vacancyEconomics": {
     "comparisonMonths": null,

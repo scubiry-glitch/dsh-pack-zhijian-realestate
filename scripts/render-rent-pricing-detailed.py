@@ -17,7 +17,7 @@ BASE_SPEC.loader.exec_module(BASE)
 LEVELS = ("community", "business_circle", "city")
 LEVEL_NAMES = {"community": "小区", "business_circle": "商圈", "city": "城市"}
 PRICE_KEYS = ("listing", "expected", "modeledConcessionBoundary", "ownerConfirmedMinimum")
-PRICE_NAMES = ("建议挂牌", "目标成交", "测算让价边界", "业主确认最低价")
+PRICE_NAMES = ("建议挂牌", "目标成交带", "底价（测算硬底）", "业主确认最低价")
 
 
 def require(condition, message):
@@ -66,25 +66,42 @@ def chart(title, svg, caption):
 
 
 def price_chart(case):
-    rows = []
-    for key, label in zip(PRICE_KEYS, PRICE_NAMES):
-        price = case[key]
-        if price.get("value") is not None:
-            rows.append((label, price["value"], price.get("nature")))
-    if len(rows) < 2:
-        return '<p class="mini">有数值的决策量不足两项，暂不绘制价格刻度。</p>'
-    low, high = min(x[1] for x in rows), max(x[1] for x in rows)
-    low = max(0, low - max(100, (high-low)*.2))
-    high += max(100, (high-low)*.2)
-    x = lambda value: 180 + (value-low)/(high-low)*540
-    parts = [f'<svg viewBox="0 0 820 {90+len(rows)*38}" role="img" aria-label="各决策量价格刻度">'
-             '<title>由已核数值绘制的价格刻度；推断与建议不等于真实成交</title>']
-    for i, (label, value, nature) in enumerate(rows):
-        y = 62+i*38
-        parts.append(f'<text x="6" y="{y+4}" font-size="13" fill="#17243a">{e(label)}·{e(nature)}</text>'
-                     f'<line x1="180" y1="{y}" x2="720" y2="{y}" stroke="#dbe3ef"/>'
-                     f'<circle cx="{x(value):.1f}" cy="{y}" r="6" fill="#245bd1"/>'
-                     f'<text x="729" y="{y+4}" font-size="12" fill="#53647a">{e(fmt(value))}</text>')
+    """One shared monthly-rent axis; every mark comes from a priced field."""
+    listing, expected, floor = (case[key] for key in PRICE_KEYS[:3])
+    observed = [v for price in (listing, expected, floor)
+                for v in ([price.get("value")] + (price.get("range") or [])) if v is not None]
+    if len(set(observed)) < 2:
+        return '<p class="mini">可核价格不足两档，暂不绘制共用横轴。</p>'
+    minimum, maximum = min(observed), max(observed)
+    span = maximum - minimum
+    padding = max(35, span * .06)
+    low, high = max(0, minimum-padding), maximum+padding
+    x = lambda value: 48 + (value-low)/(high-low)*760
+    parts = ['<svg viewBox="0 0 860 205" role="img" aria-label="挂牌、目标成交、测算硬底共用月租横轴">'
+             '<title>同一价格轴展示建议挂牌、推断成交带与有证据的测算硬底；业主底线单列</title>',
+             '<rect x="48" y="54" width="760" height="94" rx="13" fill="#edf3fc"/>',
+             '<line x1="48" y1="101" x2="808" y2="101" stroke="#9bb4da" stroke-width="2"/>']
+    if expected.get("range"):
+        start, end = expected["range"]
+        parts.append(f'<rect x="{x(start):.1f}" y="73" width="{max(1,x(end)-x(start)):.1f}" height="56" rx="8" fill="#2e67c4" opacity=".24"/>')
+    marks = []
+    if floor.get("value") is not None:
+        marks.append((floor["value"], "测算硬底", "#a6761f", 167))
+    if expected.get("value") is not None:
+        marks.append((expected["value"], "成交中枢", "#1f5fc1", 34))
+    if listing.get("value") is not None:
+        marks.append((listing["value"], "建议挂牌", "#334d70", 167))
+    for value, label, color, label_y in marks:
+        px = x(value)
+        parts.append(f'<line x1="{px:.1f}" y1="52" x2="{px:.1f}" y2="149" stroke="{color}" stroke-width="2"/>'
+                     f'<circle cx="{px:.1f}" cy="101" r="5" fill="{color}"/>'
+                     f'<text x="{px:.1f}" y="{label_y}" text-anchor="middle" font-size="11" fill="{color}">{e(label)}</text>')
+    ticks = sorted(set(observed))
+    if len(ticks) > 7:
+        ticks = sorted(set([minimum, maximum] + [v for v, *_ in marks]))
+    for value in ticks:
+        px = x(value)
+        parts.append(f'<text x="{px:.1f}" y="193" text-anchor="middle" font-size="11" fill="#53647a">{e(fmt(value))}</text>')
     parts.append('</svg>')
     return ''.join(parts)
 
@@ -116,6 +133,75 @@ def method_chart(methods):
 
 def number(value):
     return type(value) in (int, float) and value == value and 0 < value < 1000000
+
+
+def month_index(month):
+    return int(month[:4]) * 12 + int(month[5:]) - 1
+
+
+def month_at(index):
+    return f"{index // 12:04d}-{index % 12 + 1:02d}"
+
+
+def trend_metrics(trend):
+    """Calculate four changes from the selected geography's unchanged series."""
+    months = trend["months"]
+    history = trend.get("historyMonths") or months
+    values = {row["month"]: row.get("value") for row in history}
+    latest = months[-1]["month"]
+    latest_index = month_index(latest)
+    window = [month_at(latest_index - i) for i in range(11, -1, -1)]
+
+    def metric(title, numerator=None, denominator=None, detail="", missing="", formula=""):
+        if numerator is None or denominator is None or denominator <= 0:
+            return {"title": title, "value": None, "detail": missing or "历史期不完整", "formula": ""}
+        return {"title": title, "value": (numerator / denominator - 1) * 100,
+                "detail": detail, "formula": formula}
+
+    if all(number(values.get(month)) for month in window):
+        low_month = min(window, key=lambda month: values[month])
+        high_month = max(window, key=lambda month: values[month])
+        low, high = values[low_month], values[high_month]
+        amplitude = metric(f"波幅（低 {low_month} → 高 {high_month}）", high, low,
+                           f"{fmt(low)} → {fmt(high)}", formula=f"({fmt(high)} ÷ {fmt(low)} − 1) × 100%")
+    else:
+        missing = [month for month in window if not number(values.get(month))]
+        amplitude = metric("近 12 个月波幅", missing="缺月份：" + "、".join(missing))
+
+    previous_year = month_at(latest_index - 12)
+    year_on_year = metric(f"同比（{latest} vs {previous_year}）", values.get(latest), values.get(previous_year),
+                          f"{fmt(values.get(latest))} vs {fmt(values.get(previous_year))}",
+                          missing=f"缺 {previous_year} 同月原值",
+                          formula=f"({fmt(values.get(latest))} ÷ {fmt(values.get(previous_year))} − 1) × 100%")
+
+    january = f"{latest[:4]}-01"
+    year_to_date = metric(f"年内（{january} → {latest}）", values.get(latest), values.get(january),
+                          f"{fmt(values.get(january))} → {fmt(values.get(latest))}",
+                          missing=f"缺 {january} 原值",
+                          formula=f"({fmt(values.get(latest))} ÷ {fmt(values.get(january))} − 1) × 100%")
+
+    prior = [month_at(latest_index - i) for i in range(23, 11, -1)]
+    missing = [month for month in prior + window if not number(values.get(month))]
+    if missing:
+        rolling = metric("滚动 12 个月均值同比", missing="缺月份：" + "、".join(missing))
+    else:
+        current_mean = sum(values[month] for month in window) / 12
+        prior_mean = sum(values[month] for month in prior) / 12
+        rolling = metric("滚动 12 个月均值同比", current_mean, prior_mean,
+                         f"{fmt(round(current_mean))} vs {fmt(round(prior_mean))}（展示值已取整）",
+                         formula=f"({current_mean:.2f} ÷ {prior_mean:.2f} − 1) × 100%")
+    return [amplitude, year_on_year, year_to_date, rolling]
+
+
+def trend_metric_cards(trend):
+    cards = []
+    for item in trend_metrics(trend):
+        value = item["value"]
+        shown = "待计算" if value is None else (f"+{value:.1f}%" if value >= 0 else f"−{abs(value):.1f}%")
+        cards.append(f'<div class="box trend-metric"><strong>{e(item["title"])}</strong>'
+                     f'<div class="amount">{e(shown)}</div><div class="mini">{e(item["detail"])}</div>'
+                     f'<div class="mini">{e(item["formula"])}</div></div>')
+    return '<div class="grid2 trend-metrics">' + ''.join(cards) + '</div>'
 
 
 def validate(data):
@@ -150,14 +236,25 @@ def validate(data):
             if bounds is not None:
                 require(isinstance(bounds, list) and len(bounds) == 2 and all(number(x) for x in bounds)
                         and bounds[0] <= bounds[1], f"{case['id']}.{key}.range invalid")
-            require(not (value is not None and bounds is not None), f"{case['id']}.{key} has value and range")
+            if value is not None and bounds is not None:
+                require(bounds[0] <= value <= bounds[1], f"{case['id']}.{key} point falls outside range")
             if key == "ownerConfirmedMinimum":
+                require(bounds is None, "owner minimum must be one confirmed amount")
                 require(value is None or (price.get("confirmedAt") and price.get("evidenceId")),
                         "owner minimum requires owner confirmation date and evidence")
             elif value is not None or bounds is not None:
                 require(price.get("basisStepIds") and set(price["basisStepIds"]) <= step_ids,
                         f"{case['id']}.{key} requires valid calculation steps")
                 require(price.get("evidenceIds"), f"{case['id']}.{key} requires evidence IDs")
+        listed = case["listing"].get("value")
+        target = case["expected"].get("value")
+        boundary = case["modeledConcessionBoundary"].get("value")
+        require(listed is None or target is None or target <= listed,
+                f"{case['id']} target exceeds listing price")
+        require(target is None or boundary is None or boundary <= target,
+                f"{case['id']} modeled hard floor exceeds target price")
+        require(listed is None or boundary is None or boundary <= listed,
+                f"{case['id']} modeled hard floor exceeds listing price")
     comps = data.get("comparables") or []
     comp_ids = [row.get("id") for row in comps]
     require(None not in comp_ids and len(comp_ids) == len(set(comp_ids)), "comparable IDs required and unique")
@@ -218,9 +315,26 @@ def validate(data):
         require(previous <= asof.year * 12 + asof.month, "trend cannot exceed report month")
         if trend.get("lagMonths") is not None:
             require(trend["lagMonths"] == asof.year * 12 + asof.month - previous, "trend lagMonths mismatch")
+        history = trend.get("historyMonths") or []
+        require(isinstance(history, list) and len(history) <= 120, "trend.historyMonths must be a bounded list")
+        if history:
+            require(len(history) >= 12, "trend.historyMonths must contain selected 12 months")
+            last_index = None
+            for row in history:
+                month = row.get("month")
+                require(isinstance(month, str) and re.fullmatch(r"\d{4}-(0[1-9]|1[0-2])", month),
+                        "trend.historyMonths month invalid")
+                index = month_index(month)
+                require(last_index is None or index == last_index + 1, "trend.historyMonths must be consecutive")
+                last_index = index
+                require(row.get("value") is None or number(row["value"]), "trend.historyMonths value invalid")
+            require([(row["month"], row.get("value")) for row in history[-12:]] ==
+                    [(row["month"], row.get("value")) for row in months],
+                    "trend.historyMonths last 12 must match selected months")
     else:
         require(trend.get("status") == "unavailable" and not trend.get("months"),
                 "unavailable trend must not have chart values")
+        require(not trend.get("historyMonths"), "unavailable trend must not have history values")
         require(len(attempts) == 3, "unavailable trend requires three documented attempts")
     require(data.get("sources"), "sources required")
     for source in data["sources"]:
@@ -231,11 +345,46 @@ def validate(data):
 
 
 def price_text(price):
+    if price.get("value") is not None and price.get("range") is not None:
+        return (f"{fmt(price['value'])} 元/月；区间 "
+                f"{fmt(price['range'][0])}—{fmt(price['range'][1])} 元/月")
     if price.get("value") is not None:
         return f"{fmt(price['value'])} 元/月"
     if price.get("range") is not None:
         return f"{fmt(price['range'][0])}—{fmt(price['range'][1])} 元/月"
     return "待确认"
+
+
+def price_card(key, price, label):
+    value, bounds = price.get("value"), price.get("range")
+    if key == "expected" and bounds:
+        main = f"{fmt(bounds[0])}—{fmt(bounds[1])} 元/月"
+        detail = f"中枢 {fmt(value)} 元/月" if value is not None else "成交中枢待核"
+    elif value is not None:
+        main = f"{fmt(value)} 元/月"
+        detail = f"建议区间 {fmt(bounds[0])}—{fmt(bounds[1])} 元/月" if bounds else fmt(price.get("nature"))
+    elif bounds:
+        main = f"{fmt(bounds[0])}—{fmt(bounds[1])} 元/月"
+        detail = fmt(price.get("nature"))
+    else:
+        main = "待测算" if key == "modeledConcessionBoundary" else "待确认"
+        detail = fmt(price.get("conditions"))
+    klass = " gold" if key == "modeledConcessionBoundary" else " primary" if key == "expected" else ""
+    return (f'<div class="box{klass}"><strong>{e(label)}</strong><div class="amount">{e(main)}</div>'
+            f'<div class="mini">{e(detail)}</div></div>')
+
+
+def decision_gap_note(case):
+    listing = case["listing"].get("value")
+    target = case["expected"].get("value")
+    floor = case["modeledConcessionBoundary"].get("value")
+    if not all(number(value) for value in (listing, target, floor)):
+        return "议价差额待三档中枢与测算硬底都有证据后计算。"
+    require(floor <= target <= listing, "price ladder order invalid")
+    return (f"议价空间（百分比均以挂牌价 {fmt(listing)} 元/月为分母）：挂牌→成交中枢 "
+            f"{fmt(listing-target)} 元（{(listing-target)/listing*100:.1f}%）；成交中枢→测算硬底 "
+            f"{fmt(target-floor)} 元（{(target-floor)/listing*100:.1f}%）；挂牌→测算硬底 "
+            f"{fmt(listing-floor)} 元（{(listing-floor)/listing*100:.1f}%）。")
 
 
 def render(data):
@@ -264,14 +413,18 @@ def render(data):
             price = case[key]
             value = price_text(price)
             nature = price.get("nature") or ("业主输入" if key == "ownerConfirmedMinimum" else "待确认")
-            cards.append(f'<div class="box"><strong>{e(name)}</strong><div class="amount">{e(value)}</div>'
-                         f'<div class="mini">{e(nature)}｜{e(price.get("conditions"))}</div></div>')
+            if key != "ownerConfirmedMinimum":
+                cards.append(price_card(key, price, name))
             rows.append((name, value, nature, price.get("basisStepIds"), price.get("evidenceIds") or price.get("evidenceId")))
-        body += '<div class="grid2">' + ''.join(cards) + '</div>'
+        body += '<div class="grid3 price-decisions">' + ''.join(cards) + '</div>'
+        body += chart(f'图｜{case["label"]}三档定价共用横轴', price_chart(case),
+                      '同一月租刻度；蓝色带为有数据时的目标成交区间，金色标记为市场测算硬底。')
+        body += f'<p class="mini">{e(decision_gap_note(case))}</p>'
+        owner = case["ownerConfirmedMinimum"]
+        owner_value = price_text(owner) if owner.get("value") is not None else "待业主确认"
+        body += f'<div class="notice"><b>业主确认最低价：</b>{e(owner_value)}。市场测算硬底需业主同意后才能成为执行下限。</div>'
         body += table(("决策量", "结果", "性质", "计算步骤", "证据"), rows)
-        body += chart(f'图｜{case["label"]}决策量价格刻度', price_chart(case),
-                      '只显示有数值与证据的项目；建议挂牌、推断目标和业主确认最低价不能互换。')
-    body += '<p class="mini">测算让价边界只说明市场情景；业主未确认最低价时，底线保持待确认。</p>'
+    body += '<p class="mini">测算硬底只说明市场情景；业主未确认最低价时，执行下限保持待确认。</p>'
     h.append(section(1, "DECISION", headings[0], body))
 
     facts = [("城市", "city"), ("区县", "district"), ("商圈", "businessCircle"), ("小区", "community"),
@@ -340,6 +493,7 @@ def render(data):
              f'指标 {trend["indicatorKey"]}；单位 {trend["unit"]}；{fmt(trend.get("comparabilityWarning"))}')
         body += table(("月份", "指标原值", "单位", "来源"),
             [(x.get("month"), x.get("value"), trend.get("unit"), x.get("sourceRow")) for x in trend["months"]])
+        body += '<h3>四项趋势计算</h3>' + trend_metric_cards(trend)
     else:
         body += '<div class="notice">三级均无可核的 12 个月同口径序列；本报告不绘制趋势图。</div>'
     body += f'<p>时点判断：{e(trend.get("timeDecision"))}</p>'

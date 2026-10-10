@@ -47,6 +47,9 @@ export function evaluateRentPricing(input) {
       !/\b(?:src|href)=["']https?:\/\//i.test(page) &&
       (ledger.comparableCount === 0 || page.includes('aria-label="可比样本月租价格分布"')) &&
       (ledger.trendPointCount === 0 || page.includes(`aria-label="近 12 个月${trendLabel}租金趋势"`)) &&
+      (!detailed || (page.includes('底价（测算硬底）') && page.includes('三档定价共用横轴') &&
+        (ledger.trendPointCount === 0 || (page.includes('四项趋势计算') &&
+          (page.match(/class="box trend-metric"/g) ?? []).length === 4)))) &&
       pdfBytes.subarray(0, 5).toString() === '%PDF-' &&
       pdfBytes.length > 1000
     return [

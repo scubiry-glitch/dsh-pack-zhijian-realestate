@@ -12,14 +12,15 @@
 | `comparables[]` | `id`, `poolId`, `community`, `areaSqm`, `areaBasis`, `layout`, `rentalMode`, `floor`, `orientation`, `monthlyRent`, `identity`, `sourceDate`, `receiptId`, `included`, `reason` | 每个统计量能回到逐条房源。重复 listing ID 必须留去重记录。 |
 | `calculationSteps[]` | `id`, `caseId`, `inputIds`, `formula`, `units`, `rounding`, `result`, `nature`, `evidenceIds`, `reviewStatus` | 承重价格需要逐步复算，不能用文字总结代替算式。 |
 | `trend.fallbackAttempts[]` | `level`, `name`, `geoId`, `indicatorKey`, `queriedAt`, `status`, `reason`, `receiptPath` | 顺序只能是 `community → business_circle → city`；选中层级之前的失败回执必须保留。 |
-| `trend.months[]` | `month`, `value`, `sourceRowId` | 按月份连续列出最近可得 12 期；缺值写 `null` 并断线，不补造。观察期和滞后必须写清。 |
+| `trend.months[]` | `month`, `value`, `sourceRow` | 按月份连续列出最近可得 12 期；缺值写 `null` 并断线，不补造。观察期和滞后必须写清。 |
+| `trend.historyMonths[]` | `month`, `value`, `sourceRow` | 保存选中地理层级、同一指标的完整历史月序列；末 12 期必须与 `trend.months[]` 逐月一致。优先保存至少 24 期，供四项趋势百分比复算。 |
 | `vacancyEconomics.scenarios[]` | `higherRent`, `lowerRent`, `comparisonMonths`, `holdingCost`, `breakEvenVacancyDays`, `stepId` | 让价临界天数来自同一比较期下两情景净收入相等；不能套用旧报告天数。 |
 | `repricingSchedule[]` | `trigger`, `askingRent`, `action`, `economicsStepId`, `stopCondition` | 对应真实挂牌价格、看房和空置情况。业主未确认底线时，末档写“需确认”。 |
 | `sources[]` | `id`, `sourceType`, `channel`, `observedAt`, `pathOrUrl`, `sha256`, `scope` | 原始回执与出稿版本可追溯。 |
 
 ## 三种“底线”必须分清
 
-1. `modeledConcessionBoundary`：市场证据和空置情景推导出的**测算让价边界**。有输入、算式和证据时可给值，并写明条件。
+1. `modeledConcessionBoundary`：市场证据和空置情景推导出的**底价（测算硬底）**。有输入、算式和证据时可给值，并写明条件；可与 `listing.value`、`expected.value` 同画在一条月租横轴。市场测算硬底不是业主承诺。
 2. `ownerConfirmedMinimum`：业主明确认可的**最低可接受月租**。未问到时保持 `null`，报告写“业主未确认”。
 3. 合同或平台限价：若存在，作为独立约束列于 `subject`/`risks`，不能冒称业主偏好。
 
@@ -32,6 +33,11 @@
 3. 每一级都核 `indicatorKey`、单位、对象级别、统计总体、月份和原始回执。不能把房价指数、租金指数与元/月租金混成一条线。
 4. `selectedLevel` 只能是 `community`、`business_circle`、`city` 或 `null`。图题分别写“近 12 个月小区/商圈/城市租金趋势”。商圈或城市图作为市场背景；目标房型定价仍由同质房源决定。
 5. 三层都无可用序列时，保留尝试日志和缺口卡；不得画假图。最新月滞后时写实际末月和滞后月数。
+6. 选中层级后保留其**完整历史序列**，不要只截取展示用的 12 期。四项百分比由同一原始序列自动计算，均不以四舍五入后的展示均值重新计算：近 12 个月波幅 = `最高值/最低值−1`；最新月同比 = `最新月/上年同月−1`；年内变化 = `最新月/当年 1 月−1`；滚动均值同比 = `近 12 月均值/之前 12 月均值−1`。结果保留一位小数，连同分子、分母和月份展示。若历史月缺失，对应卡标“待计算”并列缺月，不能借用其他地理层级补数。
+
+## 结论图与价差
+
+每案把有证据的建议挂牌、目标成交中枢与区间、测算硬底放在**同一条月租横轴**。若有三档点价，列出挂牌→成交中枢、成交中枢→测算硬底、挂牌→测算硬底三段价差；三个百分比的分母统一为挂牌价。业主确认最低价单列；未确认时显示“待业主确认”，不能把市场测算硬底填入该字段。只有至少两档有可核数值时画横轴；缺少测算硬底时该标记保持缺口，不复制其他报告的数字。
 
 ## 发布门禁
 
