@@ -283,6 +283,30 @@ def validate(data):
                 f"{case['id']} modeled hard floor exceeds target price")
         require(listed is None or boundary is None or boundary <= listed,
                 f"{case['id']} modeled hard floor exceeds listing price")
+    for step in steps:
+        if step["id"] != "S11":
+            continue
+        case = next((item for item in cases if item["id"] == step.get("caseId")), None)
+        if case is None and len(cases) == 1:
+            case = cases[0]
+        require(case is not None, "S11 must identify a product case")
+        listed = case["listing"].get("value")
+        target = case["expected"].get("value")
+        boundary = case["modeledConcessionBoundary"].get("value")
+        require(all(number(value) for value in (listed, target, boundary)) and listed > 0,
+                "S11 requires three positive point prices")
+        denominators = [float(value.replace(",", "")) for value in
+                        re.findall(r"/\s*([\d,]+(?:\.\d+)?)", step["formula"])]
+        require(denominators and all(abs(value - listed) < 0.001 for value in denominators),
+                "S11 price spread formula must use listing price as every denominator")
+        reported = [float(value.replace("−", "-")) for value in
+                    re.findall(r"[+−-]?\d+(?:\.\d+)?(?=\s*%)", step["result"])]
+        expected = [round((target - listed) / listed * 100, 1),
+                    round((boundary - target) / listed * 100, 1),
+                    round((boundary - listed) / listed * 100, 1)]
+        require(len(reported) == 3 and all(abs(actual - calc) < 0.051
+                                           for actual, calc in zip(reported, expected)),
+                "S11 price spread results must match the three listing-denominator calculations")
     comps = data.get("comparables") or []
     comp_ids = [row.get("id") for row in comps]
     require(None not in comp_ids and len(comp_ids) == len(set(comp_ids)), "comparable IDs required and unique")

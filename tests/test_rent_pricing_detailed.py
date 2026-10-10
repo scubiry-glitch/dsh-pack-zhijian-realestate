@@ -163,6 +163,26 @@ class DetailedRentPricingTest(unittest.TestCase):
         self.assertIn("7.7%", gap)
         self.assertIn("11.5%", gap)
 
+    def test_s11_rejects_mixed_price_spread_denominators(self):
+        data = copy.deepcopy(FIXTURE)
+        case = data["productCases"][0]
+        case["listing"]["value"] = 2800
+        case["expected"]["value"] = 2600
+        case["modeledConcessionBoundary"].update(
+            value=2200, basisStepIds=["S1"], evidenceIds=["E-BE-01"])
+        step = copy.deepcopy(data["calculationSteps"][0])
+        step.update(id="S11", inputs="挂牌 2800；中枢 2600；硬底 2200",
+                    formula="(2600/2800−1)×100%；(2200/2600−1)×100%；(2200/2800−1)×100%",
+                    result="−7.1%；−15.4%；−21.4%")
+        data["calculationSteps"].append(step)
+        with self.assertRaisesRegex(ValueError, "every denominator"):
+            MODULE.validate(data)
+        step["formula"] = "(2600−2800)/2800×100%；(2200−2600)/2800×100%；(2200−2800)/2800×100%"
+        with self.assertRaisesRegex(ValueError, "results must match"):
+            MODULE.validate(data)
+        step["result"] = "−7.1%；−14.3%；−21.4%"
+        MODULE.validate(data)
+
 
 if __name__ == "__main__":
     unittest.main()
