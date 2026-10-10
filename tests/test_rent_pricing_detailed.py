@@ -12,6 +12,23 @@ FIXTURE = json.loads((ROOT / "tests/fixtures/rent-pricing-detailed-futureyue.jso
 
 
 class DetailedRentPricingTest(unittest.TestCase):
+    def test_print_audit_keeps_decision_filters_without_raw_objects(self):
+        filters = [
+            {"filter": "上架时间 <= 123", "matchType": "EXACT"},
+            {"filter": "城区 = 余杭区", "matchType": "EXACT"},
+            {"filter": "出租类型 = 整租", "matchType": "EXACT"},
+            {"filter": "房源面积 between [32.0,38.0]", "matchType": "EXACT"},
+            {"filter": "租金 between [2500,2799]", "matchType": "RELAXED"},
+        ]
+        summary = MODULE.audit_filter_summary(filters)
+        self.assertIn("城区 = 余杭区", summary)
+        self.assertIn("租金 between [2500,2799] [RELAXED]", summary)
+        self.assertIn("另 1 项见原始回执", summary)
+        self.assertNotIn("queryCondition", summary)
+        self.assertNotIn("{'filter'", summary)
+        self.assertEqual(MODULE.audit_receipt_summary({"queriedAt": "2026-10-10", "receiptPath": "raw/a.json"}),
+                         "2026-10-10；a.json")
+
     def test_craft_materials_fit_host_role_budget(self):
         craft = json.loads((ROOT / "craft/zhijian-rent-pricing.json").read_text())
         for role in ("writer", "renderer", "reviewer"):

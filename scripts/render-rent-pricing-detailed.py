@@ -47,6 +47,32 @@ def source_text(source):
     return "｜".join(fmt(source.get(key)) for key in ("id", "channel", "observedAt", "pathOrUrl", "scope"))
 
 
+def audit_filter_summary(filters):
+    """Show decision-bearing server filters in print; the JSON keeps every filter."""
+    if not isinstance(filters, list):
+        return fmt(filters)
+    relevant = ("小区", "商圈", "城区", "出租类型", "卧室数", "房源面积", "租金", "成交状态")
+    selected = []
+    for item in filters:
+        if not isinstance(item, dict):
+            continue
+        condition = str(item.get("filter") or item.get("检索条件") or "").strip()
+        if not condition or not any(key in condition for key in relevant):
+            continue
+        match_type = str(item.get("matchType") or item.get("match_type") or "").strip()
+        selected.append(condition + (f" [{match_type}]" if match_type and match_type != "EXACT" else ""))
+    omitted = len(filters) - len(selected)
+    if omitted > 0:
+        selected.append(f"另 {omitted} 项见原始回执")
+    return "；".join(selected) if selected else "实际过滤见原始回执"
+
+
+def audit_receipt_summary(row):
+    path = row.get("receiptPath")
+    receipt = Path(str(path)).name if path else "回执待确认"
+    return f'{fmt(row.get("queriedAt"))}；{receipt}'
+
+
 def table(headers, rows, empty="暂无已核数据"):
     head = "".join(f"<th>{e(item)}</th>" for item in headers)
     body = "".join("<tr>" + "".join(f"<td>{e(cell)}</td>" for cell in row) + "</tr>" for row in rows)
@@ -480,10 +506,10 @@ def render(data):
     audits, pools, comps = data.get("queryAudit") or [], data.get("comparablePools") or [], data.get("comparables") or []
     reported_pools = data.get("reportedPools") or []
     body = '<h3>查询与截断审计</h3>' + table(("查询", "通道/实际过滤", "TopK/总召回", "原始→去重→剔除→有效", "时间/回执"),
-        [(x.get("id"), f'{fmt(x.get("channel"))}；{fmt(x.get("actualFilters"))}',
+        [(x.get("id"), f'{fmt(x.get("channel"))}；{audit_filter_summary(x.get("actualFilters"))}',
           f'{fmt(x.get("topK"))}/{fmt(x.get("totalRecall"))}',
           f'{fmt(x.get("rawCount"))}→{fmt(x.get("deduplicatedCount"))}→{fmt(x.get("excludedCount"))}→{fmt(x.get("validCount"))}',
-          f'{fmt(x.get("queriedAt"))}；{fmt(x.get("receiptPath"))}') for x in audits])
+          audit_receipt_summary(x)) for x in audits])
     if not any(row.get("included") for row in comps):
         body += f'<div class="notice"><b>可比证据缺口：</b>{e(data["comparableEvidenceGap"])}</div>'
     body += '<h3>独立样本池</h3>' + table(("池/地域", "产品/身份", "有效 n", "范围", "P25/中位/P75", "覆盖与限制"),
