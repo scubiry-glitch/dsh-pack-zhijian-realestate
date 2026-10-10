@@ -1,0 +1,17 @@
+{
+  "id": "zhijian.output.rent-pricing-detailed",
+  "version": "0.1.0",
+  "schemaVersion": 2,
+  "media": ["markdown", "html", "pdf"],
+  "sections": [
+    {"id": "结论先行：三档定价与底线区分", "required": true, "requires": ["source", "caliber"]},
+    {"id": "适用前提与产品分案", "required": true, "requires": ["source", "caliber"]},
+    {"id": "三种定价依据及收敛", "required": true, "requires": ["source", "caliber"]},
+    {"id": "计算逻辑明细", "required": true, "requires": ["source", "caliber"]},
+    {"id": "可比明细、样本边界与召回审计", "required": true, "requires": ["source", "caliber"]},
+    {"id": "近 12 个月实际层级租金趋势", "required": true, "requires": ["source", "caliber"]},
+    {"id": "风险与证据缺口", "required": true, "requires": ["source", "caliber"]},
+    {"id": "挂牌、让价、合同与复核动作", "required": true, "requires": ["source", "caliber"]}
+  ],
+  "renderModes": {"discussion": {"anonymize": true}, "final": {"anonymize": false}}
+}

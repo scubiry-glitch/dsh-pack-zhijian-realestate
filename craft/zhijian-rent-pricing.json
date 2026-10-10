@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "description": "具体标的租金定价：同源数据模板渲染与必要事实核对；格式机器检查，价格独立评审",
+  "description": "具体标的租金定价：v2 简报及 v3 详细场景同源数据渲染，格式机器检查与独立价格评审",
   "applicability": [
     "房东或租赁运营者为具体住宅、公寓设置月租挂牌价与调价节奏",
     "需要核实整租/合租属性、可比样本、价格边界及数据缺口的租金定价报告"
@@ -58,6 +58,45 @@
       "id": "rent-pricing.process-review",
       "path": "references/rent-pricing-process-review-v1.md",
       "roles": []
+    },
+    {
+      "id": "rent-pricing.data-v3",
+      "path": "references/rent-pricing-data-v3.md",
+      "roles": [
+        "writer",
+        "renderer",
+        "reviewer"
+      ]
+    },
+    {
+      "id": "rent-pricing.data-v3-template",
+      "path": "references/rent-pricing-data-v3.template.json",
+      "roles": [
+        "writer",
+        "renderer"
+      ]
+    },
+    {
+      "id": "rent-pricing.collection-runbook",
+      "path": "references/rent-pricing-collection-runbook.md",
+      "roles": [
+        "writer",
+        "reviewer"
+      ]
+    },
+    {
+      "id": "rent-pricing.detailed-template",
+      "path": "references/rent-pricing-detailed-template.html",
+      "roles": [
+        "renderer"
+      ]
+    },
+    {
+      "id": "rent-pricing.detailed-renderer",
+      "path": "scripts/render-rent-pricing-detailed.py",
+      "roles": [
+        "renderer"
+      ]
     }
   ],
   "checks": [

@@ -1,0 +1,662 @@
+{
+  "schemaVersion": 3,
+  "status": "reviewed",
+  "report": {
+    "title": "未来悦 35㎡一居整租｜详细租金定价测试",
+    "asOfDate": "2026-10-09",
+    "decisionUse": "已留存原始回执的流程回归测试，不构成特定房号的正式报价",
+    "oneSentenceConclusion": "在标的为未来悦约35㎡一居室整租、房况与可比样本相近的前提下，建议试挂2500元/月；2400元/月是依据挂牌中位数设定的谈判目标推断，并非已发生成交；业主底线须待成本与偏好核实。",
+    "currency": "CNY",
+    "rentUnit": "元/月"
+  },
+  "subject": {
+    "city": "杭州",
+    "district": "余杭区",
+    "businessCircle": "未来科技城",
+    "community": "未来悦",
+    "address": "具体房号未提供",
+    "areaSqm": 35,
+    "areaBasis": "约数，建面/套内待核",
+    "layout": "一居室",
+    "rentalMode": "整租",
+    "independentKitchen": null,
+    "independentBathroom": null,
+    "independentEntrance": null,
+    "independentMetering": null,
+    "floor": null,
+    "orientation": null,
+    "decoration": null,
+    "furniture": null,
+    "rentPermission": null,
+    "vacancyStartDate": null,
+    "ownerMonthlyCost": null,
+    "desiredDaysToLet": null,
+    "verifiedFacts": [
+      "贝壳精确小区ID 1820025150637121；政研通社区ID 330100-D2-B0-C42"
+    ],
+    "unknowns": [
+      "尚未提供具体房号、准确面积、朝向、楼层、装修、家具、电费和水费类型，报价须看房后校准。",
+      "尚未提供租期、付款方式、业主空置成本和最低可接受净收入，业主底线不能计算。"
+    ]
+  },
+  "productCases": [
+    {
+      "id": "A",
+      "label": "约35㎡一居整租测试案",
+      "condition": "实际房况、家具和费用条件须与可比相近",
+      "evidenceIds": [
+        "E-BE-01"
+      ],
+      "comparablePoolIds": [
+        "P-COMMUNITY"
+      ],
+      "applicable": true,
+      "listing": {
+        "value": 2500,
+        "range": null,
+        "nature": "建议",
+        "basisStepIds": [
+          "S4"
+        ],
+        "evidenceIds": [
+          "E-BE-01"
+        ],
+        "conditions": [
+          "同小区有效挂牌中位数2385与35㎡直接可比2600的中点，取整至百元；房况待核。"
+        ]
+      },
+      "expected": {
+        "value": 2400,
+        "range": null,
+        "nature": "推断",
+        "basisStepIds": [
+          "S5"
+        ],
+        "evidenceIds": [
+          "E-BE-01"
+        ],
+        "conditions": [
+          "把同小区挂牌中位数2385取整至百元，仅作谈判情景；没有成租数据支持。"
+        ]
+      },
+      "modeledConcessionBoundary": {
+        "value": null,
+        "range": null,
+        "nature": "待测算",
+        "basisStepIds": [],
+        "evidenceIds": [],
+        "conditions": [
+          "缺已核持有成本和空置容忍度，暂不测算"
+        ]
+      },
+      "ownerConfirmedMinimum": {
+        "value": null,
+        "confirmedAt": null,
+        "evidenceId": null,
+        "conditions": [
+          "业主未提供最低可接受月租"
+        ]
+      }
+    }
+  ],
+  "methods": {
+    "homogeneousComparables": {
+      "status": "已核验",
+      "role": "主估计",
+      "poolIds": [
+        "P-COMMUNITY"
+      ],
+      "inputIds": [
+        "103154319943",
+        "103154384321",
+        "103154479987"
+      ],
+      "range": [
+        1900,
+        2600
+      ],
+      "calculationStepIds": [
+        "S1",
+        "S4"
+      ],
+      "finding": "同小区32–38㎡整租一居有效挂牌3条：1900、2385、2600元/月；中位数2385元，35㎡直接样本2600元。",
+      "limitations": [
+        "n=3，仅挂牌"
+      ]
+    },
+    "unitArea": {
+      "status": "已核验",
+      "role": "交叉验证",
+      "poolIds": [
+        "P-COMMUNITY"
+      ],
+      "inputIds": [
+        "103154319943",
+        "103154384321",
+        "103154479987"
+      ],
+      "unitRent": 66.25,
+      "areaSqm": 35,
+      "range": [
+        2078.13,
+        2600
+      ],
+      "sharesSourceWithMain": true,
+      "calculationStepIds": [
+        "S3"
+      ],
+      "finding": "三条同源挂牌折算到35㎡的租金约2078、2319、2600元/月，中位数约2319元；只作面积算术交叉验证。",
+      "limitations": [
+        "与主估计共用样本"
+      ]
+    },
+    "substitutes": {
+      "status": "已核验",
+      "role": "边界校验",
+      "poolIds": [
+        "P-BIZ-REP"
+      ],
+      "inputIds": [
+        "103154387658",
+        "103154261377",
+        "103154405414",
+        "103154546345"
+      ],
+      "bounds": [
+        1500,
+        4100
+      ],
+      "conversionValid": false,
+      "calculationStepIds": [
+        "S2"
+      ],
+      "finding": "未来科技城同条件可租挂牌57条；剔除未来悦3条后，跨小区54条挂牌中位数2625元，区间1500–4100元，说明选择面和房况差异较大。",
+      "limitations": [
+        "跨小区异质，仅边界检验"
+      ]
+    }
+  },
+  "convergence": {
+    "caseId": "A",
+    "rule": "同小区挂牌中位与同面积直接样本取中点并按百元取整",
+    "resultRange": [
+      2400,
+      2500
+    ],
+    "conflictResolution": "无真实成交，目标成交仅推断",
+    "calculationStepIds": [
+      "S4",
+      "S5"
+    ]
+  },
+  "queryAudit": [
+    {
+      "id": "Q-COMMUNITY",
+      "channel": "贝壳 CLI",
+      "queriedAt": "2026-10-09",
+      "query": "未来悦一居室整租32到38平",
+      "actualFilters": "未来悦、整租、一居室、32–38㎡",
+      "topK": 4,
+      "totalRecall": 4,
+      "rawCount": 4,
+      "deduplicatedCount": 0,
+      "excludedCount": 1,
+      "validCount": 3,
+      "receiptPath": "/root/.lark-channel-workspaces/codex/default/haixing-replay-20261009/未来悦复测/beike-rent-onebr-range.json",
+      "receiptSha256": "5519bc5e9228119c632bc23f8a9f679bf2ca9fa14caa8c92ccf90ae574eee8a4",
+      "truncated": false,
+      "reason": "1条详情不可租"
+    }
+  ],
+  "comparablePools": [
+    {
+      "id": "P-COMMUNITY",
+      "caseId": "A",
+      "geographyLevel": "community",
+      "productType": "一居室整租32-38㎡",
+      "identity": "挂牌",
+      "listingIds": [
+        "103154319943",
+        "103154384321",
+        "103154479987"
+      ],
+      "validN": 3,
+      "min": 1900,
+      "p25": 1900,
+      "median": 2385,
+      "mean": 2295,
+      "p75": 2600,
+      "max": 2600,
+      "unitRentMedian": 66.25,
+      "coverageStatus": "complete",
+      "limitations": [
+        "仅3条有效挂牌，非成交"
+      ]
+    },
+    {
+      "id": "P-BIZ-REP",
+      "caseId": "A",
+      "geographyLevel": "business_circle",
+      "productType": "一居室整租32-38㎡",
+      "identity": "挂牌",
+      "listingIds": [
+        "103154387658",
+        "103154261377",
+        "103154405414",
+        "103154546345"
+      ],
+      "validN": 4,
+      "min": 2000,
+      "p25": null,
+      "median": null,
+      "mean": null,
+      "p75": null,
+      "max": 2700,
+      "unitRentMedian": null,
+      "coverageStatus": "representative",
+      "limitations": [
+        "只展示4条代表样本；57条可租挂牌的原始去重表另存回执"
+      ]
+    }
+  ],
+  "comparables": [
+    {
+      "id": "103154319943",
+      "poolId": "P-COMMUNITY",
+      "community": "未来悦",
+      "areaSqm": 32,
+      "areaBasis": "贝壳房源展示面积",
+      "layout": "一居室",
+      "rentalMode": "整租",
+      "floor": null,
+      "orientation": null,
+      "monthlyRent": 1900,
+      "identity": "挂牌",
+      "sourceDate": "2026-09-26",
+      "receiptId": "E-BE-01",
+      "included": true,
+      "reason": "同小区有效挂牌"
+    },
+    {
+      "id": "103154384321",
+      "poolId": "P-COMMUNITY",
+      "community": "未来悦",
+      "areaSqm": 36,
+      "areaBasis": "贝壳房源展示面积",
+      "layout": "一居室",
+      "rentalMode": "整租",
+      "floor": null,
+      "orientation": null,
+      "monthlyRent": 2385,
+      "identity": "挂牌",
+      "sourceDate": "2026-09-29",
+      "receiptId": "E-BE-01",
+      "included": true,
+      "reason": "同小区有效挂牌"
+    },
+    {
+      "id": "103154479987",
+      "poolId": "P-COMMUNITY",
+      "community": "未来悦",
+      "areaSqm": 35,
+      "areaBasis": "贝壳房源展示面积",
+      "layout": "一居室",
+      "rentalMode": "整租",
+      "floor": null,
+      "orientation": null,
+      "monthlyRent": 2600,
+      "identity": "挂牌",
+      "sourceDate": "2026-10-04",
+      "receiptId": "E-BE-01",
+      "included": true,
+      "reason": "同小区有效挂牌"
+    },
+    {
+      "id": "103154387658",
+      "poolId": "P-BIZ-REP",
+      "community": "西溪美岸",
+      "areaSqm": 35,
+      "areaBasis": "贝壳房源展示面积",
+      "layout": "一居室",
+      "rentalMode": "整租",
+      "floor": null,
+      "orientation": null,
+      "monthlyRent": 2000,
+      "identity": "挂牌",
+      "sourceDate": "2026-09-29",
+      "receiptId": "E-BE-01",
+      "included": true,
+      "reason": "商圈代表样本，非全量统计"
+    },
+    {
+      "id": "103154261377",
+      "poolId": "P-BIZ-REP",
+      "community": "中南未来里",
+      "areaSqm": 35,
+      "areaBasis": "贝壳房源展示面积",
+      "layout": "一居室",
+      "rentalMode": "整租",
+      "floor": null,
+      "orientation": null,
+      "monthlyRent": 2200,
+      "identity": "挂牌",
+      "sourceDate": "2026-09-23",
+      "receiptId": "E-BE-01",
+      "included": true,
+      "reason": "商圈代表样本，非全量统计"
+    },
+    {
+      "id": "103154405414",
+      "poolId": "P-BIZ-REP",
+      "community": "海创绿谷",
+      "areaSqm": 35,
+      "areaBasis": "贝壳房源展示面积",
+      "layout": "一居室",
+      "rentalMode": "整租",
+      "floor": null,
+      "orientation": null,
+      "monthlyRent": 2500,
+      "identity": "挂牌",
+      "sourceDate": "2026-09-30",
+      "receiptId": "E-BE-01",
+      "included": true,
+      "reason": "商圈代表样本，非全量统计"
+    },
+    {
+      "id": "103154546345",
+      "poolId": "P-BIZ-REP",
+      "community": "杭州未来广场银天金城",
+      "areaSqm": 36,
+      "areaBasis": "贝壳房源展示面积",
+      "layout": "一居室",
+      "rentalMode": "整租",
+      "floor": null,
+      "orientation": null,
+      "monthlyRent": 2700,
+      "identity": "挂牌",
+      "sourceDate": "2026-10-07",
+      "receiptId": "E-BE-01",
+      "included": true,
+      "reason": "商圈代表样本，非全量统计"
+    }
+  ],
+  "calculationSteps": [
+    {
+      "id": "S1",
+      "caseId": "A",
+      "inputs": [
+        "32㎡/1900、36㎡/2385、35㎡/2600；34㎡/2650详情不可租"
+      ],
+      "formula": "4条展示－1条不可租＝3条可租；按挂牌价升序",
+      "units": "元/月",
+      "rounding": "按步骤说明",
+      "result": "有效n=3；挂牌中位数2385元/月",
+      "nature": "计算",
+      "evidenceIds": [
+        "E-BE-01"
+      ],
+      "reviewStatus": "旧报告回执核对"
+    },
+    {
+      "id": "S2",
+      "caseId": "A",
+      "inputs": [
+        "未来科技城一居整租32–38㎡总召回61，分段取齐61；可租57，跨小区54"
+      ],
+      "formula": "可租57条取中位数；跨小区54条中间两项求均值",
+      "units": "元/月",
+      "rounding": "按步骤说明",
+      "result": "板块可租中位数2600；跨小区中位数2625元/月；仅作边界",
+      "nature": "计算",
+      "evidenceIds": [
+        "E-BE-01"
+      ],
+      "reviewStatus": "旧报告回执核对"
+    },
+    {
+      "id": "S3",
+      "caseId": "A",
+      "inputs": [
+        "目标35㎡；三条同小区样本分别32、36、35㎡"
+      ],
+      "formula": "1900÷32×35=2078.13；2385÷36×35=2318.75；2600÷35×35=2600",
+      "units": "元/月",
+      "rounding": "按步骤说明",
+      "result": "折算后中位数2318.75元/月，不独立加权",
+      "nature": "计算",
+      "evidenceIds": [
+        "E-BE-01"
+      ],
+      "reviewStatus": "旧报告回执核对"
+    },
+    {
+      "id": "S4",
+      "caseId": "A",
+      "inputs": [
+        "同小区原价中位数2385；35㎡直接挂牌2600"
+      ],
+      "formula": "(2385+2600)÷2=2492.5；四舍五入至百元",
+      "units": "元/月",
+      "rounding": "按步骤说明",
+      "result": "建议试挂2500元/月，须以实际房况复核",
+      "nature": "建议或推断",
+      "evidenceIds": [
+        "E-BE-01"
+      ],
+      "reviewStatus": "旧报告回执核对"
+    },
+    {
+      "id": "S5",
+      "caseId": "A",
+      "inputs": [
+        "同小区挂牌中位数2385；无真实成租价和议价率"
+      ],
+      "formula": "2385元四舍五入至百元；仅作为谈判情景",
+      "units": "元/月",
+      "rounding": "按步骤说明",
+      "result": "推断目标2400元/月；不能称为成交均价",
+      "nature": "建议或推断",
+      "evidenceIds": [
+        "E-BE-01"
+      ],
+      "reviewStatus": "旧报告回执核对"
+    }
+  ],
+  "trend": {
+    "status": "available",
+    "selectedLevel": "community",
+    "selectedName": "未来悦",
+    "geoId": "330100-D2-B0-C42",
+    "indicatorKey": "rentIdx",
+    "indicatorMeaning": "跨户型社区租金指标",
+    "unit": "接口原值，具体统计单位未明",
+    "populationScope": "社区跨户型",
+    "source": "/root/.lark-channel-workspaces/codex/default/haixing-replay-20261009/未来悦复测/zyt-community-bundle.json",
+    "observationStart": "2025-08",
+    "observationEnd": "2026-07",
+    "lagMonths": 3,
+    "fallbackAttempts": [
+      {
+        "level": "community",
+        "name": "未来悦",
+        "geoId": "330100-D2-B0-C42",
+        "indicatorKey": "rentIdx",
+        "queriedAt": "2026-10-09",
+        "status": "selected",
+        "reason": "取到最近连续12个月",
+        "receiptPath": "/root/.lark-channel-workspaces/codex/default/haixing-replay-20261009/未来悦复测/zyt-community-bundle.json"
+      }
+    ],
+    "months": [
+      {
+        "month": "2025-08",
+        "value": 2850,
+        "sourceRow": "rentIdx/2025-08"
+      },
+      {
+        "month": "2025-09",
+        "value": 2937,
+        "sourceRow": "rentIdx/2025-09"
+      },
+      {
+        "month": "2025-10",
+        "value": 3014,
+        "sourceRow": "rentIdx/2025-10"
+      },
+      {
+        "month": "2025-11",
+        "value": 3081,
+        "sourceRow": "rentIdx/2025-11"
+      },
+      {
+        "month": "2025-12",
+        "value": 3053,
+        "sourceRow": "rentIdx/2025-12"
+      },
+      {
+        "month": "2026-01",
+        "value": 3037,
+        "sourceRow": "rentIdx/2026-01"
+      },
+      {
+        "month": "2026-02",
+        "value": 3085,
+        "sourceRow": "rentIdx/2026-02"
+      },
+      {
+        "month": "2026-03",
+        "value": 3004,
+        "sourceRow": "rentIdx/2026-03"
+      },
+      {
+        "month": "2026-04",
+        "value": 2919,
+        "sourceRow": "rentIdx/2026-04"
+      },
+      {
+        "month": "2026-05",
+        "value": 2869,
+        "sourceRow": "rentIdx/2026-05"
+      },
+      {
+        "month": "2026-06",
+        "value": 2929,
+        "sourceRow": "rentIdx/2026-06"
+      },
+      {
+        "month": "2026-07",
+        "value": 2950,
+        "sourceRow": "rentIdx/2026-07"
+      }
+    ],
+    "comparabilityWarning": "非目标35㎡一居整租租金，指标算法未公开",
+    "timeDecision": "仅作历史时点背景，不参与单套点价"
+  },
+  "vacancyEconomics": {
+    "comparisonMonths": null,
+    "monthlyHoldingCost": null,
+    "scenarios": [],
+    "formula": null,
+    "calculationStepIds": []
+  },
+  "repricingSchedule": [
+    {
+      "trigger": "初始试挂",
+      "askingRent": 2500,
+      "action": "记录询盘与带看，核实房况后复核",
+      "economicsStepId": null,
+      "stopCondition": "业主确认最低价前不得自动执行下探"
+    }
+  ],
+  "listingWindows": [
+    {
+      "goal": "短期试挂",
+      "action": "初始挂牌2500元/月，积累真实反馈",
+      "reviewDate": "待业主确认"
+    }
+  ],
+  "leaseTerms": [
+    {
+      "term": "押付与费用",
+      "detail": "待业主与租客明确约定",
+      "evidenceId": null
+    }
+  ],
+  "risks": [
+    "本报告为35㎡一居整租测试标的；具体房源条件不明，不能直接作为任一现房的正式报价。",
+    "同小区有效样本只有3条，价格为在租挂牌；34㎡/2650元房源虽被检索召回，详情已标不可租，已剔除。",
+    "板块57条可租挂牌跨多个小区，物业形态、装修及水电费存在异质性；仅作替代选择边界。",
+    "区级150条检索只展示Top10，分段补取遇服务暂时不可用；未计算区级全量统计量。",
+    "贝壳租赁行情工具返回Unknown tool，未取得成租价或实际议价率；2400元只是挂牌证据下的谈判推断。",
+    "政研通社区rentIdx最新为2026-07，距报告基准月滞后3个月，且为跨户型社区指标；不参与35㎡点价。",
+    "缺持有成本、空置容忍度和业主偏好，不设置业主最低价。"
+  ],
+  "missingEvidenceActions": [
+    "补具体房号和产品形态",
+    "补业主成本、空置容忍度及最低可接受价",
+    "取得实际成租价后复核目标成交"
+  ],
+  "sources": [
+    {
+      "id": "SRC-01",
+      "sourceType": "原始回执",
+      "channel": "贝壳 CLI",
+      "observedAt": "2026-10-09",
+      "pathOrUrl": "/root/.lark-channel-workspaces/codex/default/haixing-replay-20261009/未来悦复测/beike-resolve.json",
+      "sha256": "47e2f535b6ab9189d1560e4161e90c93ac21f3179bf6ae7d334ac95c4a15f8ff",
+      "scope": "贝壳2026-10-09：未来悦精确小区解析 beike-resolve.json；同小区一居整租32–38㎡回执 beike-rent-onebr-range.json。"
+    },
+    {
+      "id": "SRC-02",
+      "sourceType": "原始回执",
+      "channel": "贝壳 CLI",
+      "observedAt": "2026-10-09",
+      "pathOrUrl": "/root/.lark-channel-workspaces/codex/default/haixing-replay-20261009/未来悦复测/beike-rent-onebr-range.json",
+      "sha256": "5519bc5e9228119c632bc23f8a9f679bf2ca9fa14caa8c92ccf90ae574eee8a4",
+      "scope": "贝壳2026-10-09：三条有效房源详情 beike-detail-35m.json、beike-detail-valid-comps.json；剔除34㎡房源详情 beike-detail-34m-conflict.json。"
+    },
+    {
+      "id": "SRC-03",
+      "sourceType": "原始回执",
+      "channel": "贝壳 CLI",
+      "observedAt": "2026-10-09",
+      "pathOrUrl": "/root/.lark-channel-workspaces/codex/default/haixing-replay-20261009/未来悦复测/beike-plate-band-root.json",
+      "sha256": "f4e88ac6465806bb5fe2a1cf133e51a3c9edd1d382eb71c52ecc32ad6979fa40",
+      "scope": "贝壳2026-10-09：未来科技城板块根查询 beike-plate-band-root.json；11个价格叶区间 plate-bands/；去重统计 plate-segmentation-summary.json、plate-parsed.json。"
+    },
+    {
+      "id": "SRC-04",
+      "sourceType": "原始回执",
+      "channel": "贝壳 CLI",
+      "observedAt": "2026-10-09",
+      "pathOrUrl": "/root/.lark-channel-workspaces/codex/default/haixing-replay-20261009/未来悦复测/beike-district-comps.json",
+      "sha256": "9395e117aecae448daebbbfb22cbd403ac0226384313b601c1d13c5ec00ee719",
+      "scope": "贝壳2026-10-09：余杭区一居整租32–38㎡根查询 beike-district-comps.json；district-bands/为未取齐的补取回执。"
+    },
+    {
+      "id": "SRC-05",
+      "sourceType": "原始回执",
+      "channel": "政研通 CLI",
+      "observedAt": "2026-10-09",
+      "pathOrUrl": "/root/.lark-channel-workspaces/codex/default/haixing-replay-20261009/未来悦复测/zyt-community-bundle.json",
+      "sha256": "62f560120b3275814738a2683633c08400a5c743f86e2e901725966ef7f75df0",
+      "scope": "政研通2026-10-09：未来悦地理搜索 zyt-geo-search.json；社区级租金序列 zyt-community-bundle.json。"
+    },
+    {
+      "id": "SRC-06",
+      "sourceType": "原始回执",
+      "channel": "贝壳 CLI",
+      "observedAt": "2026-10-09",
+      "pathOrUrl": "/root/.lark-channel-workspaces/codex/default/haixing-replay-20261009/未来悦复测/beike-rent-market.json",
+      "sha256": "6246b6ffac8ef0ef35721e446917fe39001876bff8a639ebc00f87eeaa1ea51b",
+      "scope": "贝壳2026-10-09：租赁行情接口 beike-rent-market.json，返回Unknown tool。"
+    }
+  ],
+  "review": {
+    "reviewer": "回归测试映射",
+    "reviewedAt": "2026-10-10",
+    "blockingFindings": [],
+    "dataSha256": null,
+    "renderSha256": null
+  }
+}

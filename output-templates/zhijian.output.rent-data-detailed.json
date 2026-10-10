@@ -1,0 +1,8 @@
+{
+  "id": "zhijian.output.rent-data-detailed",
+  "version": "0.1.0",
+  "schemaVersion": 2,
+  "media": ["json"],
+  "sections": [],
+  "renderModes": {"discussion": {"anonymize": true}, "final": {"anonymize": false}}
+}

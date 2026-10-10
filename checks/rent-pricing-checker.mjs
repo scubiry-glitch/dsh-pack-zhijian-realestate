@@ -20,7 +20,8 @@ export function evaluateRentPricing(input) {
     const ledgerBytes = role(input.artifacts, 'evidence', 256 * 1024)
     const md = mdBytes.toString('utf8'), page = htmlBytes.toString('utf8')
     const ledger = JSON.parse(ledgerBytes.toString('utf8'))
-    const bound = ledger.template === 'rent-pricing-shell-v3' &&
+    const detailed = ledger.template === 'rent-pricing-detailed-v3'
+    const bound = ['rent-pricing-shell-v3', 'rent-pricing-detailed-v3'].includes(ledger.template) &&
       ledger.mdSha256 === hash(mdBytes) && ledger.htmlSha256 === hash(htmlBytes) &&
       ledger.pdfSha256 === hash(pdfBytes) &&
       /^[a-f0-9]{64}$/.test(ledger.dataSha256)
@@ -29,18 +30,23 @@ export function evaluateRentPricing(input) {
       '五、可比明细表', '六、近 12 个月社区租金趋势',
       '七、风险与限制', '八、行动建议']
     const order = sections.map(section => page.indexOf('<h2>' + section + '</h2>'))
+    const detailedOrder = Array.from({length: 8}, (_, i) => page.indexOf(`<section class="card anchor" id="s${i + 1}">`))
+    const ordered = detailed ? detailedOrder.every((position, index) => position >= 0 && (index === 0 || position > detailedOrder[index - 1])) &&
+      (page.match(/<h2>/g) ?? []).length === 8 :
+      order.every((position, index) => position >= 0 && (index === 0 || position > order[index - 1]))
+    const methods = detailed ? ['同质可比', '单位面积', '替代品'].every(item => page.includes(item)) :
+      page.includes('依据一 · 同质可比法') && page.includes('依据二 · 单位面积租金法') && page.includes('依据三 · 替代品锚定法')
+    const sources = detailed ? page.includes('<h3>来源</h3>') : page.includes('证据入口')
+    const trendLabel = detailed ?
+      (ledger.trendLevel === 'community' ? '小区' : ledger.trendLevel === 'business_circle' ? '商圈' : '城市') : '社区'
     const structure = (page.match(/<h1\b/g) ?? []).length === 1 &&
       page.includes('id="report-body"') &&
-      order.every((position, index) => position >= 0 && (index === 0 || position > order[index - 1])) &&
-      page.includes('依据一 · 同质可比法') &&
-      page.includes('依据二 · 单位面积租金法') &&
-      page.includes('依据三 · 替代品锚定法') &&
-      page.includes('证据入口') &&
+      ordered && methods && sources &&
       !/[〔〕]/.test(page + md) &&
       !/<(?:script|iframe|img)\b/i.test(page) &&
       !/\b(?:src|href)=["']https?:\/\//i.test(page) &&
       (ledger.comparableCount === 0 || page.includes('aria-label="可比样本月租价格分布"')) &&
-      (ledger.trendPointCount === 0 || page.includes('aria-label="近 12 个月社区租金趋势"')) &&
+      (ledger.trendPointCount === 0 || page.includes(`aria-label="近 12 个月${trendLabel}租金趋势"`)) &&
       pdfBytes.subarray(0, 5).toString() === '%PDF-' &&
       pdfBytes.length > 1000
     return [
