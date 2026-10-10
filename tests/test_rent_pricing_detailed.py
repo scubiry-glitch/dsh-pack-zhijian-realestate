@@ -12,6 +12,16 @@ FIXTURE = json.loads((ROOT / "tests/fixtures/rent-pricing-detailed-futureyue.jso
 
 
 class DetailedRentPricingTest(unittest.TestCase):
+    def test_craft_materials_fit_host_role_budget(self):
+        craft = json.loads((ROOT / "craft/zhijian-rent-pricing.json").read_text())
+        for role in ("writer", "renderer", "reviewer"):
+            selected = [item for item in craft["materials"] if role in item["roles"]]
+            total = sum((ROOT / item["path"]).stat().st_size for item in selected)
+            self.assertLessEqual(total, 24 * 1024, f"{role} material budget")
+        paths = {item["path"] for item in craft["materials"]}
+        self.assertIn("references/rent-pricing-collection-runbook.md", paths)
+        self.assertIn("scripts/render-rent-pricing-detailed.py", paths)
+
     def test_real_replay_renders_eight_chapters_and_distinct_minimum(self):
         data = copy.deepcopy(FIXTURE)
         MODULE.validate(data)

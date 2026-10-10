@@ -30,19 +30,12 @@
     {
       "id": "rent-pricing.data-contract",
       "path": "references/rent-pricing-data-v2.md",
-      "roles": [
-        "writer",
-        "renderer",
-        "reviewer"
-      ]
+      "roles": []
     },
     {
       "id": "rent-pricing.data-example",
       "path": "references/rent-pricing-data-v2.example.json",
-      "roles": [
-        "writer",
-        "renderer"
-      ]
+      "roles": []
     },
     {
       "id": "rent-pricing.shell",
@@ -63,7 +56,6 @@
       "id": "rent-pricing.data-v3",
       "path": "references/rent-pricing-data-v3.md",
       "roles": [
-        "writer",
         "renderer",
         "reviewer"
       ]
@@ -71,32 +63,24 @@
     {
       "id": "rent-pricing.data-v3-template",
       "path": "references/rent-pricing-data-v3.template.json",
-      "roles": [
-        "writer",
-        "renderer"
-      ]
+      "roles": []
     },
     {
       "id": "rent-pricing.collection-runbook",
       "path": "references/rent-pricing-collection-runbook.md",
       "roles": [
-        "writer",
-        "reviewer"
+        "writer"
       ]
     },
     {
       "id": "rent-pricing.detailed-template",
       "path": "references/rent-pricing-detailed-template.html",
-      "roles": [
-        "renderer"
-      ]
+      "roles": []
     },
     {
       "id": "rent-pricing.detailed-renderer",
       "path": "scripts/render-rent-pricing-detailed.py",
-      "roles": [
-        "renderer"
-      ]
+      "roles": []
     }
   ],
   "checks": [
