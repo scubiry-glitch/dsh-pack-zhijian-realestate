@@ -211,6 +211,8 @@ def validate(data):
     subject = data.get("subject") or {}
     for key in ("title", "asOfDate", "oneSentenceConclusion"):
         require(isinstance(report.get(key), str) and report[key].strip(), f"report.{key} required")
+    require(report.get("evidenceMode") in (None, "historical_transcription"),
+            "report.evidenceMode invalid")
     asof = date.fromisoformat(report["asOfDate"])
     for key in ("city", "community", "areaSqm", "areaBasis", "layout", "rentalMode"):
         require(subject.get(key) is not None, f"subject.{key} required")
@@ -265,6 +267,9 @@ def validate(data):
         require(row.get("poolId") in pool_ids, f"comparable {row['id']} has unknown pool")
         require(number(row.get("monthlyRent")), f"comparable {row['id']} rent invalid")
         require(row.get("identity") in ("挂牌", "成交"), f"comparable {row['id']} identity invalid")
+    if not any(row.get("included") for row in comps):
+        require(isinstance(data.get("comparableEvidenceGap"), str) and data["comparableEvidenceGap"].strip(),
+                "no included comparables requires comparableEvidenceGap")
     for pool in pools:
         ids = pool.get("listingIds") or []
         require(all(item in comp_ids for item in ids), f"pool {pool['id']} has unknown listing")
@@ -276,6 +281,20 @@ def validate(data):
         if pool.get("coverageStatus") != "complete":
             require(pool.get("p25") is None and pool.get("median") is None and pool.get("p75") is None,
                     f"pool {pool['id']} cannot claim full-distribution quantiles")
+    source_ids = {source.get("id") for source in data.get("sources") or [] if isinstance(source, dict)}
+    reported_pools = data.get("reportedPools") or []
+    require(isinstance(reported_pools, list), "reportedPools must be a list")
+    for row in reported_pools:
+        require(row.get("id") and row.get("sourceId") in source_ids,
+                "reported pool needs ID and known source")
+        require(type(row.get("reportedN")) is int and row["reportedN"] > 0,
+                f"reported pool {row.get('id')} needs positive reportedN")
+        require(row.get("rowEvidenceStatus") == "summary_only",
+                f"reported pool {row.get('id')} must disclose summary-only evidence")
+        bounds = row.get("range")
+        require(bounds is None or (isinstance(bounds, list) and len(bounds) == 2 and
+                all(number(value) for value in bounds) and bounds[0] <= bounds[1]),
+                f"reported pool {row.get('id')} range invalid")
     for row in data.get("queryAudit") or []:
         raw = row.get("rawCount")
         dedup = row.get("deduplicatedCount")
@@ -459,11 +478,14 @@ def render(data):
     h.append(section(4, "REPRODUCTION", headings[3], body))
 
     audits, pools, comps = data.get("queryAudit") or [], data.get("comparablePools") or [], data.get("comparables") or []
+    reported_pools = data.get("reportedPools") or []
     body = '<h3>查询与截断审计</h3>' + table(("查询", "通道/实际过滤", "TopK/总召回", "原始→去重→剔除→有效", "时间/回执"),
         [(x.get("id"), f'{fmt(x.get("channel"))}；{fmt(x.get("actualFilters"))}',
           f'{fmt(x.get("topK"))}/{fmt(x.get("totalRecall"))}',
           f'{fmt(x.get("rawCount"))}→{fmt(x.get("deduplicatedCount"))}→{fmt(x.get("excludedCount"))}→{fmt(x.get("validCount"))}',
           f'{fmt(x.get("queriedAt"))}；{fmt(x.get("receiptPath"))}') for x in audits])
+    if not any(row.get("included") for row in comps):
+        body += f'<div class="notice"><b>可比证据缺口：</b>{e(data["comparableEvidenceGap"])}</div>'
     body += '<h3>独立样本池</h3>' + table(("池/地域", "产品/身份", "有效 n", "范围", "P25/中位/P75", "覆盖与限制"),
         [(x.get("id"), f'{fmt(x.get("productType"))}·{fmt(x.get("identity"))}', x.get("validN"),
           f'{fmt(x.get("min"))}—{fmt(x.get("max"))}',
@@ -472,11 +494,35 @@ def render(data):
     included = [x for x in comps if x.get("included")]
     chart_rows = [{"label": x.get("community") or x["id"], "price": x["monthlyRent"], "identity": x["identity"]} for x in included]
     listing = next((c["listing"].get("value") for c in data["productCases"] if c["listing"].get("value") is not None), None)
-    body += chart("图 1｜逐条可比月租分布", BASE.chart(chart_rows, listing), "只展示已核实有效行；挂牌与成交分色，不能把混合池当同源成交分布。")
-    body += '<h3>逐条可比</h3>' + table(("ID/小区", "产品/面积", "月租", "身份", "日期/回执", "入选/排除"),
-        [(f'{fmt(x.get("id"))}·{fmt(x.get("community"))}', f'{fmt(x.get("rentalMode"))}·{fmt(x.get("areaSqm"))}㎡',
-          x.get("monthlyRent"), x.get("identity"), f'{fmt(x.get("sourceDate"))}；{fmt(x.get("receiptId"))}',
-          f'{"入选" if x.get("included") else "排除"}：{fmt(x.get("reason"))}') for x in comps])
+    historical = report.get("evidenceMode") == "historical_transcription"
+    caption = ("只展示原报告表格可见行的转录；跨查询重复分别保留在各查询池，不代表当前在租复核。"
+               if historical else "只展示已核实有效行；挂牌与成交分色，不能把混合池当同源成交分布。")
+    body += chart("图 1｜逐条可比月租分布", BASE.chart(chart_rows, listing), caption)
+    body += '<h3>原报告逐行转录</h3>' if historical else '<h3>逐条可比</h3>'
+    comp_rows = []
+    for item in comps:
+        unit = item.get("unitRentReported")
+        if unit is None and number(item.get("areaSqm")):
+            unit = item["monthlyRent"] / item["areaSqm"]
+        unit_text = f"{unit:.1f} 元/㎡·月" if isinstance(unit, (int, float)) else "单价待核"
+        comp_rows.append((f'{fmt(item.get("id"))}·{fmt(item.get("community"))}；{fmt(item.get("businessCircle"))}',
+            f'{fmt(item.get("layout"))}·{fmt(item.get("rentalMode"))}·{fmt(item.get("areaSqm"))}㎡',
+            f'{fmt(item.get("orientation"))}；{fmt(item.get("floor"))}',
+            f'{fmt(item.get("monthlyRent"))} 元/月；{unit_text}',
+            f'{fmt(item.get("serviceType"))}；{fmt(item.get("identity"))}',
+            f'{fmt(item.get("sourceDate"))}；{fmt(item.get("receiptId"))}',
+            f'{"入选" if item.get("included") else "排除"}：{fmt(item.get("reason"))}'))
+    body += table(("ID/小区·板块", "户型/方式/面积", "朝向/楼层", "月租/单价", "业务/身份", "日期/回执", "入选/排除"), comp_rows)
+    if data.get("comparableAuditNote"):
+        body += f'<div class="notice">{e(data["comparableAuditNote"])}</div>'
+    if reported_pools:
+        body += '<h3>原报告另列汇总口径（仅摘要，未并入逐条样本池）</h3>'
+        body += table(("口径", "原报告 n", "区间", "中位/均值", "证据/限制"),
+            [(row.get("label"), row.get("reportedN"),
+              f'{fmt(row["range"][0])}—{fmt(row["range"][1])}' if row.get("range") else None,
+              f'{fmt(row.get("median"))}/{fmt(row.get("mean"))}',
+              f'{fmt(row.get("sourceId"))}；{fmt(row.get("limitations"))}')
+             for row in reported_pools])
     h.append(section(5, "AUDIT TRAIL", headings[4], body))
 
     attempts = trend.get("fallbackAttempts") or []

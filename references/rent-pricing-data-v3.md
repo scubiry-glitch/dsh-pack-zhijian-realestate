@@ -10,6 +10,8 @@
 | `queryAudit[]` | `id`, `channel`, `queriedAt`, `query`, `actualFilters`, `topK`, `totalRecall`, `rawCount`, `deduplicatedCount`, `excludedCount`, `validCount`, `receiptPath`, `receiptSha256`, `truncated`, `reason` | 先核工具真正命中的过滤条件。`rawCount − duplicates − excluded = validCount`，跨查询去重另列并集。截断样本不得冒充全市场分位。 |
 | `comparablePools[]` | `id`, `caseId`, `geographyLevel`, `productType`, `identity`, `listingIds`, `validN`, `min`, `p25`, `median`, `mean`, `p75`, `max`, `unitRentMedian`, `coverageStatus`, `limitations` | 同小区、商圈、区级池分别统计；挂牌与成交、整租与合租分池。若 `validN` 太小或样本截断，价格分位须降级为观察范围。 |
 | `comparables[]` | `id`, `poolId`, `community`, `areaSqm`, `areaBasis`, `layout`, `rentalMode`, `floor`, `orientation`, `monthlyRent`, `identity`, `sourceDate`, `receiptId`, `included`, `reason` | 每个统计量能回到逐条房源。重复 listing ID 必须留去重记录。 |
+| `reportedPools[]` | `id`, `label`, `reportedN`, `sourceId`, `rowEvidenceStatus=summary_only`, `limitations` | 仅当旧报告有汇总统计、但无法取得逐行回执时使用；摘要单列，不并入 `comparablePools[]` 或逐条样本图。 |
+| `comparableEvidenceGap` | 无入选逐条可比时填写具体缺口 | 第五章会明确显示原因；缺此字段则阻止渲染，避免静默空表。 |
 | `calculationSteps[]` | `id`, `caseId`, `inputIds`, `formula`, `units`, `rounding`, `result`, `nature`, `evidenceIds`, `reviewStatus` | 承重价格需要逐步复算，不能用文字总结代替算式。 |
 | `trend.fallbackAttempts[]` | `level`, `name`, `geoId`, `indicatorKey`, `queriedAt`, `status`, `reason`, `receiptPath` | 顺序只能是 `community → business_circle → city`；选中层级之前的失败回执必须保留。 |
 | `trend.months[]` | `month`, `value`, `sourceRow` | 按月份连续列出最近可得 12 期；缺值写 `null` 并断线，不补造。观察期和滞后必须写清。 |
@@ -38,6 +40,12 @@
 ## 结论图与价差
 
 每案把有证据的建议挂牌、目标成交中枢与区间、测算硬底放在**同一条月租横轴**。若有三档点价，列出挂牌→成交中枢、成交中枢→测算硬底、挂牌→测算硬底三段价差；三个百分比的分母统一为挂牌价。业主确认最低价单列；未确认时显示“待业主确认”，不能把市场测算硬底填入该字段。只有至少两档有可核数值时画横轴；缺少测算硬底时该标记保持缺口，不复制其他报告的数字。
+
+## 第五章不可静默留空
+
+复用历史报告时，先把原报告可逐行核对的查询表完整转录到 `queryAudit[]`、`comparablePools[]`、`comparables[]`，标明这是原报告转录，保留跨查询重复与去重倒推。只有汇总统计而无逐行回执的口径放 `reportedPools[]`，必须披露缺少哪些行、不能与可见表混算。原始查询回执不可得时，`receiptPath` 指向实际可核的历史报告，`channel` 和 `reason` 说明不是本次工具查询；不能把历史挂牌称为当前在租。新报告若确实无可比数据，第五章应显示查询失败原因与补数动作，并在独立评审中检查，不可用空表冒充完成取证。
+
+历史报告转录样张设置 `report.evidenceMode=historical_transcription`，逐条图注会说明“原报告可见行转录”，不宣称当前在租。对没有原始房源 ID 的表格行使用显式转录 ID（如 `ORIG-A-01`）并在 `receiptId` 中指出原报告表和行号；跨表重复各留一行，在查询审计记录去重后的独立条目数。
 
 ## 发布门禁
 

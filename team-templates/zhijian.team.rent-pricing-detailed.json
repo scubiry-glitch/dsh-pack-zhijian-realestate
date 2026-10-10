@@ -116,7 +116,7 @@
       "outputSchema": "zhijian.output.rent-pricing-detailed",
       "retryPolicy": "quality-repair",
       "subject": "从冻结 v3 数据生成详细 HTML/PDF",
-      "description": "使用 references/rent-pricing-detailed-template.html 的八章视觉和 v3 字段生成同源 HTML/PDF、数据与渲染哈希。保留三档价格共用横轴、业主确认最低价单列、三段价差百分比、趋势下方四项原始序列计算及缺月说明；保留分案卡、四价格状态、三依据区间、逐步计算、查询审计、分池统计、逐条可比、趋势实际层级、让价阶梯及合同条款。图仅在数据足够时绘制；缺口显示缺口卡。核单标题、每张图的数值与证据、表格行数、手机与 A4。若事实或算式变化，退回 t2 再审；纯版式问题在 t3 修复。 执行 scripts/render-rent-pricing-detailed.py --data <已审 JSON> --md <报告.md> --html <报告.html> --pdf <报告.pdf> --ledger <台账.json>。"
+      "description": "使用 references/rent-pricing-detailed-template.html 的八章视觉和 v3 字段生成同源 HTML/PDF、数据与渲染哈希。保留三档价格共用横轴、业主确认最低价单列、三段价差百分比、趋势下方四项原始序列计算及缺月说明；保留分案卡、四价格状态、三依据区间、逐步计算、查询审计、分池统计、逐条可比、趋势实际层级、让价阶梯及合同条款。图仅在数据足够时绘制；缺口显示缺口卡。重点核第五章查询账、独立样本池、逐条明细是否非空；只有汇总而无逐行回执的旧报告口径必须单列摘要和缺口，跨查询去重倒推不能混算。核单标题、每张图的数值与证据、表格行数、手机与 A4。若事实或算式变化，退回 t2 再审；纯版式问题在 t3 修复。 执行 scripts/render-rent-pricing-detailed.py --data <已审 JSON> --md <报告.md> --html <报告.html> --pdf <报告.pdf> --ledger <台账.json>。"
     }
   ],
   "gates": [],

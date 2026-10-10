@@ -67,6 +67,17 @@ class DetailedRentPricingTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "cannot claim"):
             MODULE.validate(data)
 
+    def test_fifth_chapter_cannot_silently_have_no_comparables(self):
+        data = copy.deepcopy(FIXTURE)
+        data["comparables"] = []
+        data["comparablePools"] = []
+        with self.assertRaisesRegex(ValueError, "comparableEvidenceGap"):
+            MODULE.validate(data)
+        data["comparableEvidenceGap"] = "本轮检索无可核逐条房源；需补查询回执。"
+        MODULE.validate(data)
+        _, html = MODULE.render(data)
+        self.assertIn("可比证据缺口", html)
+
     def test_haixing_original_four_trend_rates_recalculate_from_31_periods(self):
         fixture = json.loads((ROOT / "tests/fixtures/haixing-rentidx-history.json").read_text())
         months = fixture["months"]
@@ -85,6 +96,17 @@ class DetailedRentPricingTest(unittest.TestCase):
         self.assertIn("三档定价共用横轴", html)
         for rate in ("+35.9%", "+17.4%", "−10.6%", "+2.2%"):
             self.assertIn(rate, html)
+        self.assertEqual(len(data["comparables"]), 20)
+        self.assertEqual([pool["validN"] for pool in data["comparablePools"]], [10, 10])
+        self.assertEqual(data["queryAudit"][-1]["validCount"], 19)
+        fifth = html.split('<section class="card anchor" id="s5">', 1)[1].split(
+            '<section class="card anchor" id="s6">', 1)[0]
+        self.assertEqual(fifth.count("<td>ORIG-A-"), 10)
+        self.assertEqual(fifth.count("<td>ORIG-B-"), 10)
+        self.assertIn("仅摘要，未并入逐条样本池", fifth)
+        self.assertNotIn('暂无已核数据', fifth)
+        self.assertIn('朝向/楼层', fifth)
+        self.assertIn('79.1 元/㎡·月', fifth)
 
     def test_missing_prior_period_is_explicit_instead_of_invented(self):
         data = copy.deepcopy(FIXTURE)

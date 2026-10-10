@@ -7,7 +7,8 @@
     "decisionUse": null,
     "oneSentenceConclusion": null,
     "currency": "CNY",
-    "rentUnit": "元/月"
+    "rentUnit": "元/月",
+    "evidenceMode": null
   },
   "subject": {
     "city": null,
@@ -158,5 +159,6 @@
     "blockingFindings": [],
     "dataSha256": null,
     "renderSha256": null
-  }
+  },
+  "comparableEvidenceGap": null
 }
