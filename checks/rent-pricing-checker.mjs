@@ -3,6 +3,39 @@ import { createHash } from 'node:crypto'
 
 const hash = bytes => createHash('sha256').update(bytes).digest('hex')
 const result = (id, ok, detail) => ({ id, status: ok ? 'passed' : 'failed', detail })
+const record = value => value !== null && typeof value === 'object' && !Array.isArray(value)
+const ledgerFields = ['template', 'dataSha256', 'mdSha256', 'htmlSha256', 'pdfSha256',
+  'sourceCount', 'comparableCount', 'calculationStepCount', 'trendLevel',
+  'trendPointCount', 'independentReview']
+
+function readLedger(bytes) {
+  const evidence = JSON.parse(bytes.toString('utf8'))
+  if (!record(evidence)) throw new Error('evidence must be an object')
+  if (!Object.hasOwn(evidence, 'ledger')) return evidence
+  const ledger = evidence.ledger
+  if (!record(ledger)) throw new Error('ledger must be an object')
+  for (const field of ledgerFields) {
+    if (Object.hasOwn(evidence, field) && evidence[field] !== ledger[field]) {
+      throw new Error('conflicting ledger field ' + field)
+    }
+  }
+  if (Object.hasOwn(evidence, 'data')) {
+    if (!record(evidence.data) || evidence.data.sha256 !== ledger.dataSha256) {
+      throw new Error('conflicting data digest')
+    }
+  }
+  if (Object.hasOwn(evidence, 'outputs')) {
+    if (!Array.isArray(evidence.outputs)) throw new Error('outputs must be an array')
+    for (const role of ['md', 'html', 'pdf']) {
+      const rows = evidence.outputs.filter(row => record(row) && row.role === role)
+      if (rows.length !== 1 || rows[0].sha256 !== ledger[role + 'Sha256']) {
+        throw new Error('conflicting output digest ' + role)
+      }
+    }
+  }
+  return ledger
+}
+
 const role = (artifacts, key, max) => {
   const item = artifacts?.[key]
   if (!item || typeof item.content !== 'string') throw new Error('missing ' + key)
@@ -19,7 +52,7 @@ export function evaluateRentPricing(input) {
     const pdfBytes = role(input.artifacts, 'pdf', 20 * 1024 * 1024)
     const ledgerBytes = role(input.artifacts, 'evidence', 256 * 1024)
     const md = mdBytes.toString('utf8'), page = htmlBytes.toString('utf8')
-    const ledger = JSON.parse(ledgerBytes.toString('utf8'))
+    const ledger = readLedger(ledgerBytes)
     const detailed = ledger.template === 'rent-pricing-detailed-v3'
     const bound = ['rent-pricing-shell-v3', 'rent-pricing-detailed-v3'].includes(ledger.template) &&
       ledger.mdSha256 === hash(mdBytes) && ledger.htmlSha256 === hash(htmlBytes) &&

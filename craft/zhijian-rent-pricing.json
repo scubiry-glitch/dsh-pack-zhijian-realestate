@@ -87,7 +87,7 @@
     {
       "id": "zhijian-rent-pricing-v2",
       "entrypoint": "skills/zhijian-rent-pricing/scripts/check.mjs",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "resultIds": [
         "rent-pricing-template-binding",
         "rent-pricing-output-sanity"

@@ -27,4 +27,6 @@ description: 为具体住宅或公寓生成可复核的月租定价报告；详�
 
 现有 v2 场景继续由 `scripts/render-rent-pricing.py` 从已审数据生成同源 Markdown、HTML、PDF 和 craft-evidence.json。详细 v3 场景由 `scripts/render-rent-pricing-detailed.py` 读取 `status=reviewed` 的单份 v3 JSON，生成同源 Markdown、HTML、PDF 与哈希台账；命令参数为 `--data --md --html --pdf --ledger`。八章中的分案、四价格状态、共用月租横轴、三段价差、三依据区间、计算链、查询审计、逐条可比、实际层级趋势、四项趋势百分比、让价阶梯与合同条款均从该 JSON 生成。价格刻度、依据区间、样本分布及趋势图只在数据足够时绘制，否则显示缺口。PDF 从同一 HTML 生成。禁止复制旧报告数字或把图稿规格文字当成成图。核对单标题、价格卡、可比明细、计算明细、趋势、来源、手机与 A4；机器只查模板绑定和基本版式，业务数字仍由独立评审判断。
 
+将 `--ledger` 生成的 JSON 原样作为 `evidence` 角色发布；若需附加工艺、数据和输出说明，可把这份台账原样放进 `craft-evidence.json` 顶层 `ledger` 对象。两种形式均可被检查，但不得改写台账字段。包装格式中另列的同名台账字段、`data.sha256`、`outputs[]` 各角色 SHA256 必须与 `ledger` 一致；发布的 MD、HTML、PDF 必须与台账哈希对应。提交前运行本包的 `scripts/preflight-report.mjs` 检查实际发布文件；本地预检不能代替 Host 回执及独立评审。
+
 历史报告的形成过程见 [原始会话复盘](../../references/rent-pricing-process-review-v1.md)，只继承“结论先行、适用条件、明细可查、图说明决策”的方法，不继承样本与价格。
